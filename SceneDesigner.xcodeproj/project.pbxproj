@@ -153,8 +153,6 @@
 		498B5EF514E82165002889F8 /* SDLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EF414E82165002889F8 /* SDLayer.m */; };
 		498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
-		49D0A7B31512A3B00070FB00 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 49D0A7B21512A3B00070FB00 /* LICENSE */; };
-		49D0A7B61512C2560070FB00 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 49D0A7B51512C2550070FB00 /* AUTHORS */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -436,8 +434,6 @@
 		498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSThread+Blocks.m"; sourceTree = "<group>"; };
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
-		49D0A7B21512A3B00070FB00 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		49D0A7B51512C2550070FB00 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -499,8 +495,6 @@
 				497D928614DDD736007D337F /* Shaders */,
 				497D92A114DDD737007D337F /* libs */,
 				497D93E314DDD73C007D337F /* Supporting Files */,
-				49D0A7B21512A3B00070FB00 /* LICENSE */,
-				49D0A7B51512C2550070FB00 /* AUTHORS */,
 			);
 			path = SceneDesigner;
 			sourceTree = "<group>";
@@ -1021,8 +1015,6 @@
 				497D944114DDDBDF007D337F /* arial.png in Resources */,
 				497D944214DDDBDF007D337F /* linen.png in Resources */,
 				497D944314DDDBDF007D337F /* PTKeyboardIcon.tiff in Resources */,
-				49D0A7B31512A3B00070FB00 /* LICENSE in Resources */,
-				49D0A7B61512C2560070FB00 /* AUTHORS in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
