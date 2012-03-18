@@ -9,7 +9,7 @@
 
 @interface SDDrawingView : CCLayer
 {
-    CCLayerColor *_background;
+    CCSprite *_background;
     CCNode<SDNodeProtocol> *_selectedNode;
     BOOL _willDragNode;
     BOOL _willDeselectNode;

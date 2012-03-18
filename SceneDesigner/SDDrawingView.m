@@ -44,8 +44,21 @@
     self = [super init];
     if (self)
     {
-//        _background = [[CCLayerColor layerWithColor:ccc4(255, 255, 255, 255)] retain];
-//        [self addChild:_background];
+        // add repeating checkerboard background to indicate transparency
+        _background = [CCSprite spriteWithFile:@"checkerboard_dark.png"];
+        [self addChild:_background];
+        
+        // make texture repeating
+        ccTexParams params = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+        [[_background texture] setTexParameters:&params];
+        [_background setPosition:CGPointZero];
+        [_background setAnchorPoint:CGPointZero];
+        
+        // resize background checkerboard
+        CGSize s = [[CCDirector sharedDirector] winSize];
+        [_background setContentSize:s];
+        [_background setTextureRect:CGRectMake(0, 0, s.width, s.height)];
+        
         self.isMouseEnabled = YES;
     }
     
@@ -83,7 +96,10 @@
         CGSize s = [[CCDirector sharedDirector] winSize];
         s.width = sceneWidth;
         [[CCDirector sharedDirector] reshapeProjection:s];
+        
+        // resize background checkerboard
         [_background setContentSize:s];
+        [_background setTextureRect:CGRectMake(0, 0, s.width, s.height)];
     }
 }
 
@@ -103,7 +119,10 @@
         CGSize s = [[CCDirector sharedDirector] winSize];
         s.height = sceneHeight;
         [[CCDirector sharedDirector] reshapeProjection:s];
+        
+        // resize background checkerboard
         [_background setContentSize:s];
+        [_background setTextureRect:CGRectMake(0, 0, s.width, s.height)];
     }
 }
 

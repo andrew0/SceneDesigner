@@ -153,6 +153,7 @@
 		498B5EF514E82165002889F8 /* SDLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EF414E82165002889F8 /* SDLayer.m */; };
 		498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
+		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -381,7 +382,7 @@
 		497D93E514DDD73C007D337F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		497D93E714DDD73C007D337F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		497D93E814DDD73C007D337F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		497D93EA14DDD73C007D337F /* SDDrawingView.h */ = {isa = PBXFileReference; path = SDDrawingView.h; sourceTree = "<group>"; };
+		497D93EA14DDD73C007D337F /* SDDrawingView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SDDrawingView.h; sourceTree = "<group>"; };
 		497D93EB14DDD73C007D337F /* SDDrawingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDrawingView.m; sourceTree = "<group>"; };
 		497D93F314DDD7D5007D337F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/AdvancedPreferences.xib; sourceTree = "<group>"; };
 		497D93F714DDD7D5007D337F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GeneralPreferences.xib; sourceTree = "<group>"; };
@@ -434,6 +435,7 @@
 		498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSThread+Blocks.m"; sourceTree = "<group>"; };
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
+		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +504,7 @@
 		497D927914DDD736007D337F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */,
 				497D943A14DDDBDF007D337F /* anchor.png */,
 				497D943B14DDDBDF007D337F /* arial.fnt */,
 				497D943C14DDDBDF007D337F /* arial.png */,
@@ -1015,6 +1018,7 @@
 				497D944114DDDBDF007D337F /* arial.png in Resources */,
 				497D944214DDDBDF007D337F /* linen.png in Resources */,
 				497D944314DDDBDF007D337F /* PTKeyboardIcon.tiff in Resources */,
+				49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
