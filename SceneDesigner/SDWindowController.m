@@ -74,6 +74,9 @@
 
 - (void)reloadOutlineView
 {
+    // must perform on main thread because it Cocoa objects (i.e. NSOutlineView) can only be modified on main thread
+    // waitUntilDone because this is called right before synchronizeOutlineViewWithSelection, and if it hasn't finished yet
+    // then the synchronization will fail
     [[NSThread mainThread] performBlock:^{
         [[NSNotificationCenter defaultCenter] postNotificationName:@"NSOutlineViewWillReloadDataNotification" object:_outlineView];
         [_outlineView reloadData];
@@ -258,6 +261,8 @@
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
+    // make sure this is performed on main thread, since AppKit objects can only be modified on main thread,
+    // and the selecting/deselecting of nodes modifies the animating outline view
     [[NSThread mainThread] performBlock:^{
         CCNode<SDNodeProtocol> *newNode = [[[self document] drawingView] selectedNode];
         if ([keyPath isEqualToString:@"drawingView.selectedNode"])
@@ -323,6 +328,7 @@
         }
         else if ([keyPath isEqualToString:@"drawingView.selectedNode.mutableZOrder"])
         {
+            // change in z order = change in order for outline view, so outline view must be reloaded
             [self reloadOutlineView];
             [self synchronizeOutlineViewWithSelection];
         }
@@ -382,6 +388,7 @@
     if ( ![splitView isKindOfClass:[NSSplitView class]] )
         return;
     
+    // don't update screen until flush to avoid flickering
     NSWindow *window = [splitView window];
     [window disableScreenUpdatesUntilFlush];
 }
@@ -427,7 +434,9 @@
 
 - (void)outlineViewSelectionDidChange:(NSNotification *)notification
 {
-    // ignore the new selection because it will cause an infinite loop
+    // ignore the new selection because it will cause an infinite loop, since
+    // it will call outlineViewSelectionDidChange: again, then which changes the
+    // selection, which will call outlineViewDidChange: again, etc.
     _ignoreNewSelection = YES;
     
     NSDictionary *dict = [_outlineView itemAtRow:[_outlineView selectedRow]];
@@ -441,6 +450,8 @@
     NSUInteger row = 0;
     CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
     
+    // try to find selected node's corresponding outline view item and select it
+    // if it doesn't find anything, deselect everything
     if (selectedNode != nil)
     {
         for (NSUInteger i = 0; i < [_outlineView numberOfRows]; i++)
