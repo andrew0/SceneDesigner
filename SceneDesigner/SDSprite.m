@@ -143,11 +143,10 @@
     {
         NSColor *color = [colorObject colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
         
-		CGFloat r, g, b, a;			
-		a = [color alphaComponent];
-		r = [color redComponent] * a * 255;
-		g = [color greenComponent] * a * 255;
-		b = [color blueComponent] * a * 255;
+		CGFloat r, g, b;
+		r = [color redComponent] * 255;
+		g = [color greenComponent] * 255;
+		b = [color blueComponent] * 255;
         
         [self setColor:ccc3(r, g, b)];
     }
