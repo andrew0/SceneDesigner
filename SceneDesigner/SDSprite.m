@@ -154,7 +154,7 @@
 
 - (void)setColor:(ccColor3B)color
 {
-    if (color.r != self.color.r && color.g != self.color.g && color.b != self.color.b)
+    if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
     {
         NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
         [(CCSprite *)[um prepareWithInvocationTarget:self] setColor:[self color]];
