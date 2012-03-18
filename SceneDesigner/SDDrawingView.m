@@ -131,13 +131,23 @@
     return [[CCDirector sharedDirector] winSize].height;
 }
 
-- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event
+- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent
 {
-    for (CCNode<SDNodeProtocol> *child in [[[self children] getNSArray] reverseObjectEnumerator])
+    for (CCNode<SDNodeProtocol> *child in [[[parent children] getNSArray] reverseObjectEnumerator])
+    {
         if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && [child isEventInRect:event])
-            return child;
+        {
+            CCNode<SDNodeProtocol> *grandchild = [self nodeForEvent:event withParent:child];
+            return (grandchild != nil) ? grandchild : child;
+        }
+    }
     
     return nil;
+}
+
+- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event
+{
+    return [self nodeForEvent:event withParent:self];
 }
 
 - (BOOL)ccMouseDown:(NSEvent *)event

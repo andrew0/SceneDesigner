@@ -23,6 +23,7 @@
 
 + (CCScene *)scene;
 - (CCScene *)scene;
+- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent;
 - (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event;
 
 @end
