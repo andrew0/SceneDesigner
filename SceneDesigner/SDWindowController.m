@@ -96,7 +96,8 @@
     if ([[item title] isEqualToString:@"CCNode"])
     {
         SDNode *node = [SDNode node];
-        [self addNodeToLayer:node asChild:YES];
+        CCNode *parent = [[[self document] drawingView] selectedNode];
+        [self addNodeToLayer:node parent:parent];
     }
     else if ([[item title] isEqualToString:@"CCSprite"])
     {
@@ -116,12 +117,14 @@
                 
                 NSArray *urls = [openPanel URLs];
                 
+                CCNode *parent = [[[self document] drawingView] selectedNode];
+                
                 [[[self document] undoManager] beginUndoGrouping];
                 for (NSURL *url in urls)
                 {
                     NSString *path = [url path];
                     SDSprite *sprite = [SDSprite spriteWithFile:path];
-                    [self addNodeToLayer:sprite asChild:YES];
+                    [self addNodeToLayer:sprite parent:parent];
                 }
                 [[[self document] undoManager] endUndoGrouping];
             }
@@ -130,12 +133,14 @@
     else if ([[item title] isEqualToString:@"CCLayer"])
     {
         SDLayer *layer = [SDLayer node];
-        [self addNodeToLayer:layer asChild:YES];
+        CCNode *parent = [[[self document] drawingView] selectedNode];
+        [self addNodeToLayer:layer parent:parent];
     }
     else if ([[item title] isEqualToString:@"CCLayerColor"])
     {
         SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255)];
-        [self addNodeToLayer:layer asChild:YES];
+        CCNode *parent = [[[self document] drawingView] selectedNode];
+        [self addNodeToLayer:layer parent:parent];
         [layer forceRedraw];
     }
 }
@@ -145,29 +150,25 @@
     SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
     CCNode<SDNodeProtocol> *node = [layer selectedNode];
     if (layer && node)
-        [self removeNodeFromLayer:node];
+        [self removeNodeFromLayer:node parent:[node parent]];
 }
 
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node asChild:(BOOL)flag
+- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent
 {
     if (!node)
-    {
-        CCLOG(@"%s - tried to add nil node", __FUNCTION__);
         return;
-    }
     
-    [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node];
+    if ([node parent] != nil)
+        return;
+    
+    if (parent == nil)
+        parent = [[self document] drawingView];
+    
+    [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node parent:parent];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
     
-    SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
-    if (!layer)
-    {
-        CCLOG(@"%s - document drawing view is nil", __FUNCTION__);
-        return;
-    }
-    
+    SDDrawingView *layer = [[self document] drawingView];
     CCCallBlock *action = [CCCallBlock actionWithBlock:^{
-        CCNode *parent = ([layer selectedNode] != nil) ? [layer selectedNode] : layer;
         [parent addChild:node];
         [layer setSelectedNode:node];
         [self reloadOutlineView];
@@ -177,19 +178,15 @@
 
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node
 {
-    [self addNodeToLayer:node asChild:NO];
+    [self addNodeToLayer:node parent:nil];
 }
 
-- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node
+- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent
 {
     if (!node)
-    {
-        CCLOG(@"%s - tried to remove nil node", __FUNCTION__);
         return;
-    }
     
-    // NSUndoManager will automatically retain the node for us
-    [[[[self document] undoManager] prepareWithInvocationTarget:self] addNodeToLayer:node];
+    [[[[self document] undoManager] prepareWithInvocationTarget:self] addNodeToLayer:node parent:parent];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
     
     CCCallBlock *action = [CCCallBlock actionWithBlock:^{
