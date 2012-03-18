@@ -134,14 +134,14 @@
 - (NSColor *)colorObject
 {
     ccColor3B color = self.color;
-    return [NSColor colorWithCalibratedRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
+    return [NSColor colorWithDeviceRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
 }
 
 - (void)setColorObject:(NSColor *)colorObject
 {
     if (![colorObject isEqualTo:[self colorObject]])
     {
-        NSColor *color = [colorObject colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
+        NSColor *color = [colorObject colorUsingColorSpaceName:NSDeviceRGBColorSpace];
         
 		CGFloat r, g, b;
 		r = [color redComponent] * 255;
