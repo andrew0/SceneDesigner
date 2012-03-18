@@ -90,7 +90,12 @@
     
     NSMenuItem *item = (NSMenuItem *)sender;
     
-    if ([[item title] isEqualToString:@"CCSprite"])
+    if ([[item title] isEqualToString:@"CCNode"])
+    {
+        SDNode *node = [SDNode node];
+        [self addNodeToLayer:node asChild:YES];
+    }
+    else if ([[item title] isEqualToString:@"CCSprite"])
     {
         // initialize panel + set flags
         NSOpenPanel *openPanel = [NSOpenPanel openPanel];
