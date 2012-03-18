@@ -123,7 +123,7 @@
 		497D93E114DDD73C007D337F /* vec4.c in Sources */ = {isa = PBXBuildFile; fileRef = 497D93E014DDD73C007D337F /* vec4.c */; };
 		497D93E614DDD73C007D337F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D93E514DDD73C007D337F /* main.m */; };
 		497D93E914DDD73C007D337F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D93E814DDD73C007D337F /* AppDelegate.m */; };
-		497D93EC14DDD73C007D337F /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D93EB14DDD73C007D337F /* HelloWorldLayer.m */; };
+		497D93EC14DDD73C007D337F /* SDDrawingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D93EB14DDD73C007D337F /* SDDrawingView.m */; };
 		497D93FA14DDD7D5007D337F /* AdvancedPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 497D93F214DDD7D5007D337F /* AdvancedPreferences.xib */; };
 		497D93FC14DDD7D5007D337F /* GeneralPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 497D93F614DDD7D5007D337F /* GeneralPreferences.xib */; };
 		497D93FD14DDD7D5007D337F /* ShortcutPreferences.xib in Resources */ = {isa = PBXBuildFile; fileRef = 497D93F814DDD7D5007D337F /* ShortcutPreferences.xib */; };
@@ -381,8 +381,8 @@
 		497D93E514DDD73C007D337F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		497D93E714DDD73C007D337F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		497D93E814DDD73C007D337F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		497D93EA14DDD73C007D337F /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
-		497D93EB14DDD73C007D337F /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
+		497D93EA14DDD73C007D337F /* SDDrawingView.h */ = {isa = PBXFileReference; path = SDDrawingView.h; sourceTree = "<group>"; };
+		497D93EB14DDD73C007D337F /* SDDrawingView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SDDrawingView.m; sourceTree = "<group>"; };
 		497D93F314DDD7D5007D337F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/AdvancedPreferences.xib; sourceTree = "<group>"; };
 		497D93F714DDD7D5007D337F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/GeneralPreferences.xib; sourceTree = "<group>"; };
 		497D93F914DDD7D5007D337F /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = Resources/English.lproj/ShortcutPreferences.xib; sourceTree = "<group>"; };
@@ -914,8 +914,8 @@
 				497D943514DDD8FF007D337F /* Nodes */,
 				497D940B14DDD84B007D337F /* SDGLView.h */,
 				497D940C14DDD84B007D337F /* SDGLView.m */,
-				497D93EA14DDD73C007D337F /* HelloWorldLayer.h */,
-				497D93EB14DDD73C007D337F /* HelloWorldLayer.m */,
+				497D93EA14DDD73C007D337F /* SDDrawingView.h */,
+				497D93EB14DDD73C007D337F /* SDDrawingView.m */,
 			);
 			name = cocos2d;
 			sourceTree = "<group>";
@@ -1117,7 +1117,7 @@
 				497D93E114DDD73C007D337F /* vec4.c in Sources */,
 				497D93E614DDD73C007D337F /* main.m in Sources */,
 				497D93E914DDD73C007D337F /* AppDelegate.m in Sources */,
-				497D93EC14DDD73C007D337F /* HelloWorldLayer.m in Sources */,
+				497D93EC14DDD73C007D337F /* SDDrawingView.m in Sources */,
 				497D941714DDD84F007D337F /* NSView+Additions.m in Sources */,
 				497D941814DDD84F007D337F /* SDClipView.m in Sources */,
 				497D941914DDD84F007D337F /* SDDocument.m in Sources */,

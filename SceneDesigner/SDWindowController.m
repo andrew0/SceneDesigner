@@ -10,7 +10,7 @@
 #import "TLDisclosureBar.h"
 #import "NSView+Additions.h"
 #import "SDDocument.h"
-#import "HelloWorldLayer.h"
+#import "SDDrawingView.h"
 #import "SDNode.h"
 #import "SDSprite.h"
 #import "SDLabelBMFont.h"
@@ -133,7 +133,7 @@
 
 - (IBAction)removeNode:(id)sender
 {
-    HelloWorldLayer *layer = [(SDDocument *)[self document] drawingView];
+    SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
     CCNode<SDNodeProtocol> *node = [layer selectedNode];
     if (layer && node)
         [self removeNodeFromLayer:node];
@@ -150,7 +150,7 @@
     [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
     
-    HelloWorldLayer *layer = [(SDDocument *)[self document] drawingView];
+    SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
     if (!layer)
     {
         CCLOG(@"%s - document drawing view is nil", __FUNCTION__);

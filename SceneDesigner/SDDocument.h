@@ -6,14 +6,14 @@
 #import <Cocoa/Cocoa.h>
 #import "cocos2d.h"
 
-@class HelloWorldLayer;
+@class SDDrawingView;
 
 @interface SDDocument : NSDocument
 {
-    HelloWorldLayer *_drawingView;
+    SDDrawingView *_drawingView;
     NSMutableArray *_nodesToAdd;
 }
 
-@property (nonatomic, retain) HelloWorldLayer *drawingView;
+@property (nonatomic, retain) SDDrawingView *drawingView;
 
 @end

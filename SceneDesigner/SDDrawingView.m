@@ -1,9 +1,9 @@
 //
-//  HelloWorldLayer.m
+//  SDDrawingView.m
 //  SceneDesigner
 //
 
-#import "HelloWorldLayer.h"
+#import "SDDrawingView.h"
 #import "SDNode.h"
 #import "SDSprite.h"
 #import "SDLabelBMFont.h"
@@ -11,7 +11,7 @@
 #import "SDWindowController.h"
 #import "NSThread+Blocks.h"
 
-@implementation HelloWorldLayer
+@implementation SDDrawingView
 
 @synthesize selectedNode = _selectedNode;
 @dynamic sceneWidth;
@@ -20,7 +20,7 @@
 + (CCScene *)scene
 {
     CCScene *scene = [CCScene node];
-    HelloWorldLayer *layer = [HelloWorldLayer node];
+    SDDrawingView *layer = [SDDrawingView node];
     [scene addChild: layer];
     return scene;
 }

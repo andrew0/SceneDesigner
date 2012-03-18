@@ -1,5 +1,5 @@
 //
-//  HelloWorldLayer.h
+//  SDDrawingView.h
 //  SceneDesigner
 //
 
@@ -7,7 +7,7 @@
 
 @protocol SDNodeProtocol;
 
-@interface HelloWorldLayer : CCLayer
+@interface SDDrawingView : CCLayer
 {
     CCLayerColor *_background;
     CCNode<SDNodeProtocol> *_selectedNode;

@@ -5,7 +5,7 @@
 
 #import "SDOutlineViewDataSource.h"
 #import "SDDocument.h"
-#import "HelloWorldLayer.h"
+#import "SDDrawingView.h"
 #import "SDNode.h"
 #import "cocos2d.h"
 

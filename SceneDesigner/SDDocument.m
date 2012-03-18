@@ -5,7 +5,7 @@
 
 #import "SDDocument.h"
 #import "SDWindowController.h"
-#import "HelloWorldLayer.h"
+#import "SDDrawingView.h"
 #import "SDNode.h"
 #import "AppDelegate.h"
 
@@ -29,7 +29,7 @@
 }
 
 // TODO: put this logic in makeWindowControllers and set drawing view in init
-- (void)setDrawingView:(HelloWorldLayer *)drawingView
+- (void)setDrawingView:(SDDrawingView *)drawingView
 {
     if (drawingView != _drawingView)
     {

@@ -4,7 +4,7 @@
 //
 
 #import "AppDelegate.h"
-#import "HelloWorldLayer.h"
+#import "SDDrawingView.h"
 #import "SDDocumentController.h"
 #import "SDGLView.h"
 #import "SDDocument.h"
@@ -59,7 +59,7 @@
     {
         SDDocument *document = (SDDocument *)[dc currentDocument];
         if ([document drawingView] == nil)
-            [document setDrawingView:[HelloWorldLayer node]];
+            [document setDrawingView:[SDDrawingView node]];
         
         [director runWithScene:[[document drawingView] scene]];
     }
@@ -93,7 +93,7 @@
         
         if ([document drawingView] == nil)
         {
-            HelloWorldLayer *layer = [HelloWorldLayer alloc];
+            SDDrawingView *layer = [SDDrawingView alloc];
             NSThread *runningThread = [[CCDirector sharedDirector] runningThread];
             if (runningThread)
                 [layer performSelector:@selector(init) onThread:runningThread withObject:nil waitUntilDone:YES];
