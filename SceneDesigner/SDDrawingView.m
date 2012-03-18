@@ -194,8 +194,10 @@
         if (_selectedNode)
         {
             CGPoint diff = ccpSub(location, _prevLocation);
-            CGPoint currentPos = [_selectedNode position];
-            _selectedNode.position = ccpAdd(currentPos, diff);
+            CGPoint rotatedDiff = CGPointApplyAffineTransform(diff, CGAffineTransformMakeRotation(-CC_DEGREES_TO_RADIANS([_selectedNode rotation])));
+            CGPoint currentPos = [_selectedNode convertToWorldSpace:[_selectedNode position]];
+            CGPoint newPos = ccpAdd(currentPos, rotatedDiff);
+            _selectedNode.position = [_selectedNode convertToNodeSpace:newPos];
         }
     }
     
