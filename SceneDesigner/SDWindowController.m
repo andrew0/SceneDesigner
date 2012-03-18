@@ -113,7 +113,7 @@
                 {
                     NSString *path = [url path];
                     SDSprite *sprite = [SDSprite spriteWithFile:path];
-                    [self addNodeToLayer:sprite];
+                    [self addNodeToLayer:sprite asChild:YES];
                 }
                 [[[self document] undoManager] endUndoGrouping];
             }
@@ -122,12 +122,13 @@
     else if ([[item title] isEqualToString:@"CCLayer"])
     {
         SDLayer *layer = [SDLayer node];
-        [self addNodeToLayer:layer];
+        [self addNodeToLayer:layer asChild:YES];
     }
     else if ([[item title] isEqualToString:@"CCLayerColor"])
     {
         SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255)];
-        [self addNodeToLayer:layer];
+        [self addNodeToLayer:layer asChild:YES];
+        [layer forceRedraw];
     }
 }
 
@@ -139,7 +140,7 @@
         [self removeNodeFromLayer:node];
 }
 
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node
+- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node asChild:(BOOL)flag
 {
     if (!node)
     {
@@ -158,11 +159,17 @@
     }
     
     CCCallBlock *action = [CCCallBlock actionWithBlock:^{
-        [layer addChild:node];
+        CCNode *parent = ([layer selectedNode] != nil) ? [layer selectedNode] : layer;
+        [parent addChild:node];
         [layer setSelectedNode:node];
         [self reloadOutlineView];
     }];
     [layer runAction:action];
+}
+
+- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node
+{
+    [self addNodeToLayer:node asChild:NO];
 }
 
 - (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node
@@ -339,6 +346,10 @@
 
 - (BOOL)outlineView:(TLAnimatingOutlineView *)outlineView shouldCollapseItem:(TLCollapsibleView *)item
 {
+    // only for TLAnimatingOutlineViews
+    if (![outlineView isKindOfClass:[TLAnimatingOutlineView class]])
+        return YES;
+    
     // if the first responder is being collapsed, remove its focus
     // otherwise the focus ring will still show while the view is being collapsed
     NSResponder *firstResponder = [[self window] firstResponder];

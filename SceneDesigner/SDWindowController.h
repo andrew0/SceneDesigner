@@ -37,6 +37,7 @@
 - (void)reloadOutlineView;
 - (IBAction)addNode:(id)sender;
 - (IBAction)removeNode:(id)sender;
+- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node asChild:(BOOL)flag;
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node;
 - (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node;
 - (void)configureView:(TLCollapsibleView *)view;
