@@ -63,14 +63,12 @@
     if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
     {
         NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
-        [(CCSprite *)[um prepareWithInvocationTarget:self] setColor:[self color]];
+        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
         [um setActionName:NSLocalizedString(@"color adjustment", nil)];
         
         [self willChangeValueForKey:@"colorObject"];
         [super setColor:color];
         [self didChangeValueForKey:@"colorObject"];
-        
-        [self forceRedraw];
     }
 }
 
@@ -78,8 +76,10 @@
 {
     if (opacity != [self opacity])
     {
+        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
+        [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
         [super setOpacity:opacity];
-        [self forceRedraw];
     }
 }
 

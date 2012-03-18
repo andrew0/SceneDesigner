@@ -163,8 +163,6 @@
         [self willChangeValueForKey:@"colorObject"];
         [super setColor:color];
         [self didChangeValueForKey:@"colorObject"];
-        
-        [self forceRedraw];
     }
 }
 
@@ -198,8 +196,6 @@
         [(CCSprite *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
         [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
         [super setOpacity:opacity];
-        
-        [self forceRedraw];
     }
 }
 

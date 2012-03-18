@@ -12,7 +12,6 @@
 - (void)setMutableZOrder:(NSInteger)z;
 - (NSDictionary *)dictionaryRepresentation;
 + (id)setupFromDictionaryRepresentation:(NSDictionary *)dict;
-- (void)forceRedraw;
 
 @optional
 
@@ -289,16 +288,6 @@ BOOL _isSelected;
 \
         ccDrawPoly(vertices, 4, YES);\
     }\
-}\
-\
-- (void)forceRedraw\
-{\
-    /* a little hackish, but for some reason the layer doesn't change the color until you change the size sometimes */\
-    CGSize size = [self contentSize];\
-    CGSize tempSize = size;\
-    tempSize.width += 1;\
-    [self setContentSize:tempSize];\
-    [self setContentSize:size];\
 }\
 \
 - (NSDictionary *)dictionaryRepresentation\

@@ -138,10 +138,10 @@
     }
     else if ([[item title] isEqualToString:@"CCLayerColor"])
     {
-        SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255)];
+        SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255) width:100 height:100];
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:layer parent:parent];
-        [layer forceRedraw];
+        [layer setContentSize:[[CCDirector sharedDirector] winSize]];
     }
 }
 
