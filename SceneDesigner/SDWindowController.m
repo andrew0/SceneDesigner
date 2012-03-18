@@ -75,8 +75,8 @@
 - (void)reloadOutlineView
 {
     [[NSThread mainThread] performBlock:^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NSOutlineViewWillReloadDataNotification" object:_outlineView];
         [_outlineView reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NSOutlineViewDidReloadDataNotification" object:_outlineView];
     } waitUntilDone:YES];
 }
 

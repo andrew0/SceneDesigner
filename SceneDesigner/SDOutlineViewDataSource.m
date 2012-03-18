@@ -17,7 +17,7 @@
     if (self)
     {
         _array = [[NSMutableArray alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDictionary:) name:@"NSOutlineViewDidReloadDataNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDictionary:) name:@"NSOutlineViewWillReloadDataNotification" object:nil];
     }
     
     return self;
