@@ -72,4 +72,19 @@
     [[NSGraphicsContext currentContext] restoreGraphicsState];
 }
 
+- (void)mouseDown:(NSEvent *)theEvent
+{
+    [[self documentView] mouseDown:theEvent];
+}
+
+- (void)mouseUp:(NSEvent *)theEvent
+{
+    [[self documentView] mouseUp:theEvent];
+}
+
+- (void)mouseDragged:(NSEvent *)theEvent
+{
+    [[self documentView] mouseDragged:theEvent];
+}
+
 @end
