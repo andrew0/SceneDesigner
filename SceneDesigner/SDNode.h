@@ -347,6 +347,17 @@ BOOL _isSelected;
     retVal.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];\
     [retVal setMutableZOrder:[[dict valueForKey:@"zOrder"] integerValue]];\
 \
+    NSArray *children = [dict objectForKey:@"children"];\
+    for (NSDictionary *child in children)\
+    {\
+        Class childClass = NSClassFromString([child objectForKey:@"className"]);\
+        if ([childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
+        {\
+            CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];\
+            [retVal addChild:node];\
+        }\
+    }\
+\
     return retVal;\
 }\
 \
