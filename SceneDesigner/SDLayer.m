@@ -27,6 +27,7 @@
     retVal.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
     retVal.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
     retVal.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+    retVal.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
     
     return retVal;
 }

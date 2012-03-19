@@ -28,11 +28,12 @@
 {
     ccColor3B color = ColorFromNSString([dict valueForKey:@"color"]);
     GLubyte opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-    SDLayerColor *retVal = [self layerWithColor:ccc4(color.r, color.g, color.b, opacity)];
+    SDLayerColor *retVal = [self layerWithColor:ccc4(color.r, color.g, color.b, opacity) width:0 height:0];
     retVal.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
     retVal.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
     retVal.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
     retVal.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+    retVal.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
     
     return retVal;
 }
