@@ -154,6 +154,7 @@
 		498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
+		49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9E1AD1517F04800F8998D /* SDOutlineView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -436,6 +437,8 @@
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
+		49B9E1AC1517F04800F8998D /* SDOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDOutlineView.h; sourceTree = "<group>"; };
+		49B9E1AD1517F04800F8998D /* SDOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDOutlineView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -907,6 +910,8 @@
 				497D940814DDD84A007D337F /* SDDocument.m */,
 				497D940914DDD84A007D337F /* SDDocumentController.h */,
 				497D940A14DDD84A007D337F /* SDDocumentController.m */,
+				49B9E1AC1517F04800F8998D /* SDOutlineView.h */,
+				49B9E1AD1517F04800F8998D /* SDOutlineView.m */,
 			);
 			name = Cocoa;
 			sourceTree = "<group>";
@@ -1142,6 +1147,7 @@
 				498B5EF514E82165002889F8 /* SDLayer.m in Sources */,
 				498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */,
 				49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */,
+				49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
