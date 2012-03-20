@@ -11,6 +11,8 @@
 
 - (void)keyDown:(NSEvent *)theEvent
 {
+    [super keyDown:theEvent];
+    
     if ([[self selectedRowIndexes] count] == 0)
         return;
     
