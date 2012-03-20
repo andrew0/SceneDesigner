@@ -138,7 +138,10 @@
     }
     else if ([[item title] isEqualToString:@"CCLayerColor"])
     {
-        SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255) width:100 height:100];
+        // little bit of a hack - for some reason when the CCLayerColor is added, it doesn't
+        // show color until it is resized. to remedy this, we just make a 0x0 layer and resize
+        // it to be the size of the OpenGL view
+        SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255) width:0 height:0];
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:layer parent:parent];
         [layer setContentSize:[[CCDirector sharedDirector] winSize]];
