@@ -138,11 +138,6 @@
 		497D941E14DDD84F007D337F /* SDPrefsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D941214DDD84C007D337F /* SDPrefsController.m */; };
 		497D941F14DDD84F007D337F /* SDSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D941414DDD84D007D337F /* SDSprite.m */; };
 		497D942014DDD84F007D337F /* SDWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D941614DDD84E007D337F /* SDWindowController.m */; };
-		497D942D14DDD85A007D337F /* TLAnimatingOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D942314DDD85A007D337F /* TLAnimatingOutlineView.m */; };
-		497D942E14DDD85A007D337F /* TLCollapsibleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D942514DDD85A007D337F /* TLCollapsibleView.m */; };
-		497D942F14DDD85A007D337F /* TLDisclosureBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D942714DDD85A007D337F /* TLDisclosureBar.m */; };
-		497D943014DDD85A007D337F /* TLEmbossedTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D942914DDD85A007D337F /* TLEmbossedTextFieldCell.m */; };
-		497D943114DDD85A007D337F /* TLGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D942C14DDD85A007D337F /* TLGradientView.m */; };
 		497D943F14DDDBDF007D337F /* anchor.png in Resources */ = {isa = PBXBuildFile; fileRef = 497D943A14DDDBDF007D337F /* anchor.png */; };
 		497D944014DDDBDF007D337F /* arial.fnt in Resources */ = {isa = PBXBuildFile; fileRef = 497D943B14DDDBDF007D337F /* arial.fnt */; };
 		497D944114DDDBDF007D337F /* arial.png in Resources */ = {isa = PBXBuildFile; fileRef = 497D943C14DDDBDF007D337F /* arial.png */; };
@@ -165,6 +160,11 @@
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 		49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9E1AD1517F04800F8998D /* SDOutlineView.m */; };
+		49D8F166151AD57F004A945B /* TLAnimatingOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */; };
+		49D8F167151AD57F004A945B /* TLCollapsibleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15E151AD57F004A945B /* TLCollapsibleView.m */; };
+		49D8F168151AD57F004A945B /* TLDisclosureBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F160151AD57F004A945B /* TLDisclosureBar.m */; };
+		49D8F169151AD57F004A945B /* TLEmbossedTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F162151AD57F004A945B /* TLEmbossedTextFieldCell.m */; };
+		49D8F16A151AD57F004A945B /* TLGradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F165151AD57F004A945B /* TLGradientView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -420,17 +420,6 @@
 		497D941414DDD84D007D337F /* SDSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDSprite.m; sourceTree = "<group>"; };
 		497D941514DDD84D007D337F /* SDWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWindowController.h; sourceTree = "<group>"; };
 		497D941614DDD84E007D337F /* SDWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWindowController.m; sourceTree = "<group>"; };
-		497D942214DDD85A007D337F /* TLAnimatingOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLAnimatingOutlineView.h; sourceTree = "<group>"; };
-		497D942314DDD85A007D337F /* TLAnimatingOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLAnimatingOutlineView.m; sourceTree = "<group>"; };
-		497D942414DDD85A007D337F /* TLCollapsibleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollapsibleView.h; sourceTree = "<group>"; };
-		497D942514DDD85A007D337F /* TLCollapsibleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCollapsibleView.m; sourceTree = "<group>"; };
-		497D942614DDD85A007D337F /* TLDisclosureBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLDisclosureBar.h; sourceTree = "<group>"; };
-		497D942714DDD85A007D337F /* TLDisclosureBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLDisclosureBar.m; sourceTree = "<group>"; };
-		497D942814DDD85A007D337F /* TLEmbossedTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLEmbossedTextFieldCell.h; sourceTree = "<group>"; };
-		497D942914DDD85A007D337F /* TLEmbossedTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLEmbossedTextFieldCell.m; sourceTree = "<group>"; };
-		497D942A14DDD85A007D337F /* TLGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGeometry.h; sourceTree = "<group>"; };
-		497D942B14DDD85A007D337F /* TLGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGradientView.h; sourceTree = "<group>"; };
-		497D942C14DDD85A007D337F /* TLGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLGradientView.m; sourceTree = "<group>"; };
 		497D943A14DDDBDF007D337F /* anchor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = anchor.png; path = Resources/anchor.png; sourceTree = "<group>"; };
 		497D943B14DDDBDF007D337F /* arial.fnt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = arial.fnt; path = Resources/arial.fnt; sourceTree = "<group>"; };
 		497D943C14DDDBDF007D337F /* arial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = arial.png; path = Resources/arial.png; sourceTree = "<group>"; };
@@ -460,6 +449,17 @@
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
 		49B9E1AC1517F04800F8998D /* SDOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDOutlineView.h; sourceTree = "<group>"; };
 		49B9E1AD1517F04800F8998D /* SDOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDOutlineView.m; sourceTree = "<group>"; };
+		49D8F15B151AD57F004A945B /* TLAnimatingOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLAnimatingOutlineView.h; sourceTree = "<group>"; };
+		49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLAnimatingOutlineView.m; sourceTree = "<group>"; };
+		49D8F15D151AD57F004A945B /* TLCollapsibleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollapsibleView.h; sourceTree = "<group>"; };
+		49D8F15E151AD57F004A945B /* TLCollapsibleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCollapsibleView.m; sourceTree = "<group>"; };
+		49D8F15F151AD57F004A945B /* TLDisclosureBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLDisclosureBar.h; sourceTree = "<group>"; };
+		49D8F160151AD57F004A945B /* TLDisclosureBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLDisclosureBar.m; sourceTree = "<group>"; };
+		49D8F161151AD57F004A945B /* TLEmbossedTextFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLEmbossedTextFieldCell.h; sourceTree = "<group>"; };
+		49D8F162151AD57F004A945B /* TLEmbossedTextFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLEmbossedTextFieldCell.m; sourceTree = "<group>"; };
+		49D8F163151AD57F004A945B /* TLGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGeometry.h; sourceTree = "<group>"; };
+		49D8F164151AD57F004A945B /* TLGradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLGradientView.h; sourceTree = "<group>"; };
+		49D8F165151AD57F004A945B /* TLGradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLGradientView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -585,7 +585,7 @@
 			children = (
 				497D93E214DDD73C007D337F /* LICENSE_Kazmath.txt */,
 				49A77CFA151AC6E200014AB6 /* JSONKit */,
-				497D942114DDD85A007D337F /* TLAnimatingOutlineView */,
+				49D8F15A151AD57F004A945B /* TLAnimatingOutlineView */,
 				497D92A214DDD737007D337F /* cocos2d */,
 				497D93B114DDD73C007D337F /* kazmath */,
 			);
@@ -892,24 +892,6 @@
 			name = Preferences;
 			sourceTree = "<group>";
 		};
-		497D942114DDD85A007D337F /* TLAnimatingOutlineView */ = {
-			isa = PBXGroup;
-			children = (
-				497D942214DDD85A007D337F /* TLAnimatingOutlineView.h */,
-				497D942314DDD85A007D337F /* TLAnimatingOutlineView.m */,
-				497D942414DDD85A007D337F /* TLCollapsibleView.h */,
-				497D942514DDD85A007D337F /* TLCollapsibleView.m */,
-				497D942614DDD85A007D337F /* TLDisclosureBar.h */,
-				497D942714DDD85A007D337F /* TLDisclosureBar.m */,
-				497D942814DDD85A007D337F /* TLEmbossedTextFieldCell.h */,
-				497D942914DDD85A007D337F /* TLEmbossedTextFieldCell.m */,
-				497D942A14DDD85A007D337F /* TLGeometry.h */,
-				497D942B14DDD85A007D337F /* TLGradientView.h */,
-				497D942C14DDD85A007D337F /* TLGradientView.m */,
-			);
-			path = TLAnimatingOutlineView;
-			sourceTree = "<group>";
-		};
 		497D943214DDD862007D337F /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -984,6 +966,25 @@
 			);
 			name = JSONKit;
 			path = libs/JSONKit;
+			sourceTree = "<group>";
+		};
+		49D8F15A151AD57F004A945B /* TLAnimatingOutlineView */ = {
+			isa = PBXGroup;
+			children = (
+				49D8F15B151AD57F004A945B /* TLAnimatingOutlineView.h */,
+				49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */,
+				49D8F15D151AD57F004A945B /* TLCollapsibleView.h */,
+				49D8F15E151AD57F004A945B /* TLCollapsibleView.m */,
+				49D8F15F151AD57F004A945B /* TLDisclosureBar.h */,
+				49D8F160151AD57F004A945B /* TLDisclosureBar.m */,
+				49D8F161151AD57F004A945B /* TLEmbossedTextFieldCell.h */,
+				49D8F162151AD57F004A945B /* TLEmbossedTextFieldCell.m */,
+				49D8F163151AD57F004A945B /* TLGeometry.h */,
+				49D8F164151AD57F004A945B /* TLGradientView.h */,
+				49D8F165151AD57F004A945B /* TLGradientView.m */,
+			);
+			name = TLAnimatingOutlineView;
+			path = libs/TLAnimatingOutlineView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1187,11 +1188,6 @@
 				497D941E14DDD84F007D337F /* SDPrefsController.m in Sources */,
 				497D941F14DDD84F007D337F /* SDSprite.m in Sources */,
 				497D942014DDD84F007D337F /* SDWindowController.m in Sources */,
-				497D942D14DDD85A007D337F /* TLAnimatingOutlineView.m in Sources */,
-				497D942E14DDD85A007D337F /* TLCollapsibleView.m in Sources */,
-				497D942F14DDD85A007D337F /* TLDisclosureBar.m in Sources */,
-				497D943014DDD85A007D337F /* TLEmbossedTextFieldCell.m in Sources */,
-				497D943114DDD85A007D337F /* TLGradientView.m in Sources */,
 				497D944714DE4798007D337F /* CCNode+Additions.m in Sources */,
 				497D944A14DF2A42007D337F /* SDOutlineViewDataSource.m in Sources */,
 				498B5EF514E82165002889F8 /* SDLayer.m in Sources */,
@@ -1199,6 +1195,11 @@
 				49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */,
 				49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */,
 				49A77D00151AC6E200014AB6 /* JSONKit.m in Sources */,
+				49D8F166151AD57F004A945B /* TLAnimatingOutlineView.m in Sources */,
+				49D8F167151AD57F004A945B /* TLCollapsibleView.m in Sources */,
+				49D8F168151AD57F004A945B /* TLDisclosureBar.m in Sources */,
+				49D8F169151AD57F004A945B /* TLEmbossedTextFieldCell.m in Sources */,
+				49D8F16A151AD57F004A945B /* TLGradientView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
