@@ -161,6 +161,7 @@
 		49A77D0A151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D05151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt */; };
 		49A77D0B151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */; };
 		49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */; };
+		49A77D0F151ACBFB00014AB6 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0E151ACBFB00014AB6 /* Credits.rtf */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 		49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9E1AD1517F04800F8998D /* SDOutlineView.m */; };
@@ -453,6 +454,7 @@
 		49A77D05151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_SceneDesigner.txt; sourceTree = SOURCE_ROOT; };
 		49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_TLAnimatingOutlineView.txt; sourceTree = SOURCE_ROOT; };
 		49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_JSONKit.txt; sourceTree = SOURCE_ROOT; };
+		49A77D0E151ACBFB00014AB6 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = SOURCE_ROOT; };
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 			isa = PBXGroup;
 			children = (
 				49A77D02151AC9D900014AB6 /* AUTHORS */,
+				49A77D0E151ACBFB00014AB6 /* Credits.rtf */,
 				49A77D03151AC9D900014AB6 /* LICENSE_cocos2d.txt */,
 				49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */,
 				49A77D04151AC9D900014AB6 /* LICENSE_Kazmath.txt */,
@@ -1070,6 +1073,7 @@
 				49A77D0A151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt in Resources */,
 				49A77D0B151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt in Resources */,
 				49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */,
+				49A77D0F151ACBFB00014AB6 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
