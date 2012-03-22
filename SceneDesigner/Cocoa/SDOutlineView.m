@@ -7,6 +7,9 @@
 #import "SDOutlineViewDataSource.h"
 #import "SDWindowController.h"
 
+NSString *NSOutlineViewWillReloadDataNotification = @"NSOutlineViewWillReloadDataNotification";
+NSString *NSOutlineViewDidReloadDataNotification = @"NSOutlineViewDidReloadDataNotification";
+
 @implementation SDOutlineView
 
 - (void)keyDown:(NSEvent *)theEvent
@@ -37,6 +40,13 @@
             }
         }
     }
+}
+
+- (void)reloadData
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSOutlineViewWillReloadDataNotification object:self];
+    [super reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSOutlineViewDidReloadDataNotification object:self];
 }
 
 @end

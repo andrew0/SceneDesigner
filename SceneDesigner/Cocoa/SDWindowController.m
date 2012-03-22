@@ -78,7 +78,6 @@
     // waitUntilDone because this is called right before synchronizeOutlineViewWithSelection, and if it hasn't finished yet
     // then the synchronization will fail
     [[NSThread mainThread] performBlock:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"NSOutlineViewWillReloadDataNotification" object:_outlineView];
         [_outlineView reloadData];
     } waitUntilDone:YES];
 }

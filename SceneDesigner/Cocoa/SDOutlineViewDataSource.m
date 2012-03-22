@@ -8,6 +8,7 @@
 #import "SDDrawingView.h"
 #import "SDNode.h"
 #import "cocos2d.h"
+#import "SDOutlineView.h"
 
 @implementation SDOutlineViewDataSource
 
@@ -17,7 +18,7 @@
     if (self)
     {
         _array = [[NSMutableArray alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDictionary:) name:@"NSOutlineViewWillReloadDataNotification" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDictionary:) name:NSOutlineViewWillReloadDataNotification object:nil];
     }
     
     return self;
