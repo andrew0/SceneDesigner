@@ -388,7 +388,6 @@
 		497D93DC14DDD73C007D337F /* vec2.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = vec2.c; path = libs/kazmath/src/vec2.c; sourceTree = "<group>"; };
 		497D93DE14DDD73C007D337F /* vec3.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = vec3.c; path = libs/kazmath/src/vec3.c; sourceTree = "<group>"; };
 		497D93E014DDD73C007D337F /* vec4.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = vec4.c; path = libs/kazmath/src/vec4.c; sourceTree = "<group>"; };
-		497D93E214DDD73C007D337F /* LICENSE_Kazmath.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE_Kazmath.txt; path = libs/LICENSE_Kazmath.txt; sourceTree = "<group>"; };
 		497D93E414DDD73C007D337F /* Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Prefix.pch; sourceTree = "<group>"; };
 		497D93E514DDD73C007D337F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		497D93E714DDD73C007D337F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -583,7 +582,6 @@
 		497D92A114DDD737007D337F /* libs */ = {
 			isa = PBXGroup;
 			children = (
-				497D93E214DDD73C007D337F /* LICENSE_Kazmath.txt */,
 				49A77CFA151AC6E200014AB6 /* JSONKit */,
 				49D8F15A151AD57F004A945B /* TLAnimatingOutlineView */,
 				497D92A214DDD737007D337F /* cocos2d */,
