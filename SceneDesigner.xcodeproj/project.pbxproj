@@ -155,6 +155,12 @@
 		49A77CFF151AC6E200014AB6 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 49A77CFB151AC6E200014AB6 /* CHANGELOG.md */; };
 		49A77D00151AC6E200014AB6 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77CFD151AC6E200014AB6 /* JSONKit.m */; };
 		49A77D01151AC6E200014AB6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 49A77CFE151AC6E200014AB6 /* README.md */; };
+		49A77D07151AC9DA00014AB6 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D02151AC9D900014AB6 /* AUTHORS */; };
+		49A77D08151AC9DA00014AB6 /* LICENSE_cocos2d.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D03151AC9D900014AB6 /* LICENSE_cocos2d.txt */; };
+		49A77D09151AC9DA00014AB6 /* LICENSE_Kazmath.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D04151AC9D900014AB6 /* LICENSE_Kazmath.txt */; };
+		49A77D0A151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D05151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt */; };
+		49A77D0B151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */; };
+		49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 		49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9E1AD1517F04800F8998D /* SDOutlineView.m */; };
@@ -441,6 +447,12 @@
 		49A77CFC151AC6E200014AB6 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
 		49A77CFD151AC6E200014AB6 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
 		49A77CFE151AC6E200014AB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		49A77D02151AC9D900014AB6 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = SOURCE_ROOT; };
+		49A77D03151AC9D900014AB6 /* LICENSE_cocos2d.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_cocos2d.txt; sourceTree = SOURCE_ROOT; };
+		49A77D04151AC9D900014AB6 /* LICENSE_Kazmath.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_Kazmath.txt; sourceTree = SOURCE_ROOT; };
+		49A77D05151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_SceneDesigner.txt; sourceTree = SOURCE_ROOT; };
+		49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_TLAnimatingOutlineView.txt; sourceTree = SOURCE_ROOT; };
+		49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_JSONKit.txt; sourceTree = SOURCE_ROOT; };
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
@@ -498,6 +510,12 @@
 		497D927814DDD736007D337F /* SceneDesigner */ = {
 			isa = PBXGroup;
 			children = (
+				49A77D02151AC9D900014AB6 /* AUTHORS */,
+				49A77D03151AC9D900014AB6 /* LICENSE_cocos2d.txt */,
+				49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */,
+				49A77D04151AC9D900014AB6 /* LICENSE_Kazmath.txt */,
+				49A77D05151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt */,
+				49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */,
 				497D943414DDD8A7007D337F /* cocos2d */,
 				497D943314DDD879007D337F /* Cocoa */,
 				497D943214DDD862007D337F /* Support */,
@@ -1046,6 +1064,12 @@
 				49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */,
 				49A77CFF151AC6E200014AB6 /* CHANGELOG.md in Resources */,
 				49A77D01151AC6E200014AB6 /* README.md in Resources */,
+				49A77D07151AC9DA00014AB6 /* AUTHORS in Resources */,
+				49A77D08151AC9DA00014AB6 /* LICENSE_cocos2d.txt in Resources */,
+				49A77D09151AC9DA00014AB6 /* LICENSE_Kazmath.txt in Resources */,
+				49A77D0A151AC9DA00014AB6 /* LICENSE_SceneDesigner.txt in Resources */,
+				49A77D0B151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt in Resources */,
+				49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
