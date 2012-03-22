@@ -19,6 +19,7 @@
 #import "SDGLView.h"
 #import "NSThread+Blocks.h"
 #import "SDOutlineViewDataSource.h"
+#import "SDOutlineView.h"
 
 @implementation SDWindowController
 
@@ -64,10 +65,13 @@
     // hierarchy outline view
     [_outlineView setDelegate:self];
     [self reloadOutlineView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(synchronizeOutlineViewWithSelection:) name:NSOutlineViewDidReloadDataNotification object:_outlineView];
 }
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_animatingOutlineView release];
     [super dealloc];
 }
@@ -322,14 +326,13 @@
             }
             
             if (!_ignoreNewSelection)
-                [self synchronizeOutlineViewWithSelection];
+                [self synchronizeOutlineViewWithSelection:nil];
             _ignoreNewSelection = NO;
         }
         else if ([keyPath isEqualToString:@"drawingView.selectedNode.mutableZOrder"])
         {
             // change in z order = change in order for outline view, so outline view must be reloaded
             [self reloadOutlineView];
-            [self synchronizeOutlineViewWithSelection];
         }
     }];
 }
@@ -443,7 +446,7 @@
     [[[self document] drawingView] setSelectedNode:node];
 }
 
-- (void)synchronizeOutlineViewWithSelection
+- (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification
 {
     BOOL foundRow = NO;
     NSUInteger row = 0;

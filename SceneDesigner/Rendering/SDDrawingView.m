@@ -46,7 +46,7 @@
     {
         // add repeating checkerboard background to indicate transparency
         _background = [CCSprite spriteWithFile:@"checkerboard_dark.png"];
-        [self addChild:_background];
+        [self addChild:_background z:NSIntegerMin];
         
         // make texture repeating
         ccTexParams params = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};

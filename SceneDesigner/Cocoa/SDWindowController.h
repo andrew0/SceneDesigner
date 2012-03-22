@@ -42,6 +42,6 @@
 - (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent;
 - (void)configureView:(TLCollapsibleView *)view;
 - (IBAction)selectFntFile:(id)sender;
-- (void)synchronizeOutlineViewWithSelection;
+- (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification;
 
 @end

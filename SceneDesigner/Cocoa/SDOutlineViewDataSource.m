@@ -66,7 +66,11 @@
             return NSOrderedSame;
         
         // children array is automatically sorted by z order
-        return [[NSNumber numberWithInteger:[[parent children] indexOfObject:node1]] compare:[NSNumber numberWithInteger:[[parent children] indexOfObject:node2]]];
+        NSComparisonResult retVal = [[NSNumber numberWithInteger:[node1 zOrder]] compare:[NSNumber numberWithInteger:[node2 zOrder]]];
+        if (retVal == NSOrderedSame)
+            return [[NSNumber numberWithInteger:[[parent children] indexOfObject:node1]] compare:[NSNumber numberWithInteger:[[parent children] indexOfObject:node2]]];
+        
+        return retVal;
     };
     
     [array sortUsingComparator:comparator];
@@ -136,5 +140,8 @@
 {
     return [item objectForKey:CLASS_NAME_KEY];
 }
+
+- (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
+{}
 
 @end
