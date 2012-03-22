@@ -8,6 +8,7 @@
 #import "SDDrawingView.h"
 #import "SDNode.h"
 #import "AppDelegate.h"
+#import "JSONKit.h"
 
 @implementation SDDocument
 
@@ -89,6 +90,11 @@
         if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
             [array addObject:[child dictionaryRepresentation]];
     
+    // json
+    if ([typeName isEqualToString:@"JSON"])
+        return [array JSONData];
+    
+    // plist
     return [NSPropertyListSerialization dataWithPropertyList:array format:NSPropertyListBinaryFormat_v1_0 options:0 error:NULL];
 }
 
@@ -98,10 +104,15 @@
     if ([[CCDirector sharedDirector] runningScene] == nil)
         [delegate startCocos2D];
     
-    NSArray *children = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:outError];
+    NSArray *children;
+    if ([typeName isEqualToString:@"JSON"])
+        children = [data objectFromJSONData];
+    else
+        children = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:outError];
+    
     if (![children isKindOfClass:[NSArray class]])
     {
-        CCLOG(@"%s - property list not an array", __FUNCTION__);
+        CCLOG(@"%s - property list or JSON not an array", __FUNCTION__);
         return NO;
     }
     

@@ -42,4 +42,13 @@
         [super newDocument:nil];
 }
 
+- (NSString *)defaultType
+{
+    NSString *type = [[NSUserDefaults standardUserDefaults] valueForKey:@"fileFormat"];
+    if ([type isEqualToString:@"Property List"] || [type isEqualToString:@"JSON"])
+        return type;
+    
+    return @"Property List";
+}
+
 @end

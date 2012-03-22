@@ -1,0 +1,3 @@
+[submodule "SceneDesigner/libs/JSONKit"]
+	path = SceneDesigner/libs/JSONKit
+	url = git://github.com/johnezang/JSONKit.git

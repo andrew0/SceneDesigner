@@ -152,6 +152,9 @@
 		497D944A14DF2A42007D337F /* SDOutlineViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 497D944914DF2A41007D337F /* SDOutlineViewDataSource.m */; };
 		498B5EF514E82165002889F8 /* SDLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EF414E82165002889F8 /* SDLayer.m */; };
 		498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = 498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */; };
+		49A77CFF151AC6E200014AB6 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 49A77CFB151AC6E200014AB6 /* CHANGELOG.md */; };
+		49A77D00151AC6E200014AB6 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A77CFD151AC6E200014AB6 /* JSONKit.m */; };
+		49A77D01151AC6E200014AB6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 49A77CFE151AC6E200014AB6 /* README.md */; };
 		49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49AFF53614E8B67600822C66 /* SDLayerColor.m */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 		49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B9E1AD1517F04800F8998D /* SDOutlineView.m */; };
@@ -434,6 +437,10 @@
 		498B5EF414E82165002889F8 /* SDLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayer.m; sourceTree = "<group>"; };
 		498B5EFC14E830CA002889F8 /* NSThread+Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSThread+Blocks.h"; sourceTree = "<group>"; };
 		498B5EFD14E830CA002889F8 /* NSThread+Blocks.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSThread+Blocks.m"; sourceTree = "<group>"; };
+		49A77CFB151AC6E200014AB6 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.md; sourceTree = "<group>"; };
+		49A77CFC151AC6E200014AB6 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSONKit.h; sourceTree = "<group>"; };
+		49A77CFD151AC6E200014AB6 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSONKit.m; sourceTree = "<group>"; };
+		49A77CFE151AC6E200014AB6 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		49AFF53514E8B67600822C66 /* SDLayerColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLayerColor.h; sourceTree = "<group>"; };
 		49AFF53614E8B67600822C66 /* SDLayerColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLayerColor.m; sourceTree = "<group>"; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
@@ -556,6 +563,7 @@
 			isa = PBXGroup;
 			children = (
 				497D93E214DDD73C007D337F /* LICENSE_Kazmath.txt */,
+				49A77CFA151AC6E200014AB6 /* JSONKit */,
 				497D942114DDD85A007D337F /* TLAnimatingOutlineView */,
 				497D92A214DDD737007D337F /* cocos2d */,
 				497D93B114DDD73C007D337F /* kazmath */,
@@ -904,12 +912,12 @@
 				497D941214DDD84C007D337F /* SDPrefsController.m */,
 				497D940514DDD849007D337F /* SDClipView.h */,
 				497D940614DDD849007D337F /* SDClipView.m */,
-				497D944814DF2A40007D337F /* SDOutlineViewDataSource.h */,
-				497D944914DF2A41007D337F /* SDOutlineViewDataSource.m */,
 				497D940714DDD84A007D337F /* SDDocument.h */,
 				497D940814DDD84A007D337F /* SDDocument.m */,
 				497D940914DDD84A007D337F /* SDDocumentController.h */,
 				497D940A14DDD84A007D337F /* SDDocumentController.m */,
+				497D944814DF2A40007D337F /* SDOutlineViewDataSource.h */,
+				497D944914DF2A41007D337F /* SDOutlineViewDataSource.m */,
 				49B9E1AC1517F04800F8998D /* SDOutlineView.h */,
 				49B9E1AD1517F04800F8998D /* SDOutlineView.m */,
 			);
@@ -943,6 +951,18 @@
 				49AFF53614E8B67600822C66 /* SDLayerColor.m */,
 			);
 			name = Nodes;
+			sourceTree = "<group>";
+		};
+		49A77CFA151AC6E200014AB6 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
+				49A77CFB151AC6E200014AB6 /* CHANGELOG.md */,
+				49A77CFC151AC6E200014AB6 /* JSONKit.h */,
+				49A77CFD151AC6E200014AB6 /* JSONKit.m */,
+				49A77CFE151AC6E200014AB6 /* README.md */,
+			);
+			name = JSONKit;
+			path = libs/JSONKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1024,6 +1044,8 @@
 				497D944214DDDBDF007D337F /* linen.png in Resources */,
 				497D944314DDDBDF007D337F /* PTKeyboardIcon.tiff in Resources */,
 				49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */,
+				49A77CFF151AC6E200014AB6 /* CHANGELOG.md in Resources */,
+				49A77D01151AC6E200014AB6 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1148,6 +1170,7 @@
 				498B5EFE14E830CA002889F8 /* NSThread+Blocks.m in Sources */,
 				49AFF53714E8B67600822C66 /* SDLayerColor.m in Sources */,
 				49B9E1AE1517F04800F8998D /* SDOutlineView.m in Sources */,
+				49A77D00151AC6E200014AB6 /* JSONKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
