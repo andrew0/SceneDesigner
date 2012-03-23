@@ -8,6 +8,7 @@
 #import "SDDocumentController.h"
 #import "SDGLView.h"
 #import "SDDocument.h"
+#import "NSThread+Blocks.h"
 
 @implementation SceneDesignerAppDelegate
 
@@ -44,25 +45,17 @@
     CCDirectorMac *director = (CCDirectorMac *)[CCDirector sharedDirector];
     [director setResizeMode:kCCDirectorResize_NoScale];
     
+    // set the openGL view
+    [director setView:_glView];
+    
     // set our projection delegate to be the SDGLView, which is the same as
     // kCCDirectorProjection2D except it offsets the viewport by the scrollbar
     // amount
     [director setProjection:kCCDirectorProjectionCustom];
     [director setDelegate:_glView];
     
-    // set the openGL view
-    [director setView:_glView];
-    
     // get scene
-    SDDocumentController *dc = [SDDocumentController sharedDocumentController];
-    if ( [[dc currentDocument] isKindOfClass:[SDDocument class]] )
-    {
-        SDDocument *document = (SDDocument *)[dc currentDocument];
-        if ([document drawingView] == nil)
-            [document setDrawingView:[SDDrawingView node]];
-        
-        [director runWithScene:[[document drawingView] scene]];
-    }
+    [director runWithScene:[CCScene node]];
     
     // get notifications for new document
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(currentDocumentDidChange:) name:@"CurrentDocumentDidChangeNotification" object:nil];
@@ -87,27 +80,18 @@
 
 - (void)currentDocumentDidChange:(NSNotification *)notification
 {
+    [[_glView openGLContext] makeCurrentContext];
+    
     if ([[notification object] isKindOfClass:[SDDocument class]])
     {
         SDDocument *document = (SDDocument *)[notification object];
         
         if ([document drawingView] == nil)
-        {
-            SDDrawingView *layer = [SDDrawingView alloc];
-            NSThread *runningThread = [[CCDirector sharedDirector] runningThread];
-            if (runningThread)
-                [layer performSelector:@selector(init) onThread:runningThread withObject:nil waitUntilDone:YES];
-            else
-                [layer init];
-            
-            [document setDrawingView:[layer autorelease]];
-        }
+            [document setDrawingView:[SDDrawingView node]];
         
-        if ([[CCDirector sharedDirector] runningScene] != nil)
-            [[CCDirector sharedDirector] replaceScene:[[document drawingView] scene]];
-        else
-            [[CCDirector sharedDirector] runWithScene:[[document drawingView] scene]];
+        [[CCDirector sharedDirector] replaceScene:[[document drawingView] scene]];
     }
+    
 }
 
 - (void)dealloc

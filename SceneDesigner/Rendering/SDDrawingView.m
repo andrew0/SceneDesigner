@@ -13,6 +13,7 @@
 
 @implementation SDDrawingView
 
+@synthesize nodesToAddOnEnter = _nodesToAddOnEnter;
 @synthesize selectedNode = _selectedNode;
 @dynamic sceneWidth;
 @dynamic sceneHeight;
@@ -44,8 +45,20 @@
     self = [super init];
     if (self)
     {
+        self.isMouseEnabled = YES;
+    }
+    
+    return self;
+}
+
+- (void)onEnter
+{
+    [super onEnter];
+    
+    if (_background == nil)
+    {
         // add repeating checkerboard background to indicate transparency
-        _background = [CCSprite spriteWithFile:@"checkerboard_dark.png"];
+        _background = [[CCSprite spriteWithFile:@"checkerboard_dark.png"] retain];
         [self addChild:_background z:NSIntegerMin];
         
         // make texture repeating
@@ -58,16 +71,30 @@
         CGSize s = [[CCDirector sharedDirector] winSize];
         [_background setContentSize:s];
         [_background setTextureRect:CGRectMake(0, 0, s.width, s.height)];
-        
-        self.isMouseEnabled = YES;
     }
     
-    return self;
+    if (_nodesToAddOnEnter != nil && [_nodesToAddOnEnter count] > 0)
+    {
+        for (CCNode *node in _nodesToAddOnEnter)
+            if ([node isKindOfClass:[CCNode class]])
+                [self addChild:node];
+        
+        self.nodesToAddOnEnter = nil;
+        
+        NSArray *windowControllers = [[[NSDocumentController sharedDocumentController] currentDocument] windowControllers];
+        if ([windowControllers count] > 0)
+        {
+            SDWindowController *wc = [windowControllers objectAtIndex:0];
+            if ([wc isKindOfClass:[SDWindowController class]])
+                [wc reloadOutlineView];
+        }
+    }
 }
 
 - (void)dealloc
 {
     [_background release];
+    self.nodesToAddOnEnter = nil;
     self.selectedNode = nil;
     [super dealloc];
 }

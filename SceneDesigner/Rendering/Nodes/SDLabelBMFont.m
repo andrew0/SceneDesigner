@@ -8,26 +8,10 @@
 
 @implementation SDLabelBMFont
 
-@dynamic fntFile;
-
 - (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
 {
-    NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
-    [um disableUndoRegistration];
-    
     self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment];
-    if (self)
-        [self setFntFile:fntFile];
-    
-    [um enableUndoRegistration];
-    
     return self;
-}
-
-- (void)dealloc
-{
-    [_fntFile release];
-    [super dealloc];
 }
 
 - (void)setOpacity:(GLubyte)opacity
@@ -54,21 +38,13 @@
 
 - (void)setFntFile:(NSString *)fntFile
 {
-    if (![_fntFile isEqualToString:fntFile])
+    if (![[self fntFile] isEqualToString:fntFile])
     {
         NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
-        [[um prepareWithInvocationTarget:self] setFntFile:_fntFile];
+        [[um prepareWithInvocationTarget:self] setFntFile:[self fntFile]];
         [um setActionName:NSLocalizedString(@"label font adjustment", nil)];
-        
-        [_fntFile autorelease];
-        _fntFile = [fntFile copy];
         [super setFntFile:fntFile];
     }
-}
-
-- (NSString *)fntFile
-{
-    return _fntFile;
 }
 
 - (NSDictionary *)_dictionaryRepresentation

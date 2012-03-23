@@ -36,7 +36,7 @@ NSString *NSOutlineViewDidReloadDataNotification = @"NSOutlineViewDidReloadDataN
             SDWindowController *wc = [[self window] windowController];
             if ([wc isKindOfClass:[SDWindowController class]])
             {
-                [wc removeNodeFromLayer:node parent:[node parent]];
+                [wc removeNodeFromLayer:node];
             }
         }
     }

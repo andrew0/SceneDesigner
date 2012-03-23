@@ -156,7 +156,7 @@
     SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
     CCNode<SDNodeProtocol> *node = [layer selectedNode];
     if (layer && node)
-        [self removeNodeFromLayer:node parent:[node parent]];
+        [self removeNodeFromLayer:node];
 }
 
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent
@@ -170,16 +170,15 @@
     if (parent == nil)
         parent = [[self document] drawingView];
     
-    [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node parent:parent];
+    [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
     
     SDDrawingView *layer = [[self document] drawingView];
-    CCCallBlock *action = [CCCallBlock actionWithBlock:^{
+    [[[CCDirector sharedDirector] runningThread] performBlock:^{
         [parent addChild:node];
         [layer setSelectedNode:node];
-        [self reloadOutlineView];
-    }];
-    [layer runAction:action];
+    } waitUntilDone:YES];
+    [self reloadOutlineView];
 }
 
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node
@@ -187,19 +186,18 @@
     [self addNodeToLayer:node parent:nil];
 }
 
-- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent
+- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node
 {
     if (!node)
         return;
     
-    [[[[self document] undoManager] prepareWithInvocationTarget:self] addNodeToLayer:node parent:parent];
+    [[[[self document] undoManager] prepareWithInvocationTarget:self] addNodeToLayer:node parent:[node parent]];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
     
-    CCCallBlock *action = [CCCallBlock actionWithBlock:^{
+    [[[CCDirector sharedDirector] runningThread] performBlock:^{
         [[node parent] removeChild:node cleanup:YES];
         [self reloadOutlineView];
     }];
-    [[node parent] runAction:action];
 }
 
 - (IBAction)selectFntFile:(id)sender

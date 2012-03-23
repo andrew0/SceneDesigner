@@ -39,7 +39,7 @@
 - (IBAction)removeNode:(id)sender;
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent;
 - (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node;
-- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent;
+- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node;
 - (void)configureView:(TLCollapsibleView *)view;
 - (IBAction)selectFntFile:(id)sender;
 - (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification;
