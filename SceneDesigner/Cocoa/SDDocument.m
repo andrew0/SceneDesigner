@@ -119,7 +119,10 @@
     _nodesToAdd = [[NSMutableArray arrayWithCapacity:[children count]] retain];
     for (NSDictionary *child in children)
     {
-        Class childClass = NSClassFromString([child objectForKey:@"className"]);
+        NSMutableString *string = [NSMutableString stringWithString:[child objectForKey:@"className"]];
+        [string deleteCharactersInRange:NSMakeRange(0, 2)];
+        [string insertString:@"SD" atIndex:0];
+        Class childClass = NSClassFromString(string);
         if ([childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
         {
             CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];

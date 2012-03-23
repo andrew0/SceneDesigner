@@ -298,7 +298,7 @@ BOOL _isSelected;
     else\
         dict = [NSMutableDictionary dictionaryWithCapacity:11];\
 \
-    [dict setValue:[self className] forKey:@"className"];\
+    [dict setValue:NSStringFromClass([self superclass]) forKey:@"className"];\
     [dict setValue:self.name forKey:@"name"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.position)) forKey:@"position"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.anchorPoint)) forKey:@"anchorPoint"];\
@@ -350,7 +350,10 @@ BOOL _isSelected;
     NSArray *children = [dict objectForKey:@"children"];\
     for (NSDictionary *child in children)\
     {\
-        Class childClass = NSClassFromString([child objectForKey:@"className"]);\
+        NSMutableString *string = [NSMutableString stringWithString:[child objectForKey:@"className"]];\
+        [string deleteCharactersInRange:NSMakeRange(0, 2)];\
+        [string insertString:@"SD" atIndex:0];\
+        Class childClass = NSClassFromString(string);\
         if ([childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
         {\
             CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];\
