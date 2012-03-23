@@ -9,6 +9,7 @@
 #import "SDNode.h"
 #import "AppDelegate.h"
 #import "JSONKit.h"
+#import "SDUtils.h"
 
 @implementation SDDocument
 
@@ -119,11 +120,8 @@
     _nodesToAdd = [[NSMutableArray arrayWithCapacity:[children count]] retain];
     for (NSDictionary *child in children)
     {
-        NSMutableString *string = [NSMutableString stringWithString:[child objectForKey:@"className"]];
-        [string deleteCharactersInRange:NSMakeRange(0, 2)];
-        [string insertString:@"SD" atIndex:0];
-        Class childClass = NSClassFromString(string);
-        if ([childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
+        Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child objectForKey:@"className"])];
+        if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
         {
             CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];
             [_nodesToAdd addObject:node];

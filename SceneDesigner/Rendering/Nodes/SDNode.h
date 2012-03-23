@@ -4,6 +4,7 @@
 //
 
 #import "cocos2d.h"
+#import "SDUtils.h"
 
 @protocol SDNodeProtocol <NSObject>
 
@@ -298,7 +299,7 @@ BOOL _isSelected;
     else\
         dict = [NSMutableDictionary dictionaryWithCapacity:11];\
 \
-    [dict setValue:NSStringFromClass([self superclass]) forKey:@"className"];\
+    [dict setValue:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[self class]]) forKey:@"className"];\
     [dict setValue:self.name forKey:@"name"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.position)) forKey:@"position"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.anchorPoint)) forKey:@"anchorPoint"];\
@@ -350,11 +351,8 @@ BOOL _isSelected;
     NSArray *children = [dict objectForKey:@"children"];\
     for (NSDictionary *child in children)\
     {\
-        NSMutableString *string = [NSMutableString stringWithString:[child objectForKey:@"className"]];\
-        [string deleteCharactersInRange:NSMakeRange(0, 2)];\
-        [string insertString:@"SD" atIndex:0];\
-        Class childClass = NSClassFromString(string);\
-        if ([childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
+        Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child valueForKey:@"className"])];\
+        if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
         {\
             CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];\
             [retVal addChild:node];\

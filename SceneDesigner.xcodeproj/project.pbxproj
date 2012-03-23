@@ -165,6 +165,7 @@
 		49D8F1A0151AD92A004A945B /* SDNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F19A151AD92A004A945B /* SDNode.m */; };
 		49D8F1A1151AD92A004A945B /* SDSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F19C151AD92A004A945B /* SDSprite.m */; };
 		49D8F1A4151AD968004A945B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F1A2151AD968004A945B /* main.m */; };
+		49D8F1AB151BF829004A945B /* SDUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F1AA151BF828004A945B /* SDUtils.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -459,6 +460,8 @@
 		49D8F19C151AD92A004A945B /* SDSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSprite.m; path = Rendering/Nodes/SDSprite.m; sourceTree = "<group>"; };
 		49D8F1A2151AD968004A945B /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Support/main.m; sourceTree = "<group>"; };
 		49D8F1A3151AD968004A945B /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = Support/Prefix.pch; sourceTree = "<group>"; };
+		49D8F1A9151BF828004A945B /* SDUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDUtils.h; path = Support/SDUtils.h; sourceTree = "<group>"; };
+		49D8F1AA151BF828004A945B /* SDUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDUtils.m; path = Support/SDUtils.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -890,6 +893,8 @@
 				49D8F16C151AD7DF004A945B /* NSView+Additions.m */,
 				49D8F16E151AD7E6004A945B /* NSThread+Blocks.h */,
 				49D8F16F151AD7E6004A945B /* NSThread+Blocks.m */,
+				49D8F1A9151BF828004A945B /* SDUtils.h */,
+				49D8F1AA151BF828004A945B /* SDUtils.m */,
 			);
 			name = Support;
 			sourceTree = "<group>";
@@ -1190,6 +1195,7 @@
 				49D8F1A0151AD92A004A945B /* SDNode.m in Sources */,
 				49D8F1A1151AD92A004A945B /* SDSprite.m in Sources */,
 				49D8F1A4151AD968004A945B /* main.m in Sources */,
+				49D8F1AB151BF829004A945B /* SDUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
