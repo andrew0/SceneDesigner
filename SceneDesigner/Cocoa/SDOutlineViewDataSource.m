@@ -9,6 +9,7 @@
 #import "SDNode.h"
 #import "cocos2d.h"
 #import "SDOutlineView.h"
+#import "SDUtils.h"
 
 @implementation SDOutlineViewDataSource
 
@@ -41,7 +42,7 @@
 - (NSDictionary *)dictionaryForNode:(CCNode *)node
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:3];
-    [dict setValue:NSStringFromClass([node superclass]) forKey:CLASS_NAME_KEY];
+    [dict setValue:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[node class]]) forKey:CLASS_NAME_KEY];
     [dict setValue:node forKey:NODE_KEY];
     
     NSMutableArray *array = [NSMutableArray array];
