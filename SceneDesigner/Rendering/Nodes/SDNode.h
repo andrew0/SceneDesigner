@@ -278,7 +278,6 @@ BOOL _isSelected;
     {\
         CGSize s = contentSize_;\
         ccDrawColor4B(255.0f, 255.0f, 255.0f, 255.0f);\
-        glLineWidth(1.0f);\
 \
         CGPoint vertices[] = {\
             ccp(0, s.height),\
