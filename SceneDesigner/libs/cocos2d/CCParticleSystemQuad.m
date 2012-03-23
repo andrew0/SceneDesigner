@@ -40,13 +40,15 @@
 #import "CCSpriteFrame.h"
 #import "CCDirector.h"
 #import "CCShaderCache.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCGLProgram.h"
+#import "CCConfiguration.h"
 
 // support
 #import "Support/OpenGL_Internal.h"
 #import "Support/CGPointExtension.h"
 #import "Support/TransformUtils.h"
+#import "Support/NSThread+performBlock.h"
 
 // extern
 #import "kazmath/GL/matrix.h"
@@ -91,7 +93,7 @@
 	indices_ = calloc( sizeof(indices_[0]) * totalParticles * 6, 1 );
 
 	if( !quads_ || !indices_) {
-		NSLog(@"cocos2d: Particle system: not enough memory");
+		CCLOG(@"cocos2d: Particle system: not enough memory");
 		if( quads_ )
 			free( quads_ );
 		if(indices_)
@@ -103,39 +105,109 @@
 	return YES;
 }
 
+- (void) setTotalParticles:(NSUInteger)tp
+{
+    // If we are setting the total numer of particles to a number higher
+    // than what is allocated, we need to allocate new arrays
+    if( tp > allocatedParticles )
+    {
+        // Allocate new memory
+        size_t particlesSize = tp * sizeof(tCCParticle);
+        size_t quadsSize = sizeof(quads_[0]) * tp * 1;
+        size_t indicesSize = sizeof(indices_[0]) * tp * 6 * 1;
+        
+        tCCParticle* particlesNew = realloc(particles, particlesSize);
+        ccV3F_C4B_T2F_Quad *quadsNew = realloc(quads_, quadsSize);
+        GLushort* indicesNew = realloc(indices_, indicesSize);
+        
+        if (particlesNew && quadsNew && indicesNew)
+        {
+            // Assign pointers
+            particles = particlesNew;
+            quads_ = quadsNew;
+            indices_ = indicesNew;
+            
+            // Clear the memory
+            memset(particles, 0, particlesSize);
+            memset(quads_, 0, quadsSize);
+            memset(indices_, 0, indicesSize);
+            
+            allocatedParticles = tp;
+        }
+        else
+        {
+            // Out of memory, failed to resize some array
+            if (particlesNew) particles = particlesNew;
+            if (quadsNew) quads_ = quadsNew;
+            if (indicesNew) indices_ = indicesNew;
+            
+            CCLOG(@"Particle system: out of memory");
+            return;
+        }
+        
+        totalParticles = tp;
+        
+        // Init particles
+        if (batchNode_)
+		{
+			for (int i = 0; i < totalParticles; i++)
+			{
+				particles[i].atlasIndex=i;
+			}
+		}
+        
+        [self initIndices];
+        [self initVAO];
+    }
+    else
+    {
+        totalParticles = tp;
+    }
+}
 
 -(void) initVAO
 {
-	glGenVertexArrays(1, &VAOname_);
-	glBindVertexArray(VAOname_);
+	// VAO requires GL_APPLE_vertex_array_object in order to be created on a different thread
+	// https://devforums.apple.com/thread/145566?tstart=0
+	
+	void (^createVAO)(void) = ^ {
+		glGenVertexArrays(1, &VAOname_);
+		glBindVertexArray(VAOname_);
 
-#define kQuadSize sizeof(quads_[0].bl)
+	#define kQuadSize sizeof(quads_[0].bl)
 
-	glGenBuffers(2, &buffersVBO_[0]);
+		glGenBuffers(2, &buffersVBO_[0]);
 
-	glBindBuffer(GL_ARRAY_BUFFER, buffersVBO_[0]);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quads_[0]) * totalParticles, quads_, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, buffersVBO_[0]);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quads_[0]) * totalParticles, quads_, GL_DYNAMIC_DRAW);
 
-	// vertices
-	glEnableVertexAttribArray(kCCVertexAttrib_Position);
-	glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, vertices));
+		// vertices
+		glEnableVertexAttribArray(kCCVertexAttrib_Position);
+		glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, vertices));
 
-	// colors
-	glEnableVertexAttribArray(kCCVertexAttrib_Color);
-	glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, colors));
+		// colors
+		glEnableVertexAttribArray(kCCVertexAttrib_Color);
+		glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, colors));
 
-	// tex coords
-	glEnableVertexAttribArray(kCCVertexAttrib_TexCoords);
-	glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, texCoords));
+		// tex coords
+		glEnableVertexAttribArray(kCCVertexAttrib_TexCoords);
+		glVertexAttribPointer(kCCVertexAttrib_TexCoords, 2, GL_FLOAT, GL_FALSE, kQuadSize, (GLvoid*) offsetof( ccV3F_C4B_T2F, texCoords));
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersVBO_[1]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_[0]) * totalParticles * 6, indices_, GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersVBO_[1]);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices_[0]) * totalParticles * 6, indices_, GL_STATIC_DRAW);
 
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	CHECK_GL_ERROR_DEBUG();
+		CHECK_GL_ERROR_DEBUG();
+	};
+	
+	NSThread *cocos2dThread = [[CCDirector sharedDirector] runningThread];
+	if( cocos2dThread == [NSThread currentThread] || [[CCConfiguration sharedConfiguration] supportsShareableVAO] )
+		createVAO();
+	else 
+		[cocos2dThread performBlock:createVAO waitUntilDone:YES];
 }
 
 -(void) dealloc
@@ -178,6 +250,7 @@
 #endif // ! CC_FIX_ARTIFACTS_BY_STRECHING_TEXEL
 
 	// Important. Texture in cocos2d are inverted, so the Y component should be inverted
+//<<<<<<< HEAD
 	CC_SWAP( top, bottom);
 
 	ccV3F_C4B_T2F_Quad *quads;

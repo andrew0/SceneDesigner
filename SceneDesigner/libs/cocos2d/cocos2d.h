@@ -61,6 +61,7 @@
 #import "CCActionGrid.h"
 #import "CCActionProgressTimer.h"
 #import "CCActionPageTurn3D.h"
+#import "CCActionCatmullRom.h"
 
 #import "CCAnimation.h"
 #import "CCAnimationCache.h"
@@ -113,8 +114,9 @@
 
 // Shaders
 #import "CCGLProgram.h"
-#import "ccGLState.h"
+#import "ccGLStateCache.h"
 #import "CCShaderCache.h"
+#import "ccShaders.h"
 
 //
 // cocos2d macros
@@ -122,6 +124,10 @@
 #import "ccTypes.h"
 #import "ccMacros.h"
 
+//
+// Deprecated methods/classes/functions since v1.0
+//
+#import "ccDeprecated.h"
 
 // Platform common
 #import "Platforms/CCGL.h"

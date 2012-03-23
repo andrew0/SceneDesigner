@@ -30,13 +30,6 @@
 /** OS version definitions. Includes both iOS and Mac OS versions
  */
 enum {
-	kCCiOSVersion_3_0   = 0x03000000,
-	kCCiOSVersion_3_1   = 0x03010000,
-	kCCiOSVersion_3_1_1 = 0x03010100,
-	kCCiOSVersion_3_1_2 = 0x03010200,
-	kCCiOSVersion_3_1_3 = 0x03010300,
-	kCCiOSVersion_3_2   = 0x03020000,
-	kCCiOSVersion_3_2_1 = 0x03020100,
 	kCCiOSVersion_4_0   = 0x04000000,
 	kCCiOSVersion_4_0_1 = 0x04000100,
 	kCCiOSVersion_4_1   = 0x04010000,
@@ -48,12 +41,13 @@ enum {
 	kCCiOSVersion_4_3_3 = 0x04030300,
 	kCCiOSVersion_4_3_4 = 0x04030400,
 	kCCiOSVersion_4_3_5 = 0x04030500,
-	kCCiOSVersion_5_0_0 = 0x05000000,
+	kCCiOSVersion_5_0   = 0x05000000,
 	kCCiOSVersion_5_0_1 = 0x05000100,
+	kCCiOSVersion_5_1_0 = 0x05010000,
 	
-	kCCMacVersion_10_5  = 0x0a050000,
 	kCCMacVersion_10_6  = 0x0a060000,
 	kCCMacVersion_10_7  = 0x0a070000,
+	kCCMacVersion_10_8  = 0x0a080000,
 };
 
 /**
@@ -68,6 +62,7 @@ enum {
 	BOOL			supportsNPOT_;
 	BOOL			supportsBGRA8888_;
 	BOOL			supportsDiscardFramebuffer_;
+	BOOL			supportsShareableVAO_;
 	unsigned int	OSVersion_;
 	GLint			maxSamplesAllowed_;
 	GLint			maxTextureUnits_;
@@ -105,6 +100,11 @@ enum {
  @since v0.99.2
  */
 @property (nonatomic, readonly) BOOL supportsDiscardFramebuffer;
+
+/** Whether or not shareable VAOs are supported.
+ @since v2.0.0
+ */
+@property (nonatomic, readonly) BOOL supportsShareableVAO;
 
 /** returns the OS version.
 	- On iOS devices it returns the firmware version.

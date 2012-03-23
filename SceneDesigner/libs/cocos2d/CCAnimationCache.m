@@ -144,7 +144,7 @@ static CCAnimationCache *sharedAnimationCache_=nil;
 			CCLOG(@"cocos2d: CCAnimationCache: An animation in your dictionary refers to a frame which is not in the CCSpriteFrameCache. Some or all of the frames for the animation '%@' may be missing.", name);
 		}
 		
-		animation = [CCAnimation animationWithFrames:frames delayPerUnit:[delay floatValue]];
+		animation = [CCAnimation animationWithAnimationFrames:frames delayPerUnit:[delay floatValue] loops:1 ];
 		
 		[[CCAnimationCache sharedAnimationCache] addAnimation:animation name:name];
 	}	
@@ -159,9 +159,8 @@ static CCAnimationCache *sharedAnimationCache_=nil;
 	{
 		NSDictionary* animationDict = [animations objectForKey:name];
 
-//		BOOL loop = [[animationDict objectForKey:@"loop"] boolValue];
-		BOOL restoreOriginalFrame = [[animationDict objectForKey:@"restore original frame"] boolValue];
-
+		NSNumber *loops = [animationDict objectForKey:@"loops"];
+		BOOL restoreOriginalFrame = [[animationDict objectForKey:@"restoreOriginalFrame"] boolValue];
 		NSArray *frameArray = [animationDict objectForKey:@"frames"];
 		
 		
@@ -183,7 +182,7 @@ static CCAnimationCache *sharedAnimationCache_=nil;
 				continue;
 			}
 
-			float delayUnits = [[entry objectForKey:@"delay units"] floatValue];
+			float delayUnits = [[entry objectForKey:@"delayUnits"] floatValue];
 			NSDictionary *userInfo = [entry objectForKey:@"notification"];
 			
 			CCAnimationFrame *animFrame = [[CCAnimationFrame alloc] initWithSpriteFrame:spriteFrame delayUnits:delayUnits userInfo:userInfo];
@@ -192,8 +191,8 @@ static CCAnimationCache *sharedAnimationCache_=nil;
 			[animFrame release];
 		}
 		
-		float delayPerUnit = [[animationDict objectForKey:@"delay per unit"] floatValue];
-		CCAnimation *animation = [[CCAnimation alloc] initWithFrames:array delayPerUnit:delayPerUnit];
+		float delayPerUnit = [[animationDict objectForKey:@"delayPerUnit"] floatValue];
+		CCAnimation *animation = [[CCAnimation alloc] initWithAnimationFrames:array delayPerUnit:delayPerUnit loops:(loops?[loops intValue]:1)];
 		[array release];
 		
 		[animation setRestoreOriginalFrame:restoreOriginalFrame];
@@ -239,7 +238,7 @@ static CCAnimationCache *sharedAnimationCache_=nil;
 {
 	NSAssert( plist, @"Invalid texture file name");
 
-    NSString *path = [CCFileUtils fullPathFromRelativePath:plist];
+    NSString *path = [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:plist];
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:path];
 
 	NSAssert1( dict, @"CCAnimationCache: File could not be found: %@", plist);

@@ -24,13 +24,8 @@
  */
 
 #import <TargetConditionals.h>
-
-#if (TARGET_OS_IPHONE == 1)
-#import <OpenGLES/ES2/gl.h>
-#import <OpenGLES/ES2/glext.h>
-#elif (TARGET_OS_MAC == 1)
-#import <OpenGL/gl.h>
-#endif //
+#import "ccMacros.h"
+#import "Platforms/CCGL.h"
 
 @class CCGLProgram;
 
@@ -62,7 +57,7 @@ typedef enum {
 extern "C" {
 #endif
 
-/** @file ccGLState.h
+/** @file ccGLStateCache.h
 */
 
 /** Invalidates the GL state cache.
@@ -88,11 +83,6 @@ void ccGLDeleteProgram( GLuint program );
  @since v2.0.0
  */
 void ccGLBlendFunc(GLenum sfactor, GLenum dfactor);
-
-/** sets the ModelViewProjection Matrix in the GL program
- @since v2.0.0
- */
-void ccGLUniformModelViewProjectionMatrix( CCGLProgram *shaderProgram );
 
 /** sets the projection matrix as dirty
  @since v2.0.0

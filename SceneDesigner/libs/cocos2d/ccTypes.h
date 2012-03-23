@@ -103,6 +103,12 @@ typedef struct _ccColor4F {
 	GLfloat b;
 	GLfloat a;
 } ccColor4F;
+//! helper that creates a ccColor4f type
+static inline ccColor4F 
+ccc4f(const GLfloat r, const GLfloat g, const GLfloat b, const GLfloat a)
+{
+	return (ccColor4F){r, g, b, a};
+}
 
 /** Returns a ccColor4F from a ccColor3B. Alpha will be 1.
  @since v0.99.1
@@ -308,14 +314,26 @@ typedef struct _ccBlendFunc
 //! ccResolutionType
 typedef enum
 {
+
 	//! Unknonw resolution type
 	kCCResolutionUnknown,
+#ifdef __CC_PLATFORM_IOS
 	//! iPhone resolution type
 	kCCResolutioniPhone,
 	//! RetinaDisplay resolution type
-	kCCResolutionRetinaDisplay,
+	kCCResolutioniPhoneRetinaDisplay,
 	//! iPad resolution type
 	kCCResolutioniPad,
+	//! iPad Retina Display resolution type
+	kCCResolutioniPadRetinaDisplay,
+	
+#elif defined(__CC_PLATFORM_MAC)
+	//! Mac resolution type
+	kCCResolutionMac,
+
+	//! Mac RetinaDisplay resolution type (???)
+	kCCResolutionMacRetinaDisplay,
+#endif // platform
 
 } ccResolutionType;
 
