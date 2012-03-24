@@ -8,6 +8,8 @@
 
 @implementation SDLabelBMFont
 
+@dynamic colorObject;
+
 - (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
 {
     self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment];
@@ -44,6 +46,41 @@
         [[um prepareWithInvocationTarget:self] setFntFile:[self fntFile]];
         [um setActionName:NSLocalizedString(@"label font adjustment", nil)];
         [super setFntFile:fntFile];
+    }
+}
+
+- (NSColor *)colorObject
+{
+    ccColor3B color = self.color;
+    return [NSColor colorWithDeviceRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
+}
+
+- (void)setColorObject:(NSColor *)colorObject
+{
+    if (![colorObject isEqualTo:[self colorObject]])
+    {
+        NSColor *color = [colorObject colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+        
+		CGFloat r, g, b;
+		r = [color redComponent] * 255;
+		g = [color greenComponent] * 255;
+		b = [color blueComponent] * 255;
+        
+        [self setColor:ccc3(r, g, b)];
+    }
+}
+
+- (void)setColor:(ccColor3B)color
+{
+    if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
+    {
+        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
+        [um setActionName:NSLocalizedString(@"color adjustment", nil)];
+        
+        [self willChangeValueForKey:@"colorObject"];
+        [super setColor:color];
+        [self didChangeValueForKey:@"colorObject"];
     }
 }
 

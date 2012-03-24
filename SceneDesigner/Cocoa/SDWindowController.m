@@ -102,6 +102,33 @@
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:node parent:parent];
     }
+    else if ([[item title] isEqualToString:@"CCLabelBMFont"])
+    {
+        // initialize panel + set flags
+        NSOpenPanel *openPanel = [NSOpenPanel openPanel];
+        [openPanel setCanChooseFiles:YES];
+        [openPanel setAllowsMultipleSelection:NO];
+        [openPanel setCanChooseDirectories:NO];
+        [openPanel setAllowedFileTypes:[NSArray arrayWithObject:@"fnt"]];
+        [openPanel setAllowsOtherFileTypes:NO];
+        
+        // handle the open panel
+        [openPanel beginSheetModalForWindow:[self window] completionHandler:^(NSInteger result) {
+            if (result == NSOKButton)
+            {
+                [[CCTextureCache sharedTextureCache] removeUnusedTextures];
+                
+                NSArray *urls = [openPanel URLs];
+                if ([urls count] > 0)
+                {
+                    CCNode *parent = [[[self document] drawingView] selectedNode];
+                    NSString *path = [[urls objectAtIndex:0] path];
+                    SDLabelBMFont *label = [SDLabelBMFont labelWithString:@"Text" fntFile:path];
+                    [self addNodeToLayer:label parent:parent];
+                }
+            }
+        }];
+    }
     else if ([[item title] isEqualToString:@"CCSprite"])
     {
         // initialize panel + set flags

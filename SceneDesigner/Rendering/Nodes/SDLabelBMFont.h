@@ -11,4 +11,6 @@
     SDNODE_IVARS
 }
 
+@property (nonatomic, copy) NSColor *colorObject;
+
 @end
