@@ -9,6 +9,12 @@
 
 @synthesize isAccelerometerEnabled = _isAccelerometerEnabled;
 
+- (void)dealloc
+{
+    SDNODE_DEALLOC();
+    [super dealloc];
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];

@@ -13,6 +13,7 @@
 - (void)setMutableZOrder:(NSInteger)z;
 - (NSDictionary *)dictionaryRepresentation;
 + (id)setupFromDictionaryRepresentation:(NSDictionary *)dict;
+- (NSArray *)snapPoints;
 
 @optional
 
@@ -33,7 +34,16 @@
 
 #define SDNODE_IVARS \
 NSString *_name;\
-BOOL _isSelected;
+BOOL _isSelected;\
+NSMutableArray *_snapPoints;\
+BOOL _isDirtySnapPoints;
+
+#define SDNODE_DEALLOC() \
+do\
+{\
+    [_snapPoints release];\
+    _snapPoints = nil;\
+} while (0)\
 
 #define SDNODE_FUNC_SRC \
 @synthesize name = _name;\
@@ -59,6 +69,8 @@ BOOL _isSelected;
         [super setPosition:pos];\
         [self didChangeValueForKey:@"posX"];\
         [self didChangeValueForKey:@"posY"];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 - (void)setAnchorPoint:(CGPoint)anchorPoint\
@@ -74,6 +86,8 @@ BOOL _isSelected;
         [super setAnchorPoint:anchorPoint];\
         [self didChangeValueForKey:@"anchorX"];\
         [self didChangeValueForKey:@"anchorY"];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 \
@@ -88,6 +102,8 @@ BOOL _isSelected;
         [super setContentSize:size];\
         [self didChangeValueForKey:@"contentWidth"];\
         [self didChangeValueForKey:@"contentHeight"];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 \
@@ -99,6 +115,8 @@ BOOL _isSelected;
         [[um prepareWithInvocationTarget:self] setScaleX:[self scaleX]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleX:sx];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 \
@@ -110,6 +128,8 @@ BOOL _isSelected;
         [[um prepareWithInvocationTarget:self] setScaleY:[self scaleY]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleY:sy];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 - (NSInteger)mutableZOrder\
@@ -288,6 +308,37 @@ BOOL _isSelected;
 \
         ccDrawPoly(vertices, 4, YES);\
     }\
+}\
+\
+- (NSArray *)snapPoints\
+{\
+    if (_snapPoints == nil)\
+    {\
+        _isDirtySnapPoints = YES;\
+        _snapPoints = [[NSMutableArray arrayWithCapacity:5] retain];\
+    }\
+\
+    if (_isDirtySnapPoints)\
+    {\
+        CGSize s = [self contentSize];\
+        CGPoint p1 = [self convertToWorldSpace:ccp(0,0)]; /*bl*/\
+        CGPoint p2 = [self convertToWorldSpace:ccp(s.width,0)]; /*br*/\
+        CGPoint p3 = [self convertToWorldSpace:ccp(s.width,s.height)]; /*tr*/\
+        CGPoint p4 = [self convertToWorldSpace:ccp(0,s.height)]; /*tl*/\
+        /*CGPoint p5 = [self convertToWorldSpaceAR:ccp(0,0)];*/ /*anchor point*/\
+\
+        @synchronized (_snapPoints)\
+        {\
+            [_snapPoints removeAllObjects];\
+            [_snapPoints addObject:[NSValue value:&p1 withObjCType:@encode(CGPoint)]];\
+            [_snapPoints addObject:[NSValue value:&p2 withObjCType:@encode(CGPoint)]];\
+            [_snapPoints addObject:[NSValue value:&p3 withObjCType:@encode(CGPoint)]];\
+            [_snapPoints addObject:[NSValue value:&p4 withObjCType:@encode(CGPoint)]];\
+            /*[_snapPoints addObject:[NSValue value:&p5 withObjCType:@encode(CGPoint)]];*/\
+        }\
+    }\
+\
+    return [NSArray arrayWithArray:_snapPoints];\
 }\
 \
 - (NSDictionary *)dictionaryRepresentation\

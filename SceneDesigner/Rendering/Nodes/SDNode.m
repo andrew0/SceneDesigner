@@ -9,4 +9,10 @@
 
 SDNODE_FUNC_SRC
 
+- (void)dealloc
+{
+    SDNODE_DEALLOC();
+    [super dealloc];
+}
+
 @end

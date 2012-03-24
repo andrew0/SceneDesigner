@@ -11,6 +11,10 @@
 #import "SDWindowController.h"
 #import "NSThread+Blocks.h"
 
+@interface SDDrawingView ()
+- (BOOL)willSnap;
+@end
+
 @implementation SDDrawingView
 
 @synthesize nodesToAddOnEnter = _nodesToAddOnEnter;
@@ -177,6 +181,17 @@
     return [self nodeForEvent:event withParent:self];
 }
 
+- (BOOL)willSnap
+{
+    if ([NSEvent modifierFlags] & NSAlternateKeyMask)
+        return NO;
+    
+    if (floorf([self rotation]) != [self rotation])
+        return NO;
+    
+    return ((int)floorf([self rotation]) % 90 == 0);
+}
+
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     // don't create undo event for every reposition while dragging, just one at end
@@ -202,14 +217,15 @@
     if(_selectedNode && ![_selectedNode isEventInRect:event])
         self.selectedNode = nil;
     
-    _initialPosition = _selectedNode.position;
-    _prevLocation = [[CCDirector sharedDirector] convertEventToGL:event];
+    _initialNodePosition = _selectedNode.position;
+    _initialMouseLocation = [[CCDirector sharedDirector] convertEventToGL:event];
     
     return YES;
 }
 
 - (BOOL)ccMouseDragged:(NSEvent *)event
 {
+#define kSnapDistance 7.0f
     // we're dragging the node, so don't deselect it
     _willDeselectNode = NO;
     
@@ -220,15 +236,54 @@
     {
         if (_selectedNode)
         {
-            CGPoint diff = ccpSub(location, _prevLocation);
+            CGPoint diff = ccpSub(location, _initialMouseLocation);
             CGPoint rotatedDiff = CGPointApplyAffineTransform(diff, CGAffineTransformMakeRotation(-CC_DEGREES_TO_RADIANS([_selectedNode rotation])));
-            CGPoint currentPos = [_selectedNode convertToWorldSpace:[_selectedNode position]];
-            CGPoint newPos = ccpAdd(currentPos, rotatedDiff);
-            _selectedNode.position = [_selectedNode convertToNodeSpace:newPos];
+            CGPoint worldPos = [_selectedNode convertToWorldSpace:_initialNodePosition];
+            CGPoint newPos = [_selectedNode convertToNodeSpace:ccpAdd(worldPos, rotatedDiff)];
+            _selectedNode.position = newPos; // temporarily assign new pos so that convertToWorldSpace works
+            
+            if ([self willSnap])
+            {
+                // snap to other nodes in 
+                NSMutableArray *points = [NSMutableArray array];
+                for (CCNode<SDNodeProtocol> *child in [self children])
+                    if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && child != _selectedNode)
+                        [points addObjectsFromArray:[child snapPoints]];
+                
+                // add snap points for canvas
+                CGSize s = [[CCDirector sharedDirector] winSize];
+                CGPoint canvasPoint1 = ccp(0,0);
+                CGPoint canvasPoint2 = ccp(s.width, s.height);
+                [points addObject:[NSValue valueWithBytes:&canvasPoint1 objCType:@encode(CGPoint)]];
+                [points addObject:[NSValue valueWithBytes:&canvasPoint2 objCType:@encode(CGPoint)]];
+                
+                for (NSValue *value in points)
+                {
+                    CGPoint point;
+                    [value getValue:&point];
+                    
+                    CGSize contentSize = [_selectedNode contentSize];
+                    float sx = [_selectedNode scaleX];
+                    float sy = [_selectedNode scaleY];
+                    CGPoint snapPoint1 = [_selectedNode convertToWorldSpace:ccp(0,0)];
+                    CGPoint snapPoint2 = [_selectedNode convertToWorldSpace:ccp(contentSize.width*sx,contentSize.height*sy)];
+                    
+                    if (abs(snapPoint1.x - point.x) <= kSnapDistance)
+                        newPos.x = point.x - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint1] : [_selectedNode convertToNodeSpace:snapPoint1]).x;
+                    if (abs(snapPoint1.y - point.y) <= kSnapDistance)
+                        newPos.y = point.y - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint1] : [_selectedNode convertToNodeSpace:snapPoint1]).y;
+                    
+                    if (abs(snapPoint2.x - point.x) <= kSnapDistance)
+                        newPos.x = point.x - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint2] : [_selectedNode convertToNodeSpace:snapPoint2]).x;
+                    if (abs(snapPoint2.y - point.y) <= kSnapDistance)
+                        newPos.y = point.y - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint2] : [_selectedNode convertToNodeSpace:snapPoint2]).y;
+                }
+                
+                // assign new (snapped) position
+                _selectedNode.position = newPos;
+            }
         }
     }
-    
-    _prevLocation = location;
     
     return YES;
 }
@@ -244,15 +299,13 @@
         self.selectedNode = nil;
     else if (_selectedNode)
     {
-        if (!CGPointEqualToPoint(_selectedNode.position, _initialPosition))
+        if (!CGPointEqualToPoint(_selectedNode.position, _initialNodePosition))
         {
             // make undo event
-            [[um prepareWithInvocationTarget:_selectedNode] setPosition:_initialPosition];
+            [[um prepareWithInvocationTarget:_selectedNode] setPosition:_initialNodePosition];
             [um setActionName:NSLocalizedString(@"repositioning", nil)];
         }
     }
-    
-	_prevLocation = [[CCDirector sharedDirector] convertEventToGL:event];
     
 	return YES;
 }

@@ -10,6 +10,12 @@
 
 @dynamic colorObject;
 
+- (void)dealloc
+{
+    SDNODE_DEALLOC();
+    [super dealloc];
+}
+
 - (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
 {
     self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment];

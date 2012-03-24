@@ -14,8 +14,8 @@
     CCNode<SDNodeProtocol> *_selectedNode;
     BOOL _willDragNode;
     BOOL _willDeselectNode;
-    CGPoint _initialPosition;
-    CGPoint _prevLocation;
+    CGPoint _initialNodePosition;
+    CGPoint _initialMouseLocation;
 }
 
 @property (nonatomic, retain) NSArray *nodesToAddOnEnter;

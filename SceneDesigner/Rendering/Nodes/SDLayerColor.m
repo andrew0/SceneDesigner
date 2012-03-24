@@ -11,6 +11,12 @@
 @synthesize isAccelerometerEnabled = _isAccelerometerEnabled;
 @dynamic colorObject;
 
+- (void)dealloc
+{
+    SDNODE_DEALLOC();
+    [super dealloc];
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];

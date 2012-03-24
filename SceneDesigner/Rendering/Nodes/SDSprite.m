@@ -17,6 +17,7 @@
 
 - (void)dealloc
 {
+    SDNODE_DEALLOC();
     self.path = nil;
     [super dealloc];
 }
