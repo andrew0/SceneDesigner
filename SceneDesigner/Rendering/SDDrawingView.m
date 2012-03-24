@@ -13,6 +13,7 @@
 
 @interface SDDrawingView ()
 - (BOOL)willSnap;
+- (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node;
 @end
 
 @implementation SDDrawingView
@@ -181,6 +182,17 @@
     return [self nodeForEvent:event withParent:self];
 }
 
+- (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node
+{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:[node snapPoints]];
+    
+    for (CCNode<SDNodeProtocol> *child in [node children])
+        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
+            [array addObjectsFromArray:[self snapPointsForNode:child]];
+    
+    return array;
+}
+
 - (BOOL)willSnap
 {
     // don't snap when alt key is down
@@ -252,7 +264,7 @@
                 NSMutableArray *points = [NSMutableArray array];
                 for (CCNode<SDNodeProtocol> *child in [self children])
                     if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && child != _selectedNode)
-                        [points addObjectsFromArray:[child snapPoints]];
+                        [points addObjectsFromArray:[self snapPointsForNode:child]];
                 
                 // add snap points for canvas
                 CGSize s = [[CCDirector sharedDirector] winSize];
