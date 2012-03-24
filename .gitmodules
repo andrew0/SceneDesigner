@@ -1,3 +1,6 @@
 [submodule "SceneDesigner/libs/JSONKit"]
 	path = SceneDesigner/libs/JSONKit
 	url = git://github.com/johnezang/JSONKit.git
+[submodule "SceneDesigner/libs/cocos2d"]
+	path = SceneDesigner/libs/cocos2d
+	url = git://github.com/cocos2d/cocos2d-iphone.git
