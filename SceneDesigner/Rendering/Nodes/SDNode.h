@@ -312,6 +312,9 @@ do\
 \
 - (NSArray *)snapPoints\
 {\
+    if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0)\
+        return [NSArray array];\
+\
     if (_snapPoints == nil)\
     {\
         _isDirtySnapPoints = YES;\

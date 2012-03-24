@@ -183,13 +183,15 @@
 
 - (BOOL)willSnap
 {
+    // don't snap when alt key is down
     if ([NSEvent modifierFlags] & NSAlternateKeyMask)
         return NO;
     
-    if (floorf([self rotation]) != [self rotation])
+    if (floorf([_selectedNode rotation]) != [_selectedNode rotation])
         return NO;
     
-    return ((int)floorf([self rotation]) % 90 == 0);
+    // if node rotation is divisible by 360 (i.e. not rotated), then allow snapping
+    return ((int)floorf([_selectedNode rotation]) % 360 == 0);
 }
 
 - (BOOL)ccMouseDown:(NSEvent *)event
