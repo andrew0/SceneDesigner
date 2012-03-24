@@ -1352,6 +1352,12 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SceneDesigner/Support/Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEBUG,
+					"COCOS2D_DEBUG=1",
+					"CC_DIRECTOR_MAC_THREAD=2",
+					"CC_ENABLE_GL_STATE_CACHE=1",
+				);
 				HEADER_SEARCH_PATHS = "\"SceneDesigner/libs/kazmath/include\"";
 				INFOPLIST_FILE = SceneDesigner/Resources/Info.plist;
 				OTHER_LDFLAGS = "-lz";
@@ -1369,6 +1375,12 @@
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = SceneDesigner/Support/Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					"NS_BLOCK_ASSERTIONS=1",
+					"CC_DIRECTOR_MAC_THREAD=2",
+					"CC_ENABLE_GL_STATE_CACHE=1",
+				);
 				HEADER_SEARCH_PATHS = "\"SceneDesigner/libs/kazmath/include\"";
 				INFOPLIST_FILE = SceneDesigner/Resources/Info.plist;
 				OTHER_LDFLAGS = "-lz";
