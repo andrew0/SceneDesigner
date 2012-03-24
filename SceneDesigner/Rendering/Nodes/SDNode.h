@@ -330,15 +330,12 @@ do\
         CGPoint p4 = [self convertToWorldSpace:ccp(0,s.height)]; /*tl*/\
         /*CGPoint p5 = [self convertToWorldSpaceAR:ccp(0,0)];*/ /*anchor point*/\
 \
-        @synchronized (_snapPoints)\
-        {\
-            [_snapPoints removeAllObjects];\
-            [_snapPoints addObject:[NSValue value:&p1 withObjCType:@encode(CGPoint)]];\
-            [_snapPoints addObject:[NSValue value:&p2 withObjCType:@encode(CGPoint)]];\
-            [_snapPoints addObject:[NSValue value:&p3 withObjCType:@encode(CGPoint)]];\
-            [_snapPoints addObject:[NSValue value:&p4 withObjCType:@encode(CGPoint)]];\
-            /*[_snapPoints addObject:[NSValue value:&p5 withObjCType:@encode(CGPoint)]];*/\
-        }\
+        [_snapPoints removeAllObjects];\
+        [_snapPoints addObject:[NSValue value:&p1 withObjCType:@encode(CGPoint)]];\
+        [_snapPoints addObject:[NSValue value:&p2 withObjCType:@encode(CGPoint)]];\
+        [_snapPoints addObject:[NSValue value:&p3 withObjCType:@encode(CGPoint)]];\
+        [_snapPoints addObject:[NSValue value:&p4 withObjCType:@encode(CGPoint)]];\
+        /*[_snapPoints addObject:[NSValue value:&p5 withObjCType:@encode(CGPoint)]];*/\
     }\
 \
     return [NSArray arrayWithArray:_snapPoints];\
