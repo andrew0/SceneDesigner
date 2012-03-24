@@ -191,7 +191,8 @@
         return NO;
     
     // if node rotation is divisible by 360 (i.e. not rotated), then allow snapping
-    return ((int)floorf([_selectedNode rotation]) % 360 == 0);
+    // (TEMP) disable snapping for scaled nodes until fixed
+    return ((int)floorf([_selectedNode rotation]) % 360 == 0) && ([_selectedNode scaleX] == 1 && [_selectedNode scaleY] == 1);
 }
 
 - (BOOL)ccMouseDown:(NSEvent *)event
@@ -239,9 +240,10 @@
         if (_selectedNode)
         {
             CGPoint diff = ccpSub(location, _initialMouseLocation);
-            CGPoint rotatedDiff = CGPointApplyAffineTransform(diff, CGAffineTransformMakeRotation(-CC_DEGREES_TO_RADIANS([_selectedNode rotation])));
+            diff = CGPointApplyAffineTransform(diff, CGAffineTransformMakeRotation(-CC_DEGREES_TO_RADIANS([_selectedNode rotation])));
+            diff = CGPointApplyAffineTransform(diff, CGAffineTransformMakeScale([_selectedNode scaleX], [_selectedNode scaleY]));
             CGPoint worldPos = [_selectedNode convertToWorldSpace:_initialNodePosition];
-            CGPoint newPos = [_selectedNode convertToNodeSpace:ccpAdd(worldPos, rotatedDiff)];
+            CGPoint newPos = [_selectedNode convertToNodeSpace:ccpAdd(worldPos, diff)];
             _selectedNode.position = newPos; // temporarily assign new pos so that convertToWorldSpace works
             
             if ([self willSnap])

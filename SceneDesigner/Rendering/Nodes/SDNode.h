@@ -312,7 +312,7 @@ do\
 \
 - (NSArray *)snapPoints\
 {\
-    if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0)\
+    if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0 || [self scaleX] != 1 || [self scaleY] != 1)\
         return [NSArray array];\
 \
     if (_snapPoints == nil)\
