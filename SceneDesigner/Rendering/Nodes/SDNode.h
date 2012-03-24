@@ -10,7 +10,6 @@
 
 @required
 
-- (void)setMutableZOrder:(NSInteger)z;
 - (NSDictionary *)dictionaryRepresentation;
 + (id)setupFromDictionaryRepresentation:(NSDictionary *)dict;
 - (NSArray *)snapPoints;
@@ -19,7 +18,6 @@
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) BOOL isSelected;
-@property (nonatomic, readonly) NSInteger mutableZOrder;
 @property (nonatomic, readwrite) CGFloat posX;
 @property (nonatomic, readwrite) CGFloat posY;
 @property (nonatomic, readwrite) CGFloat anchorX;
@@ -48,7 +46,6 @@ do\
 #define SDNODE_FUNC_SRC \
 @synthesize name = _name;\
 @synthesize isSelected = _isSelected;\
-@dynamic mutableZOrder;\
 @dynamic posX;\
 @dynamic posY;\
 @dynamic anchorX;\
@@ -132,19 +129,15 @@ do\
         _isDirtySnapPoints = YES;\
     }\
 }\
-- (NSInteger)mutableZOrder\
-{\
-    return [self zOrder];\
-}\
 \
-- (void)setMutableZOrder:(NSInteger)z\
+- (void)setZOrder:(NSInteger)z\
 {\
     if ([self zOrder] != z)\
     {\
         NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
-        [[um prepareWithInvocationTarget:self] setMutableZOrder:[self zOrder]];\
+        [[um prepareWithInvocationTarget:self] setZOrder:[self zOrder]];\
         [um setActionName:NSLocalizedString(@"z order adjustment", nil)];\
-        [[self parent] reorderChild:self z:z];\
+        [super setZOrder:z];\
     }\
 }\
 \
@@ -396,7 +389,7 @@ do\
     retVal.tag = [[dict valueForKey:@"tag"] integerValue];\
     retVal.visible = [[dict valueForKey:@"visible"] boolValue];\
     retVal.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];\
-    [retVal setMutableZOrder:[[dict valueForKey:@"zOrder"] integerValue]];\
+    retVal.zOrder = [[dict valueForKey:@"zOrder"] integerValue];\
 \
     NSArray *children = [dict objectForKey:@"children"];\
     for (NSDictionary *child in children)\
