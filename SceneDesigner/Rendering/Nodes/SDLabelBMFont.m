@@ -99,6 +99,18 @@
     }
 }
 
+- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
+{
+    self = [self initWithString:[dict valueForKey:@"string"] fntFile:[dict valueForKey:@"fntFile"]];
+    if (self)
+    {
+        self.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
+        self.color = ColorFromNSString([dict valueForKey:@"color"]);
+    }
+    
+    return self;
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
@@ -109,14 +121,6 @@
     [dict setValue:NSStringFromColor(self.color) forKey:@"color"];
     
     return [dict autorelease];
-}
-
-+ (id)_setupFromDictionaryRepresentation:(NSDictionary *)dict
-{
-    CCLabelBMFont *retVal = [self labelWithString:[dict valueForKey:@"string"] fntFile:[dict valueForKey:@"fntFile"]];
-    retVal.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-    retVal.color = ColorFromNSString([dict valueForKey:@"color"]);
-    return retVal;
 }
 
 SDNODE_FUNC_SRC

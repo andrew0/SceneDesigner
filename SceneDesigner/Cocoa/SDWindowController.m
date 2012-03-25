@@ -88,6 +88,41 @@
 }
 
 #pragma mark -
+#pragma mark Copy/Paste
+
+- (IBAction)copy:(id)sender
+{
+    NSArray *objects = [NSArray arrayWithObject:[[[self document] drawingView] selectedNode]];
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    [pasteboard clearContents];
+    [pasteboard writeObjects:objects];
+}
+
+- (IBAction)cut:(id)sender
+{
+    [self copy:sender];
+    [self removeNodeFromLayer:[[[self document] drawingView] selectedNode]];
+}
+
+- (IBAction)paste:(id)sender
+{
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    NSArray *classes = [NSArray arrayWithObjects:[SDNode class], [SDSprite class], [SDLayer class], [SDLayerColor class], [SDLabelBMFont class], nil];
+    NSArray *objects = [pasteboard readObjectsForClasses:classes options:nil];
+    
+    [[[self document] undoManager] beginUndoGrouping];
+    for (CCNode<SDNodeProtocol> *node in objects)
+    {
+        if ([node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+        {
+            CCNode *parent = [[[self document] drawingView] selectedNode];
+            [self addNodeToLayer:node parent:parent];
+        }
+    }
+    [[[self document] undoManager] endUndoGrouping];
+}
+
+#pragma mark -
 #pragma mark Add/Remove Nodes
 
 - (IBAction)addNode:(id)sender

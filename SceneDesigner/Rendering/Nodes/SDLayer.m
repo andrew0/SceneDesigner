@@ -24,6 +24,21 @@
     [super dealloc];
 }
 
+- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
+{
+    self = [self init];
+    if (self)
+    {
+        self.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
+        self.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
+        self.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
+        self.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+        self.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
+    }
+    
+    return self;
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
@@ -33,18 +48,6 @@
     [dict setValue:[NSNumber numberWithBool:[self isKeyboardEnabled]] forKey:@"isKeyboardEnabled"];
     
     return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (id)_setupFromDictionaryRepresentation:(NSDictionary *)dict
-{
-    SDLayer *retVal = [self node];
-    retVal.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
-    retVal.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
-    retVal.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
-    retVal.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
-    retVal.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
-    
-    return retVal;
 }
 
 - (void)setIsAccelerometerEnabled:(BOOL)isAccelerometerEnabled

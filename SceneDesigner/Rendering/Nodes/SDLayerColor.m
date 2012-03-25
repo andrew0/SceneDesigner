@@ -26,6 +26,23 @@
     [super dealloc];
 }
 
+- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
+{
+    ccColor3B color = ColorFromNSString([dict valueForKey:@"color"]);
+    GLubyte opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
+    self = [self initWithColor:ccc4(color.r, color.g, color.b, opacity) width:0 height:0];
+    if (self)
+    {
+        self.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
+        self.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
+        self.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
+        self.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+        self.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
+    }
+    
+    return self;
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
@@ -37,20 +54,6 @@
     [dict setValue:[NSNumber numberWithUnsignedChar:[self opacity]] forKey:@"opacity"];
     
     return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-+ (id)_setupFromDictionaryRepresentation:(NSDictionary *)dict
-{
-    ccColor3B color = ColorFromNSString([dict valueForKey:@"color"]);
-    GLubyte opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-    SDLayerColor *retVal = [self layerWithColor:ccc4(color.r, color.g, color.b, opacity) width:0 height:0];
-    retVal.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
-    retVal.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
-    retVal.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
-    retVal.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
-    retVal.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
-    
-    return retVal;
 }
 
 - (void)setIsAccelerometerEnabled:(BOOL)isAccelerometerEnabled

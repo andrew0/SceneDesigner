@@ -122,7 +122,7 @@
         Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child objectForKey:@"className"])];
         if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
         {
-            CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];
+            CCNode<SDNodeProtocol> *node = [[[childClass alloc] initWithDictionaryRepresentation:child] autorelease];
             [_nodesToAdd addObject:node];
         }
     }

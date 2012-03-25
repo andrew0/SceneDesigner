@@ -46,6 +46,26 @@
     return self;
 }
 
+- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
+{
+    NSString *path = [dict valueForKey:@"path"];
+    if (path == nil || ![[NSFileManager defaultManager] fileExistsAtPath:path])
+        return nil;
+    
+    self = [self initWithFile:path];
+    if (self)
+    {
+        self.path = [dict valueForKey:@"path"];    
+        self.textureRect = NSRectToCGRect(NSRectFromString([dict valueForKey:@"textureRect"]));
+        self.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
+        self.color = ColorFromNSString([dict valueForKey:@"color"]);
+        self.flipX = [[dict valueForKey:@"flipX"] boolValue];
+        self.flipY = [[dict valueForKey:@"flipY"] boolValue];
+    }
+    
+    return self;
+}
+
 - (NSDictionary *)_dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
@@ -58,24 +78,6 @@
     [dict setValue:[NSNumber numberWithBool:self.flipY] forKey:@"flipY"];
     
     return dict;
-}
-
-+ (id)_setupFromDictionaryRepresentation:(NSDictionary *)dict
-{
-    NSString *path = [dict valueForKey:@"path"];
-    if (path == nil || ![[NSFileManager defaultManager] fileExistsAtPath:path])
-        return nil;
-    
-    SDSprite *retVal = [self spriteWithFile:path];
-    
-    retVal.path = [dict valueForKey:@"path"];    
-    retVal.textureRect = NSRectToCGRect(NSRectFromString([dict valueForKey:@"textureRect"]));
-    retVal.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-    retVal.color = ColorFromNSString([dict valueForKey:@"color"]);
-    retVal.flipX = [[dict valueForKey:@"flipX"] boolValue];
-    retVal.flipY = [[dict valueForKey:@"flipY"] boolValue];
-    
-    return retVal;
 }
 
 - (CGFloat)textureRectX

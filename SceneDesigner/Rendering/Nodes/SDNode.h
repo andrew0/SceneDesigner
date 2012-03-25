@@ -5,12 +5,12 @@
 
 #import "cocos2d.h"
 
-@protocol SDNodeProtocol <NSObject>
+@protocol SDNodeProtocol <NSObject, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
 @required
 
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
-+ (id)setupFromDictionaryRepresentation:(NSDictionary *)dict;
 - (NSArray *)snapPoints;
 
 @optional
@@ -25,7 +25,7 @@
 @property (nonatomic, readwrite) CGFloat contentHeight;
 
 - (NSDictionary *)_dictionaryRepresentation;
-+ (id)_setupFromDictionaryRepresentation:(NSDictionary *)dict;
+- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict;
 
 @end
 
@@ -395,50 +395,88 @@ do\
 \
     return dict;\
 }\
-\
-+ (id)setupFromDictionaryRepresentation:(NSDictionary *)dict\
+- (id)initWithDictionaryRepresentation:(NSDictionary *)dict\
 {\
-    CCNode<SDNodeProtocol> *retVal = nil;\
-    if ([self respondsToSelector:@selector(_setupFromDictionaryRepresentation:)])\
+    if ([self respondsToSelector:@selector(_initWithDictionaryRepresentation:)])\
+        self = [self _initWithDictionaryRepresentation:dict];\
+    else\
+        self = [self init];\
+\
+    if (self)\
     {\
-        id object = [self _setupFromDictionaryRepresentation:dict];\
-        if ([object isKindOfClass:[CCNode class]] && [object conformsToProtocol:@protocol(SDNodeProtocol)])\
-            retVal = (CCNode<SDNodeProtocol> *)object;\
-    }\
+        self.name = [dict valueForKey:@"name"];\
+        self.position = NSPointToCGPoint(NSPointFromString([dict valueForKey:@"position"]));\
+        self.anchorPoint = NSPointToCGPoint(NSPointFromString([dict valueForKey:@"anchorPoint"]));\
+        self.scaleX = [[dict valueForKey:@"scaleX"] floatValue];\
+        self.scaleY = [[dict valueForKey:@"scaleY"] floatValue];\
+        self.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));\
+        self.rotation = [[dict valueForKey:@"rotation"] floatValue];\
+        self.tag = [[dict valueForKey:@"tag"] integerValue];\
+        self.visible = [[dict valueForKey:@"visible"] boolValue];\
+        self.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];\
+        self.zOrder = [[dict valueForKey:@"zOrder"] integerValue];\
 \
-    if (retVal == nil)\
-        retVal = [self node];\
-\
-    retVal.name = [dict valueForKey:@"name"];\
-    retVal.position = NSPointToCGPoint(NSPointFromString([dict valueForKey:@"position"]));\
-    retVal.anchorPoint = NSPointToCGPoint(NSPointFromString([dict valueForKey:@"anchorPoint"]));\
-    retVal.scaleX = [[dict valueForKey:@"scaleX"] floatValue];\
-    retVal.scaleY = [[dict valueForKey:@"scaleY"] floatValue];\
-    retVal.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));\
-    retVal.rotation = [[dict valueForKey:@"rotation"] floatValue];\
-    retVal.tag = [[dict valueForKey:@"tag"] integerValue];\
-    retVal.visible = [[dict valueForKey:@"visible"] boolValue];\
-    retVal.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];\
-    retVal.zOrder = [[dict valueForKey:@"zOrder"] integerValue];\
-\
-    NSArray *children = [dict objectForKey:@"children"];\
-    for (NSDictionary *child in children)\
-    {\
-        Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child valueForKey:@"className"])];\
-        if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
+        NSArray *children = [dict objectForKey:@"children"];\
+        for (NSDictionary *child in children)\
         {\
-            CCNode<SDNodeProtocol> *node = [childClass setupFromDictionaryRepresentation:child];\
-            [retVal addChild:node];\
+            Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child valueForKey:@"className"])];\
+            if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])\
+            {\
+                CCNode<SDNodeProtocol> *node = [[[childClass alloc] initWithDictionaryRepresentation:child] autorelease];\
+                [self addChild:node];\
+            }\
         }\
     }\
 \
-    return retVal;\
+    return self;\
+}\
+\
+- (id)initWithCoder:(NSCoder *)aDecoder\
+{\
+    NSDictionary *dict = [aDecoder decodeObjectForKey:@"dictionaryRepresentation"];\
+    if (!dict)\
+        return nil;\
+\
+    self = [self initWithDictionaryRepresentation:dict];\
+    return self;\
+}\
+\
+- (void)encodeWithCoder:(NSCoder *)aCoder\
+{\
+    [aCoder encodeObject:[self dictionaryRepresentation] forKey:@"dictionaryRepresentation"];\
+}\
+\
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard\
+{\
+    return [NSArray arrayWithObject:@"org.cocos2d-iphone.scenedesigner.node"];\
+}\
+\
+- (id)pasteboardPropertyListForType:(NSString *)type\
+{\
+    if ([type isEqualToString:@"org.cocos2d-iphone.scenedesigner.node"])\
+        return [NSKeyedArchiver archivedDataWithRootObject:self];\
+    \
+    return nil;\
+}\
+\
++ (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard\
+{\
+    return [NSArray arrayWithObject:@"org.cocos2d-iphone.scenedesigner.node"];\
+}\
+\
++ (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard\
+{\
+    if ([type isEqualToString:@"org.cocos2d-iphone.scenedesigner.node"])\
+        return NSPasteboardReadingAsKeyedArchive;\
+\
+    return 0;\
 }\
 \
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key\
 {\
     /* dont do anything */\
 }\
+\
 - (id)valueForUndefinedKey:(NSString *)key\
 {\
     return nil;\
