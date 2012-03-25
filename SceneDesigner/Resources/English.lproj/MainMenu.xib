@@ -886,10 +886,13 @@
 				<string key="NSClassName">NSFontManager</string>
 			</object>
 			<object class="NSOpenGLView" id="335206536">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">1292</int>
 				<object class="NSPSMatrix" key="NSDrawMatrix"/>
-				<string key="NSFrameSize">{580, 396}</string>
+				<string key="NSFrameSize">{480, 320}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<int key="NSViewLayerContentsRedrawPolicy">2</int>
 				<object class="NSOpenGLPixelFormat" key="NSPixelFormat">
 					<object class="NSMutableData" key="NSPixelAttributes">
@@ -2470,6 +2473,7 @@
 							<string>_objectController</string>
 							<string>_outlineView</string>
 							<string>_rightView</string>
+							<string>_sceneProperties</string>
 							<string>_scrollView</string>
 							<string>_splitView</string>
 							<string>_spriteProperties</string>
@@ -2485,6 +2489,7 @@
 							<string>NSObjectController</string>
 							<string>NSOutlineView</string>
 							<string>NSScrollView</string>
+							<string>NSView</string>
 							<string>NSScrollView</string>
 							<string>NSSplitView</string>
 							<string>NSView</string>
@@ -2503,6 +2508,7 @@
 							<string>_objectController</string>
 							<string>_outlineView</string>
 							<string>_rightView</string>
+							<string>_sceneProperties</string>
 							<string>_scrollView</string>
 							<string>_splitView</string>
 							<string>_spriteProperties</string>
@@ -2544,6 +2550,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">_rightView</string>
 								<string key="candidateClassName">NSScrollView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">_sceneProperties</string>
+								<string key="candidateClassName">NSView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">_scrollView</string>
