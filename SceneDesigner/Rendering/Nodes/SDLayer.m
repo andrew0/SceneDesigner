@@ -74,7 +74,7 @@
     if (isKeyboardEnabled != isKeyboardEnabled_)
     {
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isKeyboardEnabled_];
+        [[um prepareWithInvocationTarget:self] setIsKeyboardEnabled:isKeyboardEnabled_];
         [um setActionName:NSLocalizedString(@"keyboard toggling", nil)];
         isKeyboardEnabled_ = isKeyboardEnabled;
     }
