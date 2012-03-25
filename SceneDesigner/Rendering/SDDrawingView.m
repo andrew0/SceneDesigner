@@ -125,9 +125,11 @@
         [[um prepareWithInvocationTarget:self] setSceneWidth:[self sceneWidth]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
+        [[[CCDirector sharedDirector] view] lockOpenGLContext];
         CGSize s = [[CCDirector sharedDirector] winSize];
         s.width = sceneWidth;
         [[CCDirector sharedDirector] reshapeProjection:s];
+        [[[CCDirector sharedDirector] view] unlockOpenGLContext];
         
         // resize background checkerboard
         [_background setContentSize:s];
@@ -148,9 +150,12 @@
         [[um prepareWithInvocationTarget:self] setSceneHeight:[self sceneHeight]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
+        
+        [[[CCDirector sharedDirector] view] lockOpenGLContext];
         CGSize s = [[CCDirector sharedDirector] winSize];
         s.height = sceneHeight;
         [[CCDirector sharedDirector] reshapeProjection:s];
+        [[[CCDirector sharedDirector] view] unlockOpenGLContext];
         
         // resize background checkerboard
         [_background setContentSize:s];
