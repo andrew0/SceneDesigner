@@ -11,9 +11,9 @@
 @synthesize isAccelerometerEnabled = _isAccelerometerEnabled;
 @dynamic colorObject;
 
-- (id)init
+- (id)initWithColor:(ccColor4B)color width:(GLfloat)w  height:(GLfloat)h
 {
-    self = [super init];
+    self = [super initWithColor:color width:w height:h];
     if (self)
         SDNODE_INIT();
     

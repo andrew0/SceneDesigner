@@ -10,9 +10,9 @@
 
 @dynamic colorObject;
 
-- (id)init
+- (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset
 {
-    self = [super init];
+    self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment imageOffset:offset];
     if (self)
         SDNODE_INIT();
     
