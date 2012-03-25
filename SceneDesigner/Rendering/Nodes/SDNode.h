@@ -155,6 +155,8 @@ do\
         [[um prepareWithInvocationTarget:self] setRotation:[self rotation]];\
         [um setActionName:NSLocalizedString(@"rotation", nil)];\
         [super setRotation:rotation];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 \
@@ -177,6 +179,8 @@ do\
         [[um prepareWithInvocationTarget:self] setVisible:[self visible]];\
         [um setActionName:NSLocalizedString(@"visibility adjustment", nil)];\
         [super setVisible:visible];\
+\
+        _isDirtySnapPoints = YES;\
     }\
 }\
 \
@@ -331,7 +335,7 @@ do\
 \
 - (NSArray *)snapPoints\
 {\
-    if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0 || [self scaleX] != 1 || [self scaleY] != 1)\
+    if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0 || [self scaleX] != 1 || [self scaleY] != 1 || ![self visible])\
         return [NSArray array];\
 \
     if (_snapPoints == nil)\
