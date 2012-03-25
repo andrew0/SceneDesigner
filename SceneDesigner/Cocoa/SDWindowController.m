@@ -268,6 +268,7 @@
     {
         [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode"];
         [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode.zOrder"];
+        [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode.name"];
     }
     
     SceneDesignerAppDelegate *delegate = [NSApp delegate];
