@@ -24,11 +24,19 @@
 {
     // set default values for NSUserDefaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
     if (![[defaults valueForKey:@"fileFormat"] isEqualToString:@"Property List"] &&
         ![[defaults valueForKey:@"fileFormat"] isEqualToString:@"JSON"])
     {
         [defaults setValue:@"Property List" forKey:@"fileFormat"];
     }
+    
+    if (![[defaults valueForKey:@"snapToEdges"] isEqualTo:[NSNumber numberWithBool:YES]] &&
+        ![[defaults valueForKey:@"snapToEdges"] isEqualTo:[NSNumber numberWithBool:NO]])
+    {
+        [defaults setValue:[NSNumber numberWithBool:YES] forKey:@"snapToEdges"];
+    }
+    
     [defaults synchronize];
 }
 

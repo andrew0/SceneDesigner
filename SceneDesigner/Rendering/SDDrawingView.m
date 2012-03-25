@@ -195,6 +195,9 @@
 
 - (BOOL)willSnap
 {
+    if (![[[NSUserDefaults standardUserDefaults] valueForKey:@"snapToEdges"] isEqualTo:[NSNumber numberWithBool:YES]])
+        return NO;
+    
     // don't snap when alt key is down
     if ([NSEvent modifierFlags] & NSAlternateKeyMask)
         return NO;
