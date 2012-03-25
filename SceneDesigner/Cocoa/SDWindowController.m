@@ -34,6 +34,7 @@
         document = (SDDocument *)[self document];
         [document addObserver:self forKeyPath:@"drawingView.selectedNode" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
         [document addObserver:self forKeyPath:@"drawingView.selectedNode.zOrder" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+        [document addObserver:self forKeyPath:@"drawingView.selectedNode.name" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
     }
     
     SceneDesignerAppDelegate *delegate = [NSApp delegate];
@@ -359,7 +360,7 @@
                 [self synchronizeOutlineViewWithSelection:nil];
             _ignoreNewSelection = NO;
         }
-        else if ([keyPath isEqualToString:@"drawingView.selectedNode.zOrder"])
+        else if ([keyPath isEqualToString:@"drawingView.selectedNode.zOrder"] || [keyPath isEqualToString:@"drawingView.selectedNode.name"])
         {
             // change in z order = change in order for outline view, so outline view must be reloaded
             [self reloadOutlineView];

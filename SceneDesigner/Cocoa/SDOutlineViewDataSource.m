@@ -9,7 +9,6 @@
 #import "SDNode.h"
 #import "cocos2d.h"
 #import "SDOutlineView.h"
-#import "SDUtils.h"
 
 @implementation SDOutlineViewDataSource
 
@@ -139,7 +138,15 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-    return [item objectForKey:CLASS_NAME_KEY];
+    NSMutableString *string = [NSMutableString stringWithString:[item objectForKey:CLASS_NAME_KEY]];
+    NSString *name = [(CCNode<SDNodeProtocol> *)[item objectForKey:NODE_KEY] name];
+    if (name != nil && ![name isEqualToString:@""])
+    {
+        [string appendString:@" - "];
+        [string appendString:[(CCNode<SDNodeProtocol> *)[item objectForKey:NODE_KEY] name]];
+    }
+    
+    return [NSString stringWithString:string];
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView setObjectValue:(id)object forTableColumn:(NSTableColumn *)tableColumn byItem:(id)item

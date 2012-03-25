@@ -4,6 +4,9 @@
 //
 
 #import "SDUtils.h"
+#import "SDDocument.h"
+#import "SDNode.h"
+#import "SDDrawingView.h"
 
 @implementation SDUtils
 
@@ -46,6 +49,46 @@
 - (Class)cocosClassFromCustomClass:(Class)customClass
 {
     return NSClassFromString([_classesDicitonary objectForKey:NSStringFromClass(customClass)]);
+}
+
+- (SDDocument *)currentDocument
+{
+    SDDocument *doc = [[NSDocumentController sharedDocumentController] currentDocument];
+    if (![doc isKindOfClass:[SDDocument class]])
+        return nil;
+    
+    return doc;
+}
+
+- (NSArray *)allNamesOfChildrenOfNode:(CCNode *)node
+{
+    NSMutableArray *array = [NSMutableArray array];
+    for (CCNode<SDNodeProtocol> *child in [node children])
+    {
+        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && [child name] != nil && ![[child name] isEqualToString:@""])
+            [array addObject:[child name]];
+        
+        if ([[child children] count] > 0)
+            [array addObjectsFromArray:[self allNamesOfChildrenOfNode:child]];
+    }
+    
+    return [NSArray arrayWithArray:array];
+}
+
+- (NSString *)uniqueNameForString:(NSString *)string
+{
+    SDDocument *doc = [self currentDocument];
+    NSArray *names = [self allNamesOfChildrenOfNode:[doc drawingView]];
+    
+    NSString *newString = [[string copy] autorelease];
+    NSUInteger i = 1;
+    while ([names containsObject:newString])
+    {
+        NSAssert(i < NSUIntegerMax, @"can't use same name %lu times", (unsigned long)NSUIntegerMax);
+        newString = [string stringByAppendingFormat:@"%lu", (unsigned long)i++];
+    }
+    
+    return newString;
 }
 
 @end

@@ -26,7 +26,10 @@
 {
     self = [super initWithFile:filename rect:rect];
     if (self)
+    {
+        SDNODE_INIT();
         self.path = filename;
+    }
     
     return self;
 }
@@ -35,7 +38,10 @@
 {
     self = [super initWithFile:filename];
     if (self)
+    {
+        SDNODE_INIT();
         self.path = filename;
+    }
     
     return self;
 }

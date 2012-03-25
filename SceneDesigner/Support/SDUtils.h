@@ -13,5 +13,6 @@
 + (id)sharedUtils;
 - (Class)customClassFromCocosClass:(Class)cocosClass;
 - (Class)cocosClassFromCustomClass:(Class)customClass;
+- (NSString *)uniqueNameForString:(NSString *)string;
 
 @end

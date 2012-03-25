@@ -4,7 +4,6 @@
 //
 
 #import "cocos2d.h"
-#import "SDUtils.h"
 
 @protocol SDNodeProtocol <NSObject>
 
@@ -36,11 +35,18 @@ BOOL _isSelected;\
 NSMutableArray *_snapPoints;\
 BOOL _isDirtySnapPoints;
 
+#define SDNODE_INIT() \
+do\
+{\
+    [self setName:@"node"];\
+} while (0)\
+
 #define SDNODE_DEALLOC() \
 do\
 {\
     [_snapPoints release];\
     _snapPoints = nil;\
+    [self setName:nil];\
 } while (0)\
 
 #define SDNODE_FUNC_SRC \
@@ -182,6 +188,26 @@ do\
         [[um prepareWithInvocationTarget:self] setIsRelativeAnchorPoint:[self isRelativeAnchorPoint]];\
         [um setActionName:NSLocalizedString(@"relative anchor point adjustment", nil)];\
         [super setIsRelativeAnchorPoint:relative];\
+    }\
+}\
+\
+- (void)setName:(NSString *)name\
+{\
+    if (![name isEqualToString:[self name]])\
+    {\
+        /* a little bit of a hack to get the name text box binding to update to the new unique name */\
+        NSString *uniqueName = [[SDUtils sharedUtils] uniqueNameForString:name];\
+        if (![uniqueName isEqualToString:name])\
+        {\
+            [self performSelector:@selector(setName:) onThread:[NSThread currentThread] withObject:uniqueName waitUntilDone:NO];\
+            return;\
+        }\
+\
+        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        [(CCNode<SDNodeProtocol> *)[um prepareWithInvocationTarget:self] setName:[self name]];\
+        [um setActionName:NSLocalizedString(@"renaming", nil)];\
+        [_name release];\
+        _name = [name copy];\
     }\
 }\
 \
@@ -343,7 +369,7 @@ do\
         dict = [NSMutableDictionary dictionaryWithCapacity:11];\
 \
     [dict setValue:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[self class]]) forKey:@"className"];\
-    [dict setValue:self.name forKey:@"name"];\
+    [dict setValue:((self.name != nil) ? self.name : @"") forKey:@"name"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.position)) forKey:@"position"];\
     [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.anchorPoint)) forKey:@"anchorPoint"];\
     [dict setValue:[NSNumber numberWithFloat:self.scaleX] forKey:@"scaleX"];\
