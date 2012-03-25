@@ -63,7 +63,7 @@ do\
 {\
     if (!CGPointEqualToPoint([self position], pos))\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setPosition:[self position]];\
         [um setActionName:NSLocalizedString(@"repositioning", nil)];\
 \
@@ -80,7 +80,7 @@ do\
 {\
     if (!CGPointEqualToPoint([self anchorPoint], anchorPoint))\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setAnchorPoint:[self anchorPoint]];\
         [um setActionName:NSLocalizedString(@"anchor point adjustment", nil)];\
 \
@@ -114,7 +114,7 @@ do\
 {\
     if ([self scaleX] != sx)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setScaleX:[self scaleX]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleX:sx];\
@@ -127,7 +127,7 @@ do\
 {\
     if ([self scaleY] != sy)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setScaleY:[self scaleY]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleY:sy];\
@@ -140,7 +140,7 @@ do\
 {\
     if ([self zOrder] != z)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setZOrder:[self zOrder]];\
         [um setActionName:NSLocalizedString(@"z order adjustment", nil)];\
         [super setZOrder:z];\
@@ -151,7 +151,7 @@ do\
 {\
     if ([self rotation] != rotation)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setRotation:[self rotation]];\
         [um setActionName:NSLocalizedString(@"rotation", nil)];\
         [super setRotation:rotation];\
@@ -162,7 +162,7 @@ do\
 {\
     if ([self tag] != tag)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setTag:[self tag]];\
         [um setActionName:NSLocalizedString(@"tag adjustment", nil)];\
         [super setTag:tag];\
@@ -173,7 +173,7 @@ do\
 {\
     if ([self visible] != visible)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setVisible:[self visible]];\
         [um setActionName:NSLocalizedString(@"visibility adjustment", nil)];\
         [super setVisible:visible];\
@@ -184,7 +184,7 @@ do\
 {\
     if ([self isRelativeAnchorPoint] != relative)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setIsRelativeAnchorPoint:[self isRelativeAnchorPoint]];\
         [um setActionName:NSLocalizedString(@"relative anchor point adjustment", nil)];\
         [super setIsRelativeAnchorPoint:relative];\
@@ -203,7 +203,7 @@ do\
             return;\
         }\
 \
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [(CCNode<SDNodeProtocol> *)[um prepareWithInvocationTarget:self] setName:[self name]];\
         [um setActionName:NSLocalizedString(@"renaming", nil)];\
         [_name release];\
@@ -280,7 +280,7 @@ do\
 {\
     if (contentWidth != self.contentSize.width)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setContentWidth:self.contentSize.width];\
         [um setActionName:NSLocalizedString(@"content size adjustment", nil)];\
 \
@@ -299,7 +299,7 @@ do\
 {\
     if (contentHeight != self.contentSize.height)\
     {\
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];\
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [[um prepareWithInvocationTarget:self] setContentHeight:self.contentSize.height];\
         [um setActionName:NSLocalizedString(@"content size adjustment", nil)];\
 \

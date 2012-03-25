@@ -35,7 +35,7 @@
 {
     if ([self opacity] != opacity)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCLabelBMFont *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
         [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
         [super setOpacity:opacity];
@@ -46,7 +46,7 @@
 {
     if (![label isEqualToString:[self string]])
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [[um prepareWithInvocationTarget:self] setString:[self string]];
         [um setActionName:NSLocalizedString(@"label string adjustment", nil)];
         [super setString:label];
@@ -57,7 +57,7 @@
 {
     if (![[self fntFile] isEqualToString:fntFile])
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [[um prepareWithInvocationTarget:self] setFntFile:[self fntFile]];
         [um setActionName:NSLocalizedString(@"label font adjustment", nil)];
         [super setFntFile:fntFile];
@@ -89,7 +89,7 @@
 {
     if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
         [um setActionName:NSLocalizedString(@"color adjustment", nil)];
         

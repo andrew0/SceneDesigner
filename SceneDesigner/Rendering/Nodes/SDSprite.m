@@ -163,7 +163,7 @@
 {
     if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCSprite *)[um prepareWithInvocationTarget:self] setColor:[self color]];
         [um setActionName:NSLocalizedString(@"color adjustment", nil)];
         
@@ -177,7 +177,7 @@
 {
     if ([self flipX] != fx)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCSprite *)[um prepareWithInvocationTarget:self] setFlipX:[self flipX]];
         [um setActionName:NSLocalizedString(@"flip X axis", nil)];
         [super setFlipX:fx];
@@ -188,7 +188,7 @@
 {
     if ([self flipY] != fy)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCSprite *)[um prepareWithInvocationTarget:self] setFlipY:[self flipY]];
         [um setActionName:NSLocalizedString(@"flip Y axis", nil)];
         [super setFlipY:fy];
@@ -199,7 +199,7 @@
 {
     if ([self opacity] != opacity)
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [(CCSprite *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
         [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
         [super setOpacity:opacity];
@@ -210,7 +210,7 @@
 {
     if (!CGRectEqualToRect([self textureRect], rect))
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [[um prepareWithInvocationTarget:self] setTextureRect:[self textureRect]];
         [um setActionName:NSLocalizedString(@"texture rect adjustment", nil)];
         

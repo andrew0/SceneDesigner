@@ -60,6 +60,11 @@
     return doc;
 }
 
+- (NSUndoManager *)currentUndoManager
+{
+    return [[self currentDocument] undoManager];
+}
+
 - (NSArray *)allNamesOfChildrenOfNode:(CCNode *)node
 {
     NSMutableArray *array = [NSMutableArray array];

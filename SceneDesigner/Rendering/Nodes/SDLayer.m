@@ -47,6 +47,50 @@
     return retVal;
 }
 
+- (void)setIsAccelerometerEnabled:(BOOL)isAccelerometerEnabled
+{
+    if (isAccelerometerEnabled != _isAccelerometerEnabled)
+    {
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        [[um prepareWithInvocationTarget:self] setIsAccelerometerEnabled:_isAccelerometerEnabled];
+        [um setActionName:NSLocalizedString(@"accelerometer toggling", nil)];
+        _isAccelerometerEnabled = isAccelerometerEnabled;
+    }
+}
+
+- (void)setIsTouchEnabled:(BOOL)isTouchEnabled
+{
+    if (isTouchEnabled != isTouchEnabled_)
+    {
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        [[um prepareWithInvocationTarget:self] setIsTouchEnabled:isTouchEnabled_];
+        [um setActionName:NSLocalizedString(@"touch toggling", nil)];
+        isTouchEnabled_ = isTouchEnabled;
+    }
+}
+
+- (void)setIsKeyboardEnabled:(BOOL)isKeyboardEnabled
+{
+    if (isKeyboardEnabled != isKeyboardEnabled_)
+    {
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isKeyboardEnabled_];
+        [um setActionName:NSLocalizedString(@"keyboard toggling", nil)];
+        isKeyboardEnabled_ = isKeyboardEnabled;
+    }
+}
+
+- (void)setIsMouseEnabled:(BOOL)isMouseEnabled
+{
+    if (isMouseEnabled != isMouseEnabled_)
+    {
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isMouseEnabled_];
+        [um setActionName:NSLocalizedString(@"mouse toggling", nil)];
+        isMouseEnabled_ = isMouseEnabled;
+    }
+}
+
 SDNODE_FUNC_SRC
 
 @end

@@ -121,7 +121,7 @@
 {
     if (sceneWidth != [self sceneWidth])
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [[um prepareWithInvocationTarget:self] setSceneWidth:[self sceneWidth]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
@@ -144,7 +144,7 @@
 {
     if (sceneHeight != [self sceneHeight])
     {
-        NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
         [[um prepareWithInvocationTarget:self] setSceneHeight:[self sceneHeight]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
@@ -210,7 +210,7 @@
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     // don't create undo event for every reposition while dragging, just one at end
-    [[[[NSDocumentController sharedDocumentController] currentDocument] undoManager] disableUndoRegistration];
+    [[[SDUtils sharedUtils] currentUndoManager] disableUndoRegistration];
     
     _willDragNode = NO;
     _willDeselectNode = NO;
@@ -306,7 +306,7 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    NSUndoManager *um = [[[NSDocumentController sharedDocumentController] currentDocument] undoManager];
+    NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
     if (![um isUndoRegistrationEnabled])
         [um enableUndoRegistration];
     
