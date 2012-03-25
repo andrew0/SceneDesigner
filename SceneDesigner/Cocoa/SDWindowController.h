@@ -21,6 +21,7 @@
     IBOutlet NSScrollView *_scrollView;
     IBOutlet NSScrollView *_rightView;
     
+    IBOutlet NSView *_sceneProperties;
     IBOutlet NSView *_generalProperties;
     IBOutlet NSView *_nodeProperties;
     IBOutlet NSView *_spriteProperties;

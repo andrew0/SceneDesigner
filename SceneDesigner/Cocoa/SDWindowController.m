@@ -310,6 +310,11 @@
                 // set the object controller selection to the new node
                 [_objectController setContent:newNode];
                 
+                {
+                    TLCollapsibleView *view = [_animatingOutlineView addView:_generalProperties withImage:nil label:@"General Properties" expanded:YES];
+                    [self configureView:view];
+                }
+                
                 if ([newNode isKindOfClass:[CCNode class]])
                 {
                     TLCollapsibleView *view = [_animatingOutlineView addView:_nodeProperties withImage:nil label:@"Node Properties" expanded:YES];
@@ -345,7 +350,7 @@
                 // if there's no new node, then set the content to be the drawing view and add the general project properties
                 [_objectController setContent:[[self document] drawingView]];
                 
-                TLCollapsibleView *view = [_animatingOutlineView addView:_generalProperties withImage:nil label:@"General Properties" expanded:YES];
+                TLCollapsibleView *view = [_animatingOutlineView addView:_sceneProperties withImage:nil label:@"Scene Properties" expanded:YES];
                 [self configureView:view];
                 view.disclosureBar.borderSidesMask = TLMinYEdge;
             }
