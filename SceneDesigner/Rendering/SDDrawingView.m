@@ -277,8 +277,9 @@
                 // snap to other nodes in 
                 NSMutableArray *points = [NSMutableArray array];
                 for (CCNode<SDNodeProtocol> *child in [self children])
-                    if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && child != _selectedNode)
+                    if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
                         [points addObjectsFromArray:[self snapPointsForNode:child]];
+                [points removeObjectsInArray:[_selectedNode snapPoints]];
                 
                 // add snap points for canvas
                 CGSize s = [[CCDirector sharedDirector] winSize];
