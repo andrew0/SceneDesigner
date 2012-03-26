@@ -12,6 +12,7 @@
 {
     SDDrawingView *_drawingView;
     NSMutableArray *_nodesToAdd;
+    NSSize _sceneSizeToSet;
 }
 
 @property (nonatomic, retain) SDDrawingView *drawingView;

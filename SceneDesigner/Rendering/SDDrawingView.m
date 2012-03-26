@@ -119,6 +119,9 @@
 // and didChangeValueForKey: for sceneWidth and sceneHeight
 - (void)setSceneWidth:(CGFloat)sceneWidth
 {
+    if (sceneWidth <= 0)
+        return;
+    
     if (sceneWidth != [self sceneWidth])
     {
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
@@ -144,6 +147,9 @@
 
 - (void)setSceneHeight:(CGFloat)sceneHeight
 {
+    if (sceneHeight <= 0)
+        return;
+    
     if (sceneHeight != [self sceneHeight])
     {
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];

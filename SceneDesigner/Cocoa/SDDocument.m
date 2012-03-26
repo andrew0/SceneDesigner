@@ -18,8 +18,7 @@
 {
     self = [super init];
     if (self)
-    {
-    }
+        _sceneSizeToSet = NSMakeSize(-1, -1);
     
     return self;
 }
@@ -37,19 +36,27 @@
         [_drawingView release];
         _drawingView = [drawingView retain];
         
+        [[self undoManager] disableUndoRegistration];
+        
+        if (_sceneSizeToSet.width > 0)
+            [_drawingView setSceneWidth:_sceneSizeToSet.width];
+        
+        if (_sceneSizeToSet.height > 0)
+            [_drawingView setSceneHeight:_sceneSizeToSet.height];
+        
         if ([[self windowControllers] count] > 0)
         {
             SDWindowController *wc = (SDWindowController *)[[self windowControllers] objectAtIndex:0];
             
-            [[self undoManager] disableUndoRegistration];
             for (CCNode<SDNodeProtocol> *node in _nodesToAdd)
                 [wc addNodeToLayer:node];
-            [[self undoManager] enableUndoRegistration];
         }
         else
         {
             CCLOG(@"%s - no window controllers found", __FUNCTION__);
         }
+        
+        [[self undoManager] enableUndoRegistration];
         
         [_nodesToAdd release];
         _nodesToAdd = nil;
@@ -90,12 +97,16 @@
         if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
             [array addObject:[child dictionaryRepresentation]];
     
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
+    [dict setValue:NSStringFromSize(NSMakeSize([_drawingView sceneWidth], [_drawingView sceneHeight])) forKey:@"sceneSize"];
+    [dict setValue:array forKey:@"children"];
+    
     // json
     if ([typeName isEqualToString:@"JSON"])
-        return [array JSONData];
+        return [dict JSONData];
     
     // plist
-    return [NSPropertyListSerialization dataWithPropertyList:array format:NSPropertyListXMLFormat_v1_0 options:0 error:NULL];
+    return [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:NULL];
 }
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
@@ -104,18 +115,39 @@
     if ([[CCDirector sharedDirector] runningScene] == nil)
         [delegate startCocos2D];
     
-    NSArray *children;
+    // get dictionary from json/plist file
+    NSDictionary *dict;
     if ([typeName isEqualToString:@"JSON"])
-        children = [data objectFromJSONData];
+        dict = [data objectFromJSONData];
     else
-        children = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:outError];
+        dict = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:outError];
     
-    if (![children isKindOfClass:[NSArray class]])
+    // ensure that file is a dictionary
+    if (![dict isKindOfClass:[NSDictionary class]])
     {
-        CCLOG(@"%s - property list or JSON not an array", __FUNCTION__);
+        NSLog(@"%s property list or JSON not a dictionary", __FUNCTION__);
         return NO;
     }
     
+    // get scene size from dictionary
+    NSString *size = [dict valueForKey:@"sceneSize"];
+    if (!size || ![size isKindOfClass:[NSString class]])
+    {
+        NSLog(@"%s sceneSize is not a string", __FUNCTION__);
+        return NO;
+    }
+    
+    _sceneSizeToSet = NSSizeFromString(size);
+    
+    // get children array from dictionary and ensure it is an array
+    NSArray *children = [dict valueForKey:@"children"];
+    if (children == nil || ![children isKindOfClass:[NSArray class]])
+    {
+        NSLog(@"%s children is not an array", __FUNCTION__);
+        return NO;
+    }
+    
+    // add nodes to drawing view
     _nodesToAdd = [[NSMutableArray arrayWithCapacity:[children count]] retain];
     for (NSDictionary *child in children)
     {
