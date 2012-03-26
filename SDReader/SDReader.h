@@ -27,8 +27,12 @@
 
 @interface SDReader : NSObject
 {
+    NSDictionary *_dictionary;
     NSArray *_array;
+    CGSize _sceneSize;
 }
+
+@property (nonatomic, readonly) CGSize sceneSize;
 
 + (id)readerWithFile:(NSString *)file;
 + (id)readerWithURL:(NSURL *)url;

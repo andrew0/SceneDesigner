@@ -25,6 +25,10 @@
 
 #import "SDReader.h"
 
+#ifdef __CC_PLATFORM_MAC
+#define CGSizeFromString(__s__) NSSizeToCGSize(NSSizeFromString(__s__))
+#endif
+
 static inline ccColor3B ColorFromNSString(NSString *string)
 {
     ccColor3B color;
@@ -44,6 +48,8 @@ static inline ccColor3B ColorFromNSString(NSString *string)
 @end
 
 @implementation SDReader
+
+@synthesize sceneSize = _sceneSize;
 
 + (id)readerWithFile:(NSString *)file
 {
@@ -70,12 +76,17 @@ static inline ccColor3B ColorFromNSString(NSString *string)
         NSString *path = [[NSBundle mainBundle] pathForResource:[file stringByDeletingPathExtension] ofType:[file pathExtension]];
         
         // try to get dictionary
-        _array = [[NSArray arrayWithContentsOfFile:path] retain];
-        if (_array == nil)
-        {
-            NSAssert(NO, @"SDReader: file %@ non-existant or not a property list", path);
-            return nil;
-        }
+        _dictionary = [[NSDictionary dictionaryWithContentsOfFile:path] retain];
+        NSAssert(_dictionary != nil, @"SDReader: file %@ non-existant or not a property list", path);
+        
+        _array = [[_dictionary valueForKey:@"children"] retain];
+        NSAssert(_array != nil, @"SDReader: file %@ does not contain children array", path);
+        
+        _sceneSize = CGSizeFromString([_dictionary valueForKey:@"sceneSize"]);
+        if (_sceneSize.width <= 0)
+            _sceneSize.width = 480;
+        if (_sceneSize.height <= 0)
+            _sceneSize.height = 320;
         
         // search for errors in array
         [self validateArray:_array];
@@ -86,6 +97,8 @@ static inline ccColor3B ColorFromNSString(NSString *string)
 
 - (void)dealloc
 {
+    [_dictionary release];
+    [_array release];
     [super dealloc];
 }
 
@@ -187,6 +200,8 @@ static inline ccColor3B ColorFromNSString(NSString *string)
 - (CCScene *)scene
 {
     CCScene *retVal = [CCScene node];
+    retVal.contentSize = _sceneSize;
+    
     for (NSDictionary *child in _array)
     {
         CCNode *node = [self nodeForDictionary:child];
