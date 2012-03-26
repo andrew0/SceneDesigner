@@ -199,19 +199,11 @@ do\
 {\
     if (![name isEqualToString:[self name]])\
     {\
-        /* a little bit of a hack to get the name text box binding to update to the new unique name */\
-        NSString *uniqueName = [[SDUtils sharedUtils] uniqueNameForString:name];\
-        if (![uniqueName isEqualToString:name])\
-        {\
-            [self performSelector:@selector(setName:) onThread:[NSThread currentThread] withObject:uniqueName waitUntilDone:NO];\
-            return;\
-        }\
-\
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
         [(CCNode<SDNodeProtocol> *)[um prepareWithInvocationTarget:self] setName:[self name]];\
         [um setActionName:NSLocalizedString(@"renaming", nil)];\
         [_name release];\
-        _name = [name copy];\
+        _name = [[[SDUtils sharedUtils] uniqueNameForString:name] copy];\
     }\
 }\
 \
