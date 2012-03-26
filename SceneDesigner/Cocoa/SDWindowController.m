@@ -92,16 +92,24 @@
 
 - (IBAction)copy:(id)sender
 {
-    NSArray *objects = [NSArray arrayWithObject:[[[self document] drawingView] selectedNode]];
-    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
-    [pasteboard clearContents];
-    [pasteboard writeObjects:objects];
+    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    if (selectedNode != nil)
+    {
+        NSArray *objects = [NSArray arrayWithObject:selectedNode];
+        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+        [pasteboard clearContents];
+        [pasteboard writeObjects:objects];
+    }
 }
 
 - (IBAction)cut:(id)sender
 {
-    [self copy:sender];
-    [self removeNodeFromLayer:[[[self document] drawingView] selectedNode]];
+    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    if (selectedNode != nil)
+    {
+        [self copy:sender];
+        [self removeNodeFromLayer:selectedNode];
+    }
 }
 
 - (IBAction)paste:(id)sender
