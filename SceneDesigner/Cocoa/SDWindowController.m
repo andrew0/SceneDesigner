@@ -180,7 +180,7 @@
         [openPanel setCanChooseFiles:YES];
         [openPanel setAllowsMultipleSelection:YES];
         [openPanel setCanChooseDirectories:NO];
-        [openPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"png", @"gif", @"jpg", @"jpeg", @"tif", @"tiff", @"bmp", @"ccz", @"pvr", nil]];
+        [openPanel setAllowedFileTypes:[[SDUtils sharedUtils] allowedImageTypes]];
         [openPanel setAllowsOtherFileTypes:NO];
         
         // handle the open panel

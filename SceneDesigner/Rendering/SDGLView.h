@@ -5,6 +5,6 @@
 
 #import "cocos2d.h"
 
-@interface SDGLView : CCGLView <CCDirectorDelegate>
+@interface SDGLView : CCGLView <CCDirectorDelegate, NSDraggingDestination>
 
 @end

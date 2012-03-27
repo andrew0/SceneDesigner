@@ -7,6 +7,7 @@
 #import "SDDocument.h"
 #import "SDNode.h"
 #import "SDDrawingView.h"
+#import "SDWindowController.h"
 
 @implementation SDUtils
 
@@ -60,6 +61,27 @@
     return doc;
 }
 
+- (SDWindowController *)currentWindowController
+{
+    SDWindowController *wc = nil;
+    
+    NSArray *windows = [NSApp orderedWindows];
+    if ([windows count] > 0)
+    {
+        for (NSWindow *window in windows)
+        {
+            NSWindowController *controller = [window windowController];
+            if ([controller isKindOfClass:[SDWindowController class]])
+            {
+                wc = (SDWindowController *)controller;
+                break;
+            }
+        }
+    }
+    
+    return wc;
+}
+
 - (NSUndoManager *)currentUndoManager
 {
     return [[self currentDocument] undoManager];
@@ -94,6 +116,11 @@
     }
     
     return newString;
+}
+
+- (NSArray *)allowedImageTypes
+{
+    return [NSArray arrayWithObjects:@"png", @"gif", @"jpg", @"jpeg", @"tif", @"tiff", @"bmp", @"ccz", @"pvr", nil];
 }
 
 @end
