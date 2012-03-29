@@ -25,7 +25,6 @@
 - (void)updateProjection
 {
     CGSize size = [[CCDirector sharedDirector] winSizeInPixels];
-    
     [self setFrameSize:NSSizeFromCGSize(size)];
     
     CGPoint offset = ccp(-NSMinX([self visibleRect]), -NSMinY([self visibleRect]));
@@ -40,7 +39,6 @@
     kmGLMatrixMode(KM_GL_MODELVIEW);
     kmGLLoadIdentity();
     
-    [[CCDirector sharedDirector] drawScene];
     [[self superview] setNeedsDisplay:YES];
 }
 
