@@ -178,10 +178,13 @@
 {
     for (CCNode<SDNodeProtocol> *child in [[[parent children] getNSArray] reverseObjectEnumerator])
     {
-        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && [child isEventInRect:event])
+        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
         {
             CCNode<SDNodeProtocol> *grandchild = [self nodeForEvent:event withParent:child];
-            return (grandchild != nil) ? grandchild : child;
+            if (grandchild != nil)
+                return grandchild;
+            else if ([child isEventInRect:event])
+                return child;
         }
     }
     
