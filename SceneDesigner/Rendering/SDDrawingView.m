@@ -296,21 +296,35 @@
                     CGPoint point;
                     [value getValue:&point];
                     
+                    // get snap points (i.e. points on node that will can snap to another node)
                     CGSize contentSize = [_selectedNode contentSize];
                     float sx = [_selectedNode scaleX];
                     float sy = [_selectedNode scaleY];
                     CGPoint snapPoint1 = [_selectedNode convertToWorldSpace:ccp(0,0)];
                     CGPoint snapPoint2 = [_selectedNode convertToWorldSpace:ccp(contentSize.width*sx,contentSize.height*sy)];
                     
+                    // transform points into node space
+                    CGAffineTransform t = [_selectedNode parentToNodeTransform];
+                    CGPoint transformedSnapPoint1 = CGPointApplyAffineTransform(snapPoint1, t);
+                    CGPoint transformedSnapPoint2 = CGPointApplyAffineTransform(snapPoint2, t);
+                    
+                    // subtract anchor point if necessary
+                    if ([_selectedNode isRelativeAnchorPoint])
+                    {
+                        transformedSnapPoint1 = ccpSub(transformedSnapPoint1, [_selectedNode anchorPointInPoints]);
+                        transformedSnapPoint2 = ccpSub(transformedSnapPoint2, [_selectedNode anchorPointInPoints]);
+                    }
+                    
+                    // apply snapping
                     if (abs(snapPoint1.x - point.x) <= kSnapDistance)
-                        newPos.x = point.x - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint1] : [_selectedNode convertToNodeSpace:snapPoint1]).x;
+                        newPos.x = point.x - transformedSnapPoint1.x;
                     if (abs(snapPoint1.y - point.y) <= kSnapDistance)
-                        newPos.y = point.y - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint1] : [_selectedNode convertToNodeSpace:snapPoint1]).y;
+                        newPos.y = point.y - transformedSnapPoint1.y;
                     
                     if (abs(snapPoint2.x - point.x) <= kSnapDistance)
-                        newPos.x = point.x - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint2] : [_selectedNode convertToNodeSpace:snapPoint2]).x;
+                        newPos.x = point.x - transformedSnapPoint2.x;
                     if (abs(snapPoint2.y - point.y) <= kSnapDistance)
-                        newPos.y = point.y - ([_selectedNode isRelativeAnchorPoint] ? [_selectedNode convertToNodeSpaceAR:snapPoint2] : [_selectedNode convertToNodeSpace:snapPoint2]).y;
+                        newPos.y = point.y - transformedSnapPoint2.y;
                 }
                 
                 // assign new (snapped) position
