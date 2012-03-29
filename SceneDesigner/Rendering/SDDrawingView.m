@@ -341,6 +341,14 @@
 	return YES;
 }
 
+- (void)sortAllChildren
+{
+    BOOL shouldPostNotification = isReorderChildDirty_;
+    [super sortAllChildren];
+    if (shouldPostNotification)
+        [[NSNotificationCenter defaultCenter] postNotificationName:CCNodeDidReorderChildren object:self];
+}
+
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
     // don't do anything

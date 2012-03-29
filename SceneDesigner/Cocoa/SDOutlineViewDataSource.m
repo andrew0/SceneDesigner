@@ -66,11 +66,12 @@
             return NSOrderedSame;
         
         // children array is automatically sorted by z order
-        NSComparisonResult retVal = [[NSNumber numberWithInteger:[node1 zOrder]] compare:[NSNumber numberWithInteger:[node2 zOrder]]];
-        if (retVal == NSOrderedSame)
-            return [[NSNumber numberWithInteger:[[parent children] indexOfObject:node1]] compare:[NSNumber numberWithInteger:[[parent children] indexOfObject:node2]]];
+        if ([[parent children] indexOfObject:node1] < [[parent children] indexOfObject:node2])
+            return NSOrderedAscending;
+        else if ([[parent children] indexOfObject:node1] > [[parent children] indexOfObject:node2])
+            return NSOrderedDescending;
         
-        return retVal;
+        return NSOrderedSame;
     };
     
     [array sortUsingComparator:comparator];

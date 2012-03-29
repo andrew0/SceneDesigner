@@ -5,6 +5,8 @@
 
 #import "cocos2d.h"
 
+extern NSString *CCNodeDidReorderChildren;
+
 @protocol SDNodeProtocol <NSObject, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
 @required
@@ -303,6 +305,14 @@ do\
         size.height = contentHeight;\
         self.contentSize = size;\
     }\
+}\
+\
+- (void)sortAllChildren\
+{\
+    BOOL shouldPostNotification = isReorderChildDirty_;\
+    [super sortAllChildren];\
+    if (shouldPostNotification)\
+        [[NSNotificationCenter defaultCenter] postNotificationName:CCNodeDidReorderChildren object:self];\
 }\
 \
 - (void)draw\

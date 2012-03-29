@@ -5,6 +5,8 @@
 
 #import "SDNode.h"
 
+NSString *CCNodeDidReorderChildren = @"CCNodeDidReorderChildren";
+
 @implementation SDNode
 
 SDNODE_FUNC_SRC
