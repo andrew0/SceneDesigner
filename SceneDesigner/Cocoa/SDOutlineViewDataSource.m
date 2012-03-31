@@ -12,139 +12,94 @@
 
 @implementation SDOutlineViewDataSource
 
-- (id)init
+- (CCArray *)childrenOfNode:(CCNode *)node
 {
-    self = [super init];
-    if (self)
-    {
-        _array = [[NSMutableArray alloc] init];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadDictionary:) name:NSOutlineViewWillReloadDataNotification object:nil];
-    }
+    if (!node)
+        return nil;
     
-    return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [_array release];
-    [super dealloc];
-}
-
-- (void)reloadDictionary:(NSNotification *)notification
-{
-    SDDocument *document = [_windowController document];
-    if ([document isKindOfClass:[SDDocument class]])
-        [_array setArray:[[self dictionaryForNode:[document drawingView]] objectForKey:CHILDREN_KEY]];
-}
-
-- (NSDictionary *)dictionaryForNode:(CCNode *)node
-{
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:3];
-    [dict setValue:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[node class]]) forKey:CLASS_NAME_KEY];
-    [dict setValue:node forKey:NODE_KEY];
+    // create copy of children since we're going to mutate it
+    CCArray *children = [node children];
+    CCArray *retVal = [[children copy] autorelease];
     
-    NSMutableArray *array = [NSMutableArray array];
-    if ([[node children] count] > 0)
-        for (CCNode<SDNodeProtocol> *child in [node children])
-            if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
-                [array addObject:[self dictionaryForNode:child]];
-    
-    [dict setValue:array forKey:CHILDREN_KEY];
-    
-    return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-- (void)sortArrayByZOrder:(NSMutableArray *)array
-{
-    NSComparisonResult (^comparator)(id obj1, id obj2) = ^NSComparisonResult(id obj1, id obj2) {
-        CCNode *node1 = [obj1 objectForKey:NODE_KEY];
-        CCNode *node2 = [obj2 objectForKey:NODE_KEY];
-        
-        CCNode *parent = [node1 parent];
-        if ([node2 parent] != parent)
-            return NSOrderedSame;
-        
-        // children array is automatically sorted by z order
-        if ([[parent children] indexOfObject:node1] < [[parent children] indexOfObject:node2])
-            return NSOrderedAscending;
-        else if ([[parent children] indexOfObject:node1] > [[parent children] indexOfObject:node2])
-            return NSOrderedDescending;
-        
-        return NSOrderedSame;
-    };
-    
-    [array sortUsingComparator:comparator];
+    // remove all nodes that are not SDNodes
+    for (id child in children)
+        if (![child isKindOfClass:[CCNode class]] || ![child conformsToProtocol:@protocol(SDNodeProtocol)])
+            [retVal removeObject:child];
     
     // reverse the array
     // we could use [[array reverseObjectEnumerator] allObjects], but that is not
     // guaranteed to be in the correct order
-    if ([array count] > 1)
+    if ([retVal count] > 1)
     {
-        NSUInteger count = floorf([array count]/2.0f);
-        NSUInteger maxIndex = [array count] - 1;
+        NSUInteger count = floorf([retVal count]/2.0f);
+        NSUInteger maxIndex = [retVal count] - 1;
         for (NSUInteger i = 0; i < count; i++)
         {
-            [array exchangeObjectAtIndex:i withObjectAtIndex:maxIndex];
+            [retVal exchangeObjectAtIndex:i withObjectAtIndex:maxIndex];
             maxIndex--;
         }
     }
     
-    // use recursion to sort children
-    for (NSDictionary *dict in array)
-    {
-        if ([dict isKindOfClass:[NSDictionary class]])
-        {
-            NSMutableArray *children = [dict objectForKey:CHILDREN_KEY];
-            if (children != nil && [children count] > 0)
-                [self sortArrayByZOrder:children];
-        }
-    }
+    return retVal;
+}
+
+- (CCArray *)drawingViewChildren
+{
+    // ensure document is SDDocument
+    SDDocument *document = [_windowController document];
+    if (![document isKindOfClass:[SDDocument class]])
+        return nil;
+    
+    return [self childrenOfNode:[document drawingView]];
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
 {
-    return (item != nil) ? [[item objectForKey:CHILDREN_KEY] count] : [_array count];
+    if (!item)
+        return [[self drawingViewChildren] count];
+    
+    if (![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+        return 0;
+    
+    return [[self childrenOfNode:item] count];
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
+    // if there is no item (no parent), then get nodes from root
     if (!item)
     {
-        if ([_array count] > index)
-        {
-            [self sortArrayByZOrder:_array];
-            return [_array objectAtIndex:index];
-        }
-        else
-            return nil;
+        CCArray *rootChildren = [self drawingViewChildren];
+        return ([rootChildren count] > index) ? [rootChildren objectAtIndex:index] : nil;
     }
     
-    if (![item isKindOfClass:[NSDictionary class]])
+    if (![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
         return nil;
     
-    NSMutableArray *array = [item objectForKey:CHILDREN_KEY];
-    [self sortArrayByZOrder:array];
-    
-    if ([array count] <= index)
-        return nil;
-    
-    return [array objectAtIndex:index];
+    CCArray *childrenOfItem = [self childrenOfNode:item];
+    return ([childrenOfItem count] > index) ? [childrenOfItem objectAtIndex:index] : nil;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    return (item != nil && [[item objectForKey:CHILDREN_KEY] count] > 0);
+    if (!item || ![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+        return NO;
+    
+    return [[self childrenOfNode:item] count] > 0;
 }
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-    NSMutableString *string = [NSMutableString stringWithString:[item objectForKey:CLASS_NAME_KEY]];
-    NSString *name = [(CCNode<SDNodeProtocol> *)[item objectForKey:NODE_KEY] name];
+    if (!item || ![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+        return nil;
+    
+    // get class name and append name if applicable
+    NSMutableString *string = [NSMutableString stringWithString:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[item class]])];
+    NSString *name = [(CCNode<SDNodeProtocol> *)item name];
     if (name != nil && ![name isEqualToString:@""])
     {
         [string appendString:@" - "];
-        [string appendString:[(CCNode<SDNodeProtocol> *)[item objectForKey:NODE_KEY] name]];
+        [string appendString:name];
     }
     
     return [NSString stringWithString:string];

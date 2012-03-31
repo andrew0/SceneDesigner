@@ -516,9 +516,11 @@
     // selection, which will call outlineViewDidChange: again, etc.
     _ignoreNewSelection = YES;
     
-    NSDictionary *dict = [_outlineView itemAtRow:[_outlineView selectedRow]];
-    CCNode<SDNodeProtocol> *node = ([dict isKindOfClass:[NSDictionary class]]) ? [dict objectForKey:NODE_KEY] : nil;
-    [[[self document] drawingView] setSelectedNode:node];
+    CCNode<SDNodeProtocol> *node = [_outlineView itemAtRow:[_outlineView selectedRow]];
+    if (node && [node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+        [[[self document] drawingView] setSelectedNode:node];
+    else
+        [[[self document] drawingView] setSelectedNode:nil];
 }
 
 - (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification
@@ -533,15 +535,11 @@
     {
         for (NSUInteger i = 0; i < [_outlineView numberOfRows]; i++)
         {
-            NSDictionary *dict = [_outlineView itemAtRow:i];
-            if ([dict isKindOfClass:[NSDictionary class]])
+            CCNode<SDNodeProtocol> *node = [_outlineView itemAtRow:i];
+            if (node == selectedNode)
             {
-                CCNode<SDNodeProtocol> *node = [dict objectForKey:NODE_KEY];
-                if (node == selectedNode)
-                {
-                    foundRow = YES;
-                    row = i;
-                }
+                foundRow = YES;
+                row = i;
             }
         }
     }

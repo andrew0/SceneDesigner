@@ -29,15 +29,12 @@ NSString *NSOutlineViewDidReloadDataNotification = @"NSOutlineViewDidReloadDataN
         firstCharacter == NSBackspaceCharacter)
     {
         NSInteger row = [self selectedRow];
-        NSDictionary *dict = [self itemAtRow:row];
-        CCNode<SDNodeProtocol> *node = [dict objectForKey:NODE_KEY];
-        if (node != nil)
+        CCNode<SDNodeProtocol> *node = [self itemAtRow:row];
+        if (node != nil && [node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
         {
             SDWindowController *wc = [[self window] windowController];
             if ([wc isKindOfClass:[SDWindowController class]])
-            {
                 [wc removeNodeFromLayer:node];
-            }
         }
     }
 }
