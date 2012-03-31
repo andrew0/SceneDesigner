@@ -6,6 +6,7 @@
 #import "SDNode.h"
 
 NSString *CCNodeDidReorderChildren = @"CCNodeDidReorderChildren";
+NSString *SDNodeUTI = @"org.cocos2d-iphone.scenedesigner.node";
 
 @implementation SDNode
 

@@ -6,6 +6,7 @@
 #import "cocos2d.h"
 
 extern NSString *CCNodeDidReorderChildren;
+extern NSString *SDNodeUTI;
 
 @protocol SDNodeProtocol <NSObject, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
@@ -450,12 +451,12 @@ do\
 \
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard\
 {\
-    return [NSArray arrayWithObject:@"org.cocos2d-iphone.scenedesigner.node"];\
+    return [NSArray arrayWithObject:SDNodeUTI];\
 }\
 \
 - (id)pasteboardPropertyListForType:(NSString *)type\
 {\
-    if ([type isEqualToString:@"org.cocos2d-iphone.scenedesigner.node"])\
+    if ([type isEqualToString:SDNodeUTI])\
         return [NSKeyedArchiver archivedDataWithRootObject:self];\
     \
     return nil;\
@@ -463,12 +464,12 @@ do\
 \
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard\
 {\
-    return [NSArray arrayWithObject:@"org.cocos2d-iphone.scenedesigner.node"];\
+    return [NSArray arrayWithObject:SDNodeUTI];\
 }\
 \
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard\
 {\
-    if ([type isEqualToString:@"org.cocos2d-iphone.scenedesigner.node"])\
+    if ([type isEqualToString:SDNodeUTI])\
         return NSPasteboardReadingAsKeyedArchive;\
 \
     return 0;\
