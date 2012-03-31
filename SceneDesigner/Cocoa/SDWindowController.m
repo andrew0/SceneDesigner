@@ -525,26 +525,25 @@
 
 - (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification
 {
-    BOOL foundRow = NO;
-    NSUInteger row = 0;
     CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
     
-    // try to find selected node's corresponding outline view item and select it
-    // if it doesn't find anything, deselect everything
-    if (selectedNode != nil)
+    // expand all parents of item
+    CCNode *item = selectedNode;
+    while (item != nil)
     {
-        for (NSUInteger i = 0; i < [_outlineView numberOfRows]; i++)
-        {
-            CCNode<SDNodeProtocol> *node = [_outlineView itemAtRow:i];
-            if (node == selectedNode)
-            {
-                foundRow = YES;
-                row = i;
-            }
-        }
+        CCNode *parent = [item parent];
+        
+        if (![_outlineView isExpandable:parent])
+            break;
+        
+        [_outlineView expandItem:parent];
+        
+        item = parent;
     }
     
-    if (foundRow)
+    // select row
+    NSInteger row = [_outlineView rowForItem:selectedNode];
+    if (row > -1)
         [_outlineView selectRowIndexes:[NSIndexSet indexSetWithIndex:row] byExtendingSelection:NO];
     else
         [_outlineView deselectAll:nil];
