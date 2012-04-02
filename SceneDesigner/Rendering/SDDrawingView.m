@@ -51,6 +51,7 @@
     if (self)
     {
         self.isMouseEnabled = YES;
+        self.isKeyboardEnabled = YES;
     }
     
     return self;
@@ -342,8 +343,8 @@
     if (![um isUndoRegistrationEnabled])
         [um enableUndoRegistration];
     
-	// are we supposed to toggle the visibility?
-	if (_willDeselectNode)
+    // are we supposed to toggle the visibility?
+    if (_willDeselectNode)
         self.selectedNode = nil;
     else if (_selectedNode)
     {
@@ -355,7 +356,141 @@
         }
     }
     
-	return YES;
+    return YES;
+}
+
+- (BOOL)ccKeyDown:(NSEvent *)event
+{
+//    [[[SDUtils sharedUtils] currentUndoManager] beginUndoGrouping];
+    
+    // keycodes available at http://forums.macrumors.com/showpost.php?p=8428116&postcount=2
+    NSUInteger modifiers = [event modifierFlags];
+    unsigned short keyCode = [event keyCode];
+    SDWindowController *wc = [[SDUtils sharedUtils] currentWindowController];
+    
+    // remove node
+    switch (keyCode)
+    {
+        case 0x33: // delete
+        case 0x75: // forward delete
+            [wc removeNodeFromLayer:_selectedNode];
+            break;
+        default:
+            break;
+    }
+    
+    // if option/alt key is pressed....
+    if(modifiers & NSAlternateKeyMask)
+    {
+        // move anchor point
+        CGFloat increment = (modifiers & NSShiftKeyMask) ? 0.1f : 0.01f;
+        CGPoint anchorPoint = [_selectedNode anchorPoint];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                anchorPoint.x -= increment;
+                break;
+            case 0x7C: // right arrow
+                anchorPoint.x += increment;
+                break;
+            case 0x7D: // down arrow
+                anchorPoint.y -= increment;
+                break;
+            case 0x7E: // up arrow
+                anchorPoint.y += increment;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setAnchorPoint:anchorPoint];
+        
+        return YES;
+    }
+    else if (modifiers & NSControlKeyMask)
+    {
+        // rotate node
+        float increment = (modifiers & NSShiftKeyMask) ? 10.0f : 1.0f;
+        float rotation = [_selectedNode rotation];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                rotation -= increment;
+                break;
+            case 0x7C: // right arrow
+                rotation += increment;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setRotation:rotation];
+        
+        return YES;
+    }
+    else if (modifiers & NSCommandKeyMask)
+    {
+        // change z
+        NSInteger zOrder = [_selectedNode zOrder];
+        
+        switch(keyCode)
+        {
+            case 0x1E: // cmd-]
+                zOrder += 1;
+                break;
+            case 0x21: // cmd-[
+                zOrder -= 1;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setZOrder:zOrder];
+    }
+    else
+    {
+        // move position & change z
+        NSInteger increment = (modifiers & NSShiftKeyMask) ? 10 : 1;
+        CGPoint position = [_selectedNode position];
+        NSInteger zOrder = [_selectedNode zOrder];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                position.x -= increment;
+                break;
+            case 0x7C: // right arrow
+                position.x += increment;
+                break;
+            case 0x7D: // down arrow
+                position.y -= increment;
+                break;
+            case 0x7E: // up arrow
+                position.y += increment;
+                break;
+            case 0x74: // page up
+                zOrder += 1;
+                break;
+            case 0x79: // page down
+                zOrder -= 1;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setPosition:position];
+        [_selectedNode setZOrder:zOrder];
+    }
+
+    return YES;
+}
+
+- (BOOL)ccKeyUp:(NSEvent *)event
+{
+//    [[[SDUtils sharedUtils] currentUndoManager] endUndoGrouping];
+    return YES;
 }
 
 - (void)sortAllChildren
