@@ -4,6 +4,7 @@
 //
 
 #import "SDLayer.h"
+#import "CCNode+Additions.h"
 
 @implementation SDLayer
 
@@ -13,87 +14,54 @@
 {
     self = [super init];
     if (self)
-        SDNODE_INIT();
-    
-    return self;
-}
-
-- (void)dealloc
-{
-    SDNODE_DEALLOC();
-    [super dealloc];
-}
-
-- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
-{
-    self = [self init];
-    if (self)
     {
-        self.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
-        self.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
-        self.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
-        self.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
-        self.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
+        [dict setValue:@"" forKey:@"isAccelerometerEnabled"];
+        [dict setValue:@"" forKey:@"isTouchEnabled"];
+        [dict setValue:@"" forKey:@"isMouseEnabled"];
+        [dict setValue:@"" forKey:@"isKeyboardEnabled"];
+        [self registerKeysFromDictionary:dict];
     }
     
     return self;
 }
 
-- (NSDictionary *)_dictionaryRepresentation
++ (Class)representedClass
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
+    return [CCLayer class];
+}
+
++ (id)node
+{
+    CCLayer *retVal = [CCLayer node];
+    retVal.SDNode = [[[self alloc] init] autorelease];
+    [retVal.SDNode setNode:retVal];
+    return retVal;
+}
+
++ (void)setupNode:(CCNode *)node withDictionaryRepresentation:(NSDictionary *)dict
+{
+    [super setupNode:node withDictionaryRepresentation:dict];
+    
+    CCLayer *layer = (CCLayer *)node;
+    [(SDLayer *)layer.SDNode setIsAccelerometerEnabled:[[dict valueForKey:@"isAccelerometerEnabled"] boolValue]];
+    layer.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
+    layer.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
+    layer.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+    layer.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+    CCLayer *layer = (CCLayer *)_node;
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super dictionaryRepresentation]];
     [dict setValue:[NSNumber numberWithBool:[self isAccelerometerEnabled]] forKey:@"isAccelerometerEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isTouchEnabled]] forKey:@"isTouchEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isMouseEnabled]] forKey:@"isMouseEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isKeyboardEnabled]] forKey:@"isKeyboardEnabled"];
+    [dict setValue:[NSNumber numberWithBool:[layer isTouchEnabled]] forKey:@"isTouchEnabled"];
+    [dict setValue:[NSNumber numberWithBool:[layer isMouseEnabled]] forKey:@"isMouseEnabled"];
+    [dict setValue:[NSNumber numberWithBool:[layer isKeyboardEnabled]] forKey:@"isKeyboardEnabled"];
     
-    return [NSDictionary dictionaryWithDictionary:dict];
+    return dict;
 }
-
-- (void)setIsAccelerometerEnabled:(BOOL)isAccelerometerEnabled
-{
-    if (isAccelerometerEnabled != _isAccelerometerEnabled)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsAccelerometerEnabled:_isAccelerometerEnabled];
-        [um setActionName:NSLocalizedString(@"accelerometer toggling", nil)];
-        _isAccelerometerEnabled = isAccelerometerEnabled;
-    }
-}
-
-- (void)setIsTouchEnabled:(BOOL)isTouchEnabled
-{
-    if (isTouchEnabled != isTouchEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsTouchEnabled:isTouchEnabled_];
-        [um setActionName:NSLocalizedString(@"touch toggling", nil)];
-        isTouchEnabled_ = isTouchEnabled;
-    }
-}
-
-- (void)setIsKeyboardEnabled:(BOOL)isKeyboardEnabled
-{
-    if (isKeyboardEnabled != isKeyboardEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsKeyboardEnabled:isKeyboardEnabled_];
-        [um setActionName:NSLocalizedString(@"keyboard toggling", nil)];
-        isKeyboardEnabled_ = isKeyboardEnabled;
-    }
-}
-
-- (void)setIsMouseEnabled:(BOOL)isMouseEnabled
-{
-    if (isMouseEnabled != isMouseEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isMouseEnabled_];
-        [um setActionName:NSLocalizedString(@"mouse toggling", nil)];
-        isMouseEnabled_ = isMouseEnabled;
-    }
-}
-
-SDNODE_FUNC_SRC
 
 @end

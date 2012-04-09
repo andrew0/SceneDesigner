@@ -5,13 +5,11 @@
 
 #import "cocos2d.h"
 
-@protocol SDNodeProtocol;
-
 @interface SDDrawingView : CCLayer
 {
     CCSprite *_background;
     NSArray *_nodesToAddOnEnter;
-    CCNode<SDNodeProtocol> *_selectedNode;
+    CCNode *_selectedNode;
     BOOL _willDragNode;
     BOOL _willDeselectNode;
     CGPoint _initialNodePosition;
@@ -19,13 +17,13 @@
 }
 
 @property (nonatomic, retain) NSArray *nodesToAddOnEnter;
-@property (nonatomic, retain) CCNode<SDNodeProtocol> *selectedNode;
+@property (nonatomic, retain) CCNode *selectedNode;
 @property (nonatomic, assign) CGFloat sceneWidth;
 @property (nonatomic, assign) CGFloat sceneHeight;
 
 + (CCScene *)scene;
 - (CCScene *)scene;
-- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent;
-- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event;
+- (CCNode *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent;
+- (CCNode *)nodeForEvent:(NSEvent *)event;
 
 @end

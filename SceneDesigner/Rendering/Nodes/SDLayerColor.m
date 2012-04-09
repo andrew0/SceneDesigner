@@ -5,104 +5,62 @@
 
 #import "SDLayerColor.h"
 #import "ColorFunctions.h"
+#import "CCNode+Additions.h"
 
 @implementation SDLayerColor
 
-@synthesize isAccelerometerEnabled = _isAccelerometerEnabled;
 @dynamic colorObject;
 
-- (id)initWithColor:(ccColor4B)color width:(GLfloat)w  height:(GLfloat)h
+- (id)init
 {
-    self = [super initWithColor:color width:w height:h];
-    if (self)
-        SDNODE_INIT();
-    
-    return self;
-}
-
-- (void)dealloc
-{
-    SDNODE_DEALLOC();
-    [super dealloc];
-}
-
-- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
-{
-    ccColor3B color = ColorFromNSString([dict valueForKey:@"color"]);
-    GLubyte opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-    self = [self initWithColor:ccc4(color.r, color.g, color.b, opacity) width:0 height:0];
+    self = [super init];
     if (self)
     {
-        self.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
-        self.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
-        self.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
-        self.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
-        self.contentSize = NSSizeToCGSize(NSSizeFromString([dict valueForKey:@"contentSize"]));
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
+        [dict setValue:@"" forKey:@"color"];
+        [dict setValue:@"" forKey:@"opacity"];
+        [self registerKeysFromDictionary:dict];
     }
     
     return self;
 }
 
-- (NSDictionary *)_dictionaryRepresentation
++ (Class)representedClass
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
-    [dict setValue:[NSNumber numberWithBool:[self isAccelerometerEnabled]] forKey:@"isAccelerometerEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isTouchEnabled]] forKey:@"isTouchEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isMouseEnabled]] forKey:@"isMouseEnabled"];
-    [dict setValue:[NSNumber numberWithBool:[self isKeyboardEnabled]] forKey:@"isKeyboardEnabled"];
-    [dict setValue:NSStringFromColor([self color]) forKey:@"color"];
-    [dict setValue:[NSNumber numberWithUnsignedChar:[self opacity]] forKey:@"opacity"];
+    return [CCLayerColor class];
+}
+
++ (id)node
+{
+    CCLayerColor *retVal = [CCLayerColor layerWithColor:ccc4(0, 0, 0, 255) width:0 height:0];
+    retVal.SDNode = [[[self alloc] init] autorelease];
+    [retVal.SDNode setNode:retVal];
+    return retVal;
+}
+
++ (void)setupNode:(CCNode *)node withDictionaryRepresentation:(NSDictionary *)dict
+{
+    [super setupNode:node withDictionaryRepresentation:dict];
     
-    return [NSDictionary dictionaryWithDictionary:dict];
+    CCLayerColor *layer = (CCLayerColor *)node;
+    [layer setColor:ColorFromNSString([dict valueForKey:@"color"])];
+    [layer setOpacity:[[dict valueForKey:@"opacity"] unsignedCharValue]];
 }
 
-- (void)setIsAccelerometerEnabled:(BOOL)isAccelerometerEnabled
+- (NSDictionary *)dictionaryRepresentation
 {
-    if (isAccelerometerEnabled != _isAccelerometerEnabled)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsAccelerometerEnabled:_isAccelerometerEnabled];
-        [um setActionName:NSLocalizedString(@"accelerometer toggling", nil)];
-        _isAccelerometerEnabled = isAccelerometerEnabled;
-    }
-}
-
-- (void)setIsTouchEnabled:(BOOL)isTouchEnabled
-{
-    if (isTouchEnabled != isTouchEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsTouchEnabled:isTouchEnabled_];
-        [um setActionName:NSLocalizedString(@"touch toggling", nil)];
-        isTouchEnabled_ = isTouchEnabled;
-    }
-}
-
-- (void)setIsKeyboardEnabled:(BOOL)isKeyboardEnabled
-{
-    if (isKeyboardEnabled != isKeyboardEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsKeyboardEnabled:isKeyboardEnabled_];
-        [um setActionName:NSLocalizedString(@"keyboard toggling", nil)];
-        isKeyboardEnabled_ = isKeyboardEnabled;
-    }
-}
-
-- (void)setIsMouseEnabled:(BOOL)isMouseEnabled
-{
-    if (isMouseEnabled != isMouseEnabled_)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isMouseEnabled_];
-        [um setActionName:NSLocalizedString(@"mouse toggling", nil)];
-        isMouseEnabled_ = isMouseEnabled;
-    }
+    CCLayerColor *layer = (CCLayerColor *)_node;
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super dictionaryRepresentation]];
+    [dict setValue:NSStringFromColor([layer color]) forKey:@"color"];
+    [dict setValue:[NSNumber numberWithUnsignedChar:[layer opacity]] forKey:@"opacity"];
+    
+    return dict;
 }
 
 - (NSColor *)colorObject
 {
-    ccColor3B color = self.color;
+    ccColor3B color = [(CCLayerColor *)_node color];
     return [NSColor colorWithDeviceRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
 }
 
@@ -117,35 +75,21 @@
 		g = [color greenComponent] * 255;
 		b = [color blueComponent] * 255;
         
-        [self setColor:ccc3(r, g, b)];
+        [(CCLayerColor *)_node setColor:ccc3(r, g, b)];
     }
 }
 
-- (void)setColor:(ccColor3B)color
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
-    if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    if ([key isEqualToString:@"colroObject"])
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
-        [um setActionName:NSLocalizedString(@"color adjustment", nil)];
-        
-        [self willChangeValueForKey:@"colorObject"];
-        [super setColor:color];
-        [self didChangeValueForKey:@"colorObject"];
+        NSSet *affectingKeys = [NSSet setWithObject:@"color"];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
+    
+    return keyPaths;
 }
-
-- (void)setOpacity:(GLubyte)opacity
-{
-    if (opacity != [self opacity])
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
-        [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
-        [super setOpacity:opacity];
-    }
-}
-
-SDNODE_FUNC_SRC
 
 @end

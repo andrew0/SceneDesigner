@@ -1,5 +1,6 @@
-version 0.2.0 ??-Apr-2012
+version ??.??.?? ??-Apr-2012
  * [NEW] added keyboard shortcuts
+ * overhauled SDNodes. now all nodes are normal CCNodes, but they have an SDNode attached as a userObject.
  
 version 0.1.0 01-Apr-2012
  * First stable release

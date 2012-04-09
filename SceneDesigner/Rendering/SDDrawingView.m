@@ -13,7 +13,7 @@
 
 @interface SDDrawingView ()
 - (BOOL)willSnap;
-- (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node;
+- (NSArray *)snapPointsForNode:(CCNode *)node;
 @end
 
 @implementation SDDrawingView
@@ -105,14 +105,14 @@
     [super dealloc];
 }
 
-- (void)setSelectedNode:(CCNode<SDNodeProtocol> *)selectedNode
+- (void)setSelectedNode:(CCNode *)selectedNode
 {
     if (selectedNode != _selectedNode)
     {
-        [_selectedNode setIsSelected:NO];
+//        [_selectedNode setIsSelected:NO];
         [_selectedNode release];
         _selectedNode = [selectedNode retain];
-        [_selectedNode setIsSelected:YES];
+//        [_selectedNode setIsSelected:YES];
     }
 }
 
@@ -175,13 +175,13 @@
     return [[CCDirector sharedDirector] winSize].height;
 }
 
-- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent
+- (CCNode *)nodeForEvent:(NSEvent *)event withParent:(CCNode *)parent
 {
-    for (CCNode<SDNodeProtocol> *child in [[[parent children] getNSArray] reverseObjectEnumerator])
+    for (CCNode *child in [[[parent children] getNSArray] reverseObjectEnumerator])
     {
-        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
+        if ([child isKindOfClass:[CCNode class]] && [child isSDNode])
         {
-            CCNode<SDNodeProtocol> *grandchild = [self nodeForEvent:event withParent:child];
+            CCNode *grandchild = [self nodeForEvent:event withParent:child];
             if (grandchild != nil)
                 return grandchild;
             else if ([child isEventInRect:event])
@@ -192,17 +192,17 @@
     return nil;
 }
 
-- (CCNode<SDNodeProtocol> *)nodeForEvent:(NSEvent *)event
+- (CCNode *)nodeForEvent:(NSEvent *)event
 {
     return [self nodeForEvent:event withParent:self];
 }
 
-- (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node
+- (NSArray *)snapPointsForNode:(CCNode *)node
 {
-    NSMutableArray *array = [NSMutableArray arrayWithArray:[node snapPoints]];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:[node.SDNode snapPoints]];
     
-    for (CCNode<SDNodeProtocol> *child in [node children])
-        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
+    for (CCNode *child in [node children])
+        if ([child isKindOfClass:[CCNode class]] && [child isSDNode])
             [array addObjectsFromArray:[self snapPointsForNode:child]];
     
     return array;
@@ -228,12 +228,12 @@
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     // don't create undo event for every reposition while dragging, just one at end
-    [[[SDUtils sharedUtils] currentUndoManager] disableUndoRegistration];
+    [[[SDUtils sharedUtils] currentUndoManager] beginUndoGrouping];
     
     _willDragNode = NO;
     _willDeselectNode = NO;
     
-    CCNode<SDNodeProtocol> *node = [self nodeForEvent:event];
+    CCNode *node = [self nodeForEvent:event];
     if (node)
     {
         // if new node is clicked, select it
@@ -280,10 +280,10 @@
             {
                 // snap to other nodes in 
                 NSMutableArray *points = [NSMutableArray array];
-                for (CCNode<SDNodeProtocol> *child in [self children])
-                    if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
+                for (CCNode *child in [self children])
+                    if ([child isKindOfClass:[CCNode class]] && [child isSDNode])
                         [points addObjectsFromArray:[self snapPointsForNode:child]];
-                [points removeObjectsInArray:[_selectedNode snapPoints]];
+                [points removeObjectsInArray:[_selectedNode.SDNode snapPoints]];
                 
                 // add snap points for canvas
                 CGSize s = [[CCDirector sharedDirector] winSize];
@@ -340,21 +340,21 @@
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
     NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-    if (![um isUndoRegistrationEnabled])
-        [um enableUndoRegistration];
+//    if (![um isUndoRegistrationEnabled])
+        [um endUndoGrouping];
     
     // are we supposed to toggle the visibility?
     if (_willDeselectNode)
         self.selectedNode = nil;
-    else if (_selectedNode)
-    {
-        if (!CGPointEqualToPoint(_selectedNode.position, _initialNodePosition))
-        {
-            // make undo event
-            [[um prepareWithInvocationTarget:_selectedNode] setPosition:_initialNodePosition];
-            [um setActionName:NSLocalizedString(@"repositioning", nil)];
-        }
-    }
+//    else if (_selectedNode)
+//    {
+//        if (!CGPointEqualToPoint(_selectedNode.position, _initialNodePosition))
+//        {
+//            // make undo event
+//            [[um prepareWithInvocationTarget:_selectedNode] setPosition:_initialNodePosition];
+//            [um setActionName:NSLocalizedString(@"repositioning", nil)];
+//        }
+//    }
     
     return YES;
 }

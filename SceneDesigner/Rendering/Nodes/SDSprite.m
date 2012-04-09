@@ -5,6 +5,7 @@
 
 #import "SDSprite.h"
 #import "ColorFunctions.h"
+#import "CCNode+Additions.h"
 
 @implementation SDSprite
 
@@ -15,134 +16,140 @@
 @dynamic textureRectHeight;
 @dynamic colorObject;
 
-- (void)dealloc
+- (id)init
 {
-    SDNODE_DEALLOC();
-    self.path = nil;
-    [super dealloc];
-}
-
-- (id)initWithFile:(NSString *)filename rect:(CGRect)rect
-{
-    self = [super initWithFile:filename rect:rect];
+    self = [super init];
     if (self)
     {
-        SDNODE_INIT();
-        self.path = filename;
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:5];
+        [dict setValue:@"" forKey:@"flipX"];
+        [dict setValue:@"" forKey:@"flipY"];
+        [dict setValue:@"" forKey:@"opacity"];
+        [dict setValue:@"" forKey:@"color"];
+        [dict setValue:@"" forKey:@"textureRect"];
+        [self registerKeysFromDictionary:dict];
     }
     
     return self;
 }
 
-- (id)initWithFile:(NSString*)filename
++ (Class)representedClass
 {
-    self = [super initWithFile:filename];
-    if (self)
-    {
-        SDNODE_INIT();
-        self.path = filename;
-    }
-    
-    return self;
+    return [CCSprite class];
 }
 
-- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
++ (CCSprite *)spriteWithFile:(NSString *)filename
 {
-    NSString *path = [dict valueForKey:@"path"];
-    if (path == nil || ![[NSFileManager defaultManager] fileExistsAtPath:path])
-        return nil;
-    
-    self = [self initWithFile:path];
-    if (self)
-    {
-        self.path = [dict valueForKey:@"path"];    
-        self.textureRect = NSRectToCGRect(NSRectFromString([dict valueForKey:@"textureRect"]));
-        self.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-        self.color = ColorFromNSString([dict valueForKey:@"color"]);
-        self.flipX = [[dict valueForKey:@"flipX"] boolValue];
-        self.flipY = [[dict valueForKey:@"flipY"] boolValue];
-    }
-    
-    return self;
+    CCSprite *retVal = [CCSprite spriteWithFile:filename];
+    retVal.SDNode = [[[self alloc] init] autorelease];
+    [retVal.SDNode setNode:retVal];
+    [(SDSprite *)retVal.SDNode setPath:filename];
+    return retVal;
 }
 
-- (NSDictionary *)_dictionaryRepresentation
++ (id)node
 {
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
+    return [self spriteWithFile:@"no_image.png"];
+}
+
++ (void)setupNode:(CCNode *)node withDictionaryRepresentation:(NSDictionary *)dict
+{
+    [super setupNode:node withDictionaryRepresentation:dict];
     
+    CCSprite *sprite = (CCSprite *)node;
+    sprite.texture = [[CCTextureCache sharedTextureCache] addImage:[dict valueForKey:@"path"]];
+    [(SDSprite *)sprite.SDNode setPath:[dict valueForKey:@"path"]];
+    sprite.textureRect = NSRectToCGRect(NSRectFromString([dict valueForKey:@"textureRect"]));
+    sprite.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
+    sprite.color = ColorFromNSString([dict valueForKey:@"color"]);
+    sprite.flipX = [[dict valueForKey:@"flipX"] boolValue];
+    sprite.flipY = [[dict valueForKey:@"flipY"] boolValue];
+}
+
+- (NSDictionary *)dictionaryRepresentation
+{
+    CCSprite *sprite = (CCSprite *)_node;
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super dictionaryRepresentation]];
     [dict setValue:self.path forKey:@"path"];
-    [dict setValue:NSStringFromRect(NSRectFromCGRect(self.textureRect)) forKey:@"textureRect"];
-    [dict setValue:[NSNumber numberWithUnsignedChar:self.opacity] forKey:@"opacity"];
-    [dict setValue:NSStringFromColor(self.color) forKey:@"color"];
-    [dict setValue:[NSNumber numberWithBool:self.flipX] forKey:@"flipX"];
-    [dict setValue:[NSNumber numberWithBool:self.flipY] forKey:@"flipY"];
+    [dict setValue:NSStringFromRect(NSRectFromCGRect(sprite.textureRect)) forKey:@"textureRect"];
+    [dict setValue:[NSNumber numberWithUnsignedChar:sprite.opacity] forKey:@"opacity"];
+    [dict setValue:NSStringFromColor(sprite.color) forKey:@"color"];
+    [dict setValue:[NSNumber numberWithBool:sprite.flipX] forKey:@"flipX"];
+    [dict setValue:[NSNumber numberWithBool:sprite.flipY] forKey:@"flipY"];
     
     return dict;
 }
 
+- (void)dealloc
+{
+    self.path = nil;
+    [super dealloc];
+}
+
 - (CGFloat)textureRectX
 {
-    return self.textureRect.origin.x;
+    return [(CCSprite *)_node textureRect].origin.x;
 }
 
 - (void)setTextureRectX:(CGFloat)textureRectX
 {
-    if (textureRectX != self.textureRect.origin.x)
+    if (textureRectX != [self textureRectX])
     {
-        CGRect rect = self.textureRect;
+        CGRect rect = [(CCSprite *)_node textureRect];
         rect.origin.x = textureRectX;
-        self.textureRect = rect;
+        [(CCSprite *)_node setTextureRect:rect];
     }
 }
 
 - (CGFloat)textureRectY
 {
-    return self.textureRect.origin.y;
+    return [(CCSprite *)_node textureRect].origin.y;
 }
 
 - (void)setTextureRectY:(CGFloat)textureRectY
 {
-    if (textureRectY != self.textureRect.origin.y)
+    if (textureRectY != [self textureRectY])
     {
-        CGRect rect = self.textureRect;
+        CGRect rect = [(CCSprite *)_node textureRect];
         rect.origin.y = textureRectY;
-        self.textureRect = rect;
+        [(CCSprite *)_node setTextureRect:rect];
     }
 }
 
 - (CGFloat)textureRectWidth
 {
-    return self.textureRect.size.width;
+    return [(CCSprite *)_node textureRect].size.width;
 }
 
 - (void)setTextureRectWidth:(CGFloat)textureRectWidth
 {
-    if (textureRectWidth != self.textureRect.size.width)
+    if (textureRectWidth != [self textureRectWidth])
     {
-        CGRect rect = self.textureRect;
+        CGRect rect = [(CCSprite *)_node textureRect];
         rect.size.width = textureRectWidth;
-        self.textureRect = rect;
+        [(CCSprite *)_node setTextureRect:rect];
     }
 }
 
 - (CGFloat)textureRectHeight
 {
-    return self.textureRect.size.height;
+    return [(CCSprite *)_node textureRect].size.height;
 }
 
 - (void)setTextureRectHeight:(CGFloat)textureRectHeight
 {
-    if (textureRectHeight != self.textureRect.size.height)
+    if (textureRectHeight != [self textureRectHeight])
     {
-        CGRect rect = self.textureRect;
+        CGRect rect = [(CCSprite *)_node textureRect];
         rect.size.height = textureRectHeight;
-        self.textureRect = rect;
+        [(CCSprite *)_node setTextureRect:rect];
     }
 }
 
 - (NSColor *)colorObject
 {
-    ccColor3B color = self.color;
+    ccColor3B color = [(CCSprite *)_node color];
     return [NSColor colorWithDeviceRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
 }
 
@@ -157,77 +164,21 @@
 		g = [color greenComponent] * 255;
 		b = [color blueComponent] * 255;
         
-        [self setColor:ccc3(r, g, b)];
+        [(CCSprite *)_node setColor:ccc3(r, g, b)];
     }
 }
 
-- (void)setColor:(ccColor3B)color
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
-    if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    
+    if ([key isEqualToString:@"textureRectX"] || [key isEqualToString:@"textureRectY"] || [key isEqualToString:@"textureRectWidth"] || [key isEqualToString:@"textureRectHeight"])
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCSprite *)[um prepareWithInvocationTarget:self] setColor:[self color]];
-        [um setActionName:NSLocalizedString(@"color adjustment", nil)];
-        
-        [self willChangeValueForKey:@"colorObject"];
-        [super setColor:color];
-        [self didChangeValueForKey:@"colorObject"];
+        NSSet *affectingKeys = [NSSet setWithObject:@"textureRect"];
+        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
     }
+    
+    return keyPaths;
 }
-
-- (void)setFlipX:(BOOL)fx
-{
-    if ([self flipX] != fx)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCSprite *)[um prepareWithInvocationTarget:self] setFlipX:[self flipX]];
-        [um setActionName:NSLocalizedString(@"flip X axis", nil)];
-        [super setFlipX:fx];
-    }
-}
-
-- (void)setFlipY:(BOOL)fy
-{
-    if ([self flipY] != fy)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCSprite *)[um prepareWithInvocationTarget:self] setFlipY:[self flipY]];
-        [um setActionName:NSLocalizedString(@"flip Y axis", nil)];
-        [super setFlipY:fy];
-    }
-}
-
-- (void)setOpacity:(GLubyte)opacity
-{
-    if ([self opacity] != opacity)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCSprite *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
-        [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
-        [super setOpacity:opacity];
-    }
-}
-
-- (void)setTextureRect:(CGRect)rect
-{
-    if (!CGRectEqualToRect([self textureRect], rect))
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setTextureRect:[self textureRect]];
-        [um setActionName:NSLocalizedString(@"texture rect adjustment", nil)];
-        
-        [self willChangeValueForKey:@"textureRectX"];
-        [self willChangeValueForKey:@"textureRectX"];
-        [self willChangeValueForKey:@"textureRectWidth"];
-        [self willChangeValueForKey:@"textureRectHeight"];
-        [super setTextureRect:rect];
-        [self didChangeValueForKey:@"textureRectX"];
-        [self didChangeValueForKey:@"textureRectY"];
-        [self didChangeValueForKey:@"textureRectWidth"];
-        [self didChangeValueForKey:@"textureRectHeight"];
-    }
-}
-
-SDNODE_FUNC_SRC
 
 @end

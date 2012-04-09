@@ -145,6 +145,7 @@
 		49A77D0B151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */; };
 		49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */; };
 		49A77D0F151ACBFB00014AB6 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0E151ACBFB00014AB6 /* Credits.rtf */; };
+		49B6801C15315728008D17AA /* no_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B6801B15315727008D17AA /* no_image.png */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
 		49D8F166151AD57F004A945B /* TLAnimatingOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */; };
 		49D8F167151AD57F004A945B /* TLCollapsibleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15E151AD57F004A945B /* TLCollapsibleView.m */; };
@@ -435,6 +436,7 @@
 		49A77D06151AC9DA00014AB6 /* LICENSE_TLAnimatingOutlineView.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_TLAnimatingOutlineView.txt; sourceTree = SOURCE_ROOT; };
 		49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_JSONKit.txt; sourceTree = SOURCE_ROOT; };
 		49A77D0E151ACBFB00014AB6 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = SOURCE_ROOT; };
+		49B6801B15315727008D17AA /* no_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_image.png; path = Resources/no_image.png; sourceTree = "<group>"; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
 		49D8F15B151AD57F004A945B /* TLAnimatingOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLAnimatingOutlineView.h; sourceTree = "<group>"; };
 		49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLAnimatingOutlineView.m; sourceTree = "<group>"; };
@@ -876,6 +878,7 @@
 		497D927914DDD736007D337F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49B6801B15315727008D17AA /* no_image.png */,
 				49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */,
 				497D943A14DDDBDF007D337F /* anchor.png */,
 				497D943B14DDDBDF007D337F /* arial.fnt */,
@@ -1120,6 +1123,7 @@
 				49795193151D8EFE00CD18B4 /* CMakeLists.txt in Resources */,
 				497951AA151D8FF200CD18B4 /* CHANGELOG.md in Resources */,
 				497951AC151D8FF200CD18B4 /* README.md in Resources */,
+				49B6801C15315728008D17AA /* no_image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

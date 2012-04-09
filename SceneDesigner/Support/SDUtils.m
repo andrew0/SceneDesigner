@@ -8,6 +8,7 @@
 #import "SDNode.h"
 #import "SDDrawingView.h"
 #import "SDWindowController.h"
+#import "CCNode+Additions.h"
 
 @implementation SDUtils
 
@@ -90,10 +91,10 @@
 - (NSArray *)allNamesOfChildrenOfNode:(CCNode *)node
 {
     NSMutableArray *array = [NSMutableArray array];
-    for (CCNode<SDNodeProtocol> *child in [node children])
+    for (CCNode *child in [node children])
     {
-        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)] && [child name] != nil && ![[child name] isEqualToString:@""])
-            [array addObject:[child name]];
+        if ([child isKindOfClass:[CCNode class]] && [child isSDNode] && [(SDNode *)child.SDNode name] != nil && ![[(SDNode *)child.SDNode name] isEqualToString:@""])
+            [array addObject:[(SDNode *)child.SDNode name]];
         
         if ([[child children] count] > 0)
             [array addObjectsFromArray:[self allNamesOfChildrenOfNode:child]];

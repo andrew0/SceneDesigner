@@ -20,6 +20,7 @@
 #import "NSThread+Blocks.h"
 #import "SDOutlineViewDataSource.h"
 #import "SDOutlineView.h"
+#import "CCNode+Additions.h"
 
 @implementation SDWindowController
 
@@ -33,7 +34,7 @@
     {
         document = (SDDocument *)[self document];
         [document addObserver:self forKeyPath:@"drawingView.selectedNode" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
-        [document addObserver:self forKeyPath:@"drawingView.selectedNode.name" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
+        [document addObserver:self forKeyPath:@"drawingView.selectedNode.SDNode.name" options:(NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld) context:NULL];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadOutlineView) name:CCNodeDidReorderChildren object:nil];
@@ -93,7 +94,7 @@
 
 - (IBAction)delete:(id)sender
 {
-    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    CCNode *selectedNode = [[[self document] drawingView] selectedNode];
     if (selectedNode)
         [self removeNodeFromLayer:selectedNode];
     else
@@ -102,10 +103,10 @@
 
 - (IBAction)copy:(id)sender
 {
-    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    CCNode *selectedNode = [[[self document] drawingView] selectedNode];
     if (selectedNode != nil)
     {
-        NSArray *objects = [NSArray arrayWithObject:selectedNode];
+        NSArray *objects = [NSArray arrayWithObject:selectedNode.SDNode];
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard clearContents];
         [pasteboard writeObjects:objects];
@@ -114,7 +115,7 @@
 
 - (IBAction)cut:(id)sender
 {
-    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    CCNode *selectedNode = [[[self document] drawingView] selectedNode];
     if (selectedNode != nil)
     {
         [self copy:sender];
@@ -129,12 +130,13 @@
     NSArray *objects = [pasteboard readObjectsForClasses:classes options:nil];
     
     [[[self document] undoManager] beginUndoGrouping];
-    for (CCNode<SDNodeProtocol> *node in objects)
+    for (SDNode *node in objects)
     {
-        if ([node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+        if ([node isKindOfClass:[SDNode class]])
         {
             CCNode *parent = [[[self document] drawingView] selectedNode];
-            [self addNodeToLayer:node parent:parent];
+            [self addNodeToLayer:node.node parent:parent];
+            [node.node release];
         }
     }
     [[[self document] undoManager] endUndoGrouping];
@@ -152,7 +154,7 @@
     
     if ([[item title] isEqualToString:@"CCNode"])
     {
-        SDNode *node = [SDNode node];
+        CCNode *node = [SDNode node];
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:node parent:parent];
     }
@@ -177,7 +179,9 @@
                 {
                     CCNode *parent = [[[self document] drawingView] selectedNode];
                     NSString *path = [[urls objectAtIndex:0] path];
-                    SDLabelBMFont *label = [SDLabelBMFont labelWithString:@"Text" fntFile:path];
+                    CCLabelBMFont *label = [SDLabelBMFont node];
+                    label.string = @"Text";
+                    label.fntFile = path;
                     [self addNodeToLayer:label parent:parent];
                 }
             }
@@ -207,7 +211,7 @@
                 for (NSURL *url in urls)
                 {
                     NSString *path = [url path];
-                    SDSprite *sprite = [SDSprite spriteWithFile:path];
+                    CCSprite *sprite = [SDSprite spriteWithFile:path];
                     [self addNodeToLayer:sprite parent:parent];
                 }
                 [[[self document] undoManager] endUndoGrouping];
@@ -216,7 +220,7 @@
     }
     else if ([[item title] isEqualToString:@"CCLayer"])
     {
-        SDLayer *layer = [SDLayer node];
+        CCLayer *layer = [SDLayer node];
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:layer parent:parent];
     }
@@ -225,7 +229,8 @@
         // little bit of a hack - for some reason when the CCLayerColor is added, it doesn't
         // show color until it is resized. to remedy this, we just make a 0x0 layer and resize
         // it to be the size of the OpenGL view
-        SDLayerColor *layer = [SDLayerColor layerWithColor:ccc4(0, 0, 0, 255) width:0 height:0];
+        CCLayerColor *layer = [SDLayerColor node];
+        [layer setColor:ccBLACK];
         CCNode *parent = [[[self document] drawingView] selectedNode];
         [self addNodeToLayer:layer parent:parent];
         [layer setContentSize:[[CCDirector sharedDirector] winSize]];
@@ -235,12 +240,12 @@
 - (IBAction)removeNode:(id)sender
 {
     SDDrawingView *layer = [(SDDocument *)[self document] drawingView];
-    CCNode<SDNodeProtocol> *node = [layer selectedNode];
+    CCNode *node = [layer selectedNode];
     if (layer && node)
         [self removeNodeFromLayer:node];
 }
 
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent
+- (void)addNodeToLayer:(CCNode *)node parent:(CCNode *)parent
 {
     if (!node)
         return;
@@ -262,12 +267,12 @@
     [self reloadOutlineView];
 }
 
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node
+- (void)addNodeToLayer:(CCNode *)node
 {
     [self addNodeToLayer:node parent:nil];
 }
 
-- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node
+- (void)removeNodeFromLayer:(CCNode *)node
 {
     if (!node)
         return;
@@ -279,6 +284,9 @@
         [[node parent] removeChild:node cleanup:YES];
         [self reloadOutlineView];
     }];
+    
+    if ([[[self document] drawingView] selectedNode] == node)
+        [[[self document] drawingView] setSelectedNode:nil];
 }
 
 - (IBAction)selectFntFile:(id)sender
@@ -301,7 +309,7 @@
                 SDDocument *document = [self document];
                 if ([document isKindOfClass:[SDDocument class]])
                 {
-                    SDLabelBMFont *node = (SDLabelBMFont *)[[document drawingView] selectedNode];
+                    CCLabelBMFont *node = (CCLabelBMFont *)[[document drawingView] selectedNode];
                     if ([node isKindOfClass:[SDLabelBMFont class]])
                         node.fntFile = [url path];
                 }
@@ -320,7 +328,7 @@
     if ([[self document] isKindOfClass:[SDDocument class]])
     {
         [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode"];
-        [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode.name"];
+        [[self document] removeObserver:self forKeyPath:@"drawingView.selectedNode.SDNode.name"];
     }
     
     SceneDesignerAppDelegate *delegate = [NSApp delegate];
@@ -346,7 +354,7 @@
     // make sure this is performed on main thread, since AppKit objects can only be modified on main thread,
     // and the selecting/deselecting of nodes modifies the animating outline view
     [[NSThread mainThread] performBlock:^{
-        CCNode<SDNodeProtocol> *newNode = [[[self document] drawingView] selectedNode];
+        CCNode *newNode = [[[self document] drawingView] selectedNode];
         if ([keyPath isEqualToString:@"drawingView.selectedNode"])
         {
             
@@ -359,10 +367,10 @@
             [subviews release];
             
             // if there's a new node, set the appropriate view
-            if (newNode && [newNode isKindOfClass:[CCNode class]] && [newNode conformsToProtocol:@protocol(SDNodeProtocol)])
+            if (newNode && [newNode isKindOfClass:[CCNode class]] && [newNode isSDNode])
             {
                 // set the object controller selection to the new node
-                [_objectController setContent:newNode];
+                [_objectController setContent:newNode.SDNode];
                 
                 {
                     TLCollapsibleView *view = [_animatingOutlineView addView:_generalProperties withImage:nil label:@"General Properties" expanded:YES];
@@ -413,7 +421,7 @@
                 [self synchronizeOutlineViewWithSelection:nil];
             _ignoreNewSelection = NO;
         }
-        else if ([keyPath isEqualToString:@"drawingView.selectedNode.name"])
+        else if ([keyPath isEqualToString:@"drawingView.selectedNode.SDNode.name"])
         {
             // change in z order = change in order for outline view, so outline view must be reloaded
             [self reloadOutlineView];
@@ -525,8 +533,8 @@
     // selection, which will call outlineViewDidChange: again, etc.
     _ignoreNewSelection = YES;
     
-    CCNode<SDNodeProtocol> *node = [_outlineView itemAtRow:[_outlineView selectedRow]];
-    if (node && [node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+    CCNode *node = [_outlineView itemAtRow:[_outlineView selectedRow]];
+    if (node && [node isKindOfClass:[CCNode class]] && [node isSDNode])
         [[[self document] drawingView] setSelectedNode:node];
     else
         [[[self document] drawingView] setSelectedNode:nil];
@@ -534,7 +542,7 @@
 
 - (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification
 {
-    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    CCNode *selectedNode = [[[self document] drawingView] selectedNode];
     
     // expand all parents of item
     CCNode *item = selectedNode;

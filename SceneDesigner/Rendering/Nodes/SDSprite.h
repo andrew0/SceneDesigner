@@ -6,10 +6,9 @@
 #import "cocos2d.h"
 #import "SDNode.h"
 
-@interface SDSprite : CCSprite <SDNodeProtocol>
+@interface SDSprite : SDNode
 {
     NSString *_path;
-    SDNODE_IVARS
 }
 
 @property (nonatomic, copy) NSString *path;
@@ -17,6 +16,8 @@
 @property (nonatomic, readwrite) CGFloat textureRectY;
 @property (nonatomic, readwrite) CGFloat textureRectWidth;
 @property (nonatomic, readwrite) CGFloat textureRectHeight;
-@property (nonatomic, assign, readwrite) NSColor *colorObject;
+@property (nonatomic, assign) NSColor *colorObject;
+
++ (CCSprite *)spriteWithFile:(NSString *)filename;
 
 @end

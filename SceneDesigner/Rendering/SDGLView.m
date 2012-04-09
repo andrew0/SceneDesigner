@@ -84,7 +84,7 @@
             SDWindowController *wc = [[SDUtils sharedUtils] currentWindowController];
             CCNode *parent = [[[[SDUtils sharedUtils] currentDocument] drawingView] selectedNode];
             
-            SDSprite *sprite = [SDSprite spriteWithFile:path];
+            CCSprite *sprite = [SDSprite spriteWithFile:path];
             sprite.position = NSPointToCGPoint(point);
             [wc addNodeToLayer:sprite parent:parent];
         }

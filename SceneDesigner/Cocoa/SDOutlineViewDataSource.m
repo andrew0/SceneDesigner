@@ -9,6 +9,7 @@
 #import "SDNode.h"
 #import "cocos2d.h"
 #import "SDOutlineView.h"
+#import "CCNode+Additions.h"
 
 @implementation SDOutlineViewDataSource
 
@@ -23,7 +24,7 @@
     
     // remove all nodes that are not SDNodes
     for (id child in children)
-        if (![child isKindOfClass:[CCNode class]] || ![child conformsToProtocol:@protocol(SDNodeProtocol)])
+        if (![child isKindOfClass:[CCNode class]] || ![child isSDNode])
             [retVal removeObject:child];
     
     // reverse the array
@@ -58,7 +59,7 @@
     if (!item)
         return [[self drawingViewChildren] count];
     
-    if (![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+    if (![item isKindOfClass:[CCNode class]] || ![item isSDNode])
         return 0;
     
     return [[self childrenOfNode:item] count];
@@ -73,7 +74,7 @@
         return ([rootChildren count] > index) ? [rootChildren objectAtIndex:index] : nil;
     }
     
-    if (![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+    if (![item isKindOfClass:[CCNode class]] || ![item isSDNode])
         return nil;
     
     CCArray *childrenOfItem = [self childrenOfNode:item];
@@ -82,7 +83,7 @@
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView isItemExpandable:(id)item
 {
-    if (!item || ![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
+    if (!item || ![item isKindOfClass:[CCNode class]] || ![item isSDNode])
         return NO;
     
     return [[self childrenOfNode:item] count] > 0;
@@ -90,12 +91,12 @@
 
 - (id)outlineView:(NSOutlineView *)outlineView objectValueForTableColumn:(NSTableColumn *)tableColumn byItem:(id)item
 {
-    if (!item || ![item isKindOfClass:[CCNode class]] || ![item conformsToProtocol:@protocol(SDNodeProtocol)])
-        return nil;
+    if (!item || ![item isKindOfClass:[CCNode class]] || ![item isSDNode])
+        return @"fail";
     
     // get class name and append name if applicable
-    NSMutableString *string = [NSMutableString stringWithString:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[item class]])];
-    NSString *name = [(CCNode<SDNodeProtocol> *)item name];
+    NSMutableString *string = [NSMutableString stringWithString:NSStringFromClass([item class])];
+    NSString *name = [[item SDNode] name];
     if (name != nil && ![name isEqualToString:@""])
     {
         [string appendString:@" - "];

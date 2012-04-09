@@ -9,6 +9,7 @@
 #import "SDNode.h"
 #import "AppDelegate.h"
 #import "JSONKit.h"
+#import "CCNode+Additions.h"
 
 @implementation SDDocument
 
@@ -48,7 +49,7 @@
         {
             SDWindowController *wc = (SDWindowController *)[[self windowControllers] objectAtIndex:0];
             
-            for (CCNode<SDNodeProtocol> *node in _nodesToAdd)
+            for (CCNode *node in _nodesToAdd)
                 [wc addNodeToLayer:node];
         }
         else
@@ -93,9 +94,9 @@
 {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[[_drawingView children] count]];
     
-    for (CCNode<SDNodeProtocol> *child in [_drawingView children])
-        if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])
-            [array addObject:[child dictionaryRepresentation]];
+    for (CCNode *child in [_drawingView children])
+        if ([child isSDNode])
+            [array addObject:[[child SDNode] dictionaryRepresentation]];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:2];
     [dict setValue:NSStringFromSize(NSMakeSize([_drawingView sceneWidth], [_drawingView sceneHeight])) forKey:@"sceneSize"];
@@ -152,9 +153,9 @@
     for (NSDictionary *child in children)
     {
         Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child objectForKey:@"className"])];
-        if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
+        if (childClass && [childClass isSubclassOfClass:[SDNode class]])
         {
-            CCNode<SDNodeProtocol> *node = [[[childClass alloc] initWithDictionaryRepresentation:child] autorelease];
+            CCNode *node = [childClass nodeWithDictionaryRepresentation:child];
             [_nodesToAdd addObject:node];
         }
     }

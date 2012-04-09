@@ -3964,15 +3964,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.posY</string>
+						<string key="label">value: selection.positionY</string>
 						<reference key="source" ref="357444136"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="357444136"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.posY</string>
+							<string key="NSLabel">value: selection.positionY</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.posY</string>
+							<string key="NSKeyPath">selection.positionY</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -3980,15 +3980,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.posY</string>
+						<string key="label">value: selection.positionY</string>
 						<reference key="source" ref="1043443698"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1043443698"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.posY</string>
+							<string key="NSLabel">value: selection.positionY</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.posY</string>
+							<string key="NSKeyPath">selection.positionY</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -4004,15 +4004,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.posX</string>
+						<string key="label">value: selection.positionX</string>
 						<reference key="source" ref="1010765309"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1010765309"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.posX</string>
+							<string key="NSLabel">value: selection.positionX</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.posX</string>
+							<string key="NSKeyPath">selection.positionX</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -4045,15 +4045,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.posX</string>
+						<string key="label">value: selection.positionX</string>
 						<reference key="source" ref="703166345"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="703166345"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.posX</string>
+							<string key="NSLabel">value: selection.positionX</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.posX</string>
+							<string key="NSKeyPath">selection.positionX</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -4061,15 +4061,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.anchorY</string>
+						<string key="label">value: selection.anchorPointY</string>
 						<reference key="source" ref="1063773196"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1063773196"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.anchorY</string>
+							<string key="NSLabel">value: selection.anchorPointY</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.anchorY</string>
+							<string key="NSKeyPath">selection.anchorPointY</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -4077,15 +4077,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.anchorX</string>
+						<string key="label">value: selection.anchorPointX</string>
 						<reference key="source" ref="338480664"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="338480664"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.anchorX</string>
+							<string key="NSLabel">value: selection.anchorPointX</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.anchorX</string>
+							<string key="NSKeyPath">selection.anchorPointX</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -4093,15 +4093,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.anchorX</string>
+						<string key="label">value: selection.anchorPointX</string>
 						<reference key="source" ref="1046536422"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1046536422"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.anchorX</string>
+							<string key="NSLabel">value: selection.anchorPointX</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.anchorX</string>
+							<string key="NSKeyPath">selection.anchorPointX</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -4134,15 +4134,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.anchorY</string>
+						<string key="label">value: selection.anchorPointY</string>
 						<reference key="source" ref="974119553"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="974119553"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.anchorY</string>
+							<string key="NSLabel">value: selection.anchorPointY</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.anchorY</string>
+							<string key="NSKeyPath">selection.anchorPointY</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -4289,15 +4289,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.contentHeight</string>
+						<string key="label">value: selection.contentSizeHeight</string>
 						<reference key="source" ref="932090585"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="932090585"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.contentHeight</string>
+							<string key="NSLabel">value: selection.contentSizeHeight</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.contentHeight</string>
+							<string key="NSKeyPath">selection.contentSizeHeight</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>
@@ -4305,15 +4305,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.contentHeight</string>
+						<string key="label">value: selection.contentSizeHeight</string>
 						<reference key="source" ref="1054149436"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="1054149436"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.contentHeight</string>
+							<string key="NSLabel">value: selection.contentSizeHeight</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.contentHeight</string>
+							<string key="NSKeyPath">selection.contentSizeHeight</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -4346,15 +4346,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.contentWidth</string>
+						<string key="label">value: selection.contentSizeWidth</string>
 						<reference key="source" ref="34082996"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="34082996"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.contentWidth</string>
+							<string key="NSLabel">value: selection.contentSizeWidth</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.contentWidth</string>
+							<string key="NSKeyPath">selection.contentSizeWidth</string>
 							<object class="NSDictionary" key="NSOptions">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSArray" key="dict.sortedKeys">
@@ -4387,15 +4387,15 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: selection.contentWidth</string>
+						<string key="label">value: selection.contentSizeWidth</string>
 						<reference key="source" ref="921978459"/>
 						<reference key="destination" ref="850139978"/>
 						<object class="NSNibBindingConnector" key="connector">
 							<reference key="NSSource" ref="921978459"/>
 							<reference key="NSDestination" ref="850139978"/>
-							<string key="NSLabel">value: selection.contentWidth</string>
+							<string key="NSLabel">value: selection.contentSizeWidth</string>
 							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">selection.contentWidth</string>
+							<string key="NSKeyPath">selection.contentSizeWidth</string>
 							<int key="NSNibBindingConnectorVersion">2</int>
 						</object>
 					</object>

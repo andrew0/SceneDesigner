@@ -9,7 +9,6 @@
 @class TLAnimatingOutlineView;
 @class TLCollapsibleView;
 @class CCNode;
-@protocol SDNodeProtocol;
 
 @interface SDWindowController : NSWindowController <NSSplitViewDelegate, TLAnimatingOutlineViewDelegate, NSWindowDelegate, NSOutlineViewDelegate>
 {
@@ -38,9 +37,9 @@
 - (void)reloadOutlineView;
 - (IBAction)addNode:(id)sender;
 - (IBAction)removeNode:(id)sender;
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node parent:(CCNode *)parent;
-- (void)addNodeToLayer:(CCNode<SDNodeProtocol> *)node;
-- (void)removeNodeFromLayer:(CCNode<SDNodeProtocol> *)node;
+- (void)addNodeToLayer:(CCNode *)node parent:(CCNode *)parent;
+- (void)addNodeToLayer:(CCNode *)node;
+- (void)removeNodeFromLayer:(CCNode *)node;
 - (void)configureView:(TLCollapsibleView *)view;
 - (IBAction)selectFntFile:(id)sender;
 - (void)synchronizeOutlineViewWithSelection:(NSNotification *)notification;

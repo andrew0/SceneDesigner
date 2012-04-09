@@ -5,68 +5,68 @@
 
 #import "SDLabelBMFont.h"
 #import "ColorFunctions.h"
+#import "CCNode+Additions.h"
 
 @implementation SDLabelBMFont
 
 @dynamic colorObject;
 
-- (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment imageOffset:(CGPoint)offset
+- (id)init
 {
-    self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment imageOffset:offset];
+    self = [super init];
     if (self)
-        SDNODE_INIT();
+    {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
+        [dict setValue:@"" forKey:@"string"];
+        [dict setValue:@"" forKey:@"fntFile"];
+        [dict setValue:@"" forKey:@"color"];
+        [dict setValue:@"" forKey:@"opacity"];
+        [self registerKeysFromDictionary:dict];
+    }
     
     return self;
 }
 
-- (void)dealloc
++ (Class)representedClass
 {
-    SDNODE_DEALLOC();
-    [super dealloc];
+    return [CCLabelBMFont class];
 }
 
-- (id)initWithString:(NSString*)theString fntFile:(NSString*)fntFile width:(float)width alignment:(CCTextAlignment)alignment
++ (id)node
 {
-    self = [super initWithString:theString fntFile:fntFile width:width alignment:alignment];
-    return self;
+    CCLabelBMFont *retVal = [CCLabelBMFont labelWithString:nil fntFile:nil];
+    retVal.SDNode = [[[self alloc] init] autorelease];
+    [retVal.SDNode setNode:retVal];
+    return retVal;
 }
 
-- (void)setOpacity:(GLubyte)opacity
++ (void)setupNode:(CCNode *)node withDictionaryRepresentation:(NSDictionary *)dict
 {
-    if ([self opacity] != opacity)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCLabelBMFont *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
-        [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
-        [super setOpacity:opacity];
-    }
+    [super setupNode:node withDictionaryRepresentation:dict];
+    
+    CCLabelBMFont *label = (CCLabelBMFont *)node;
+    [label setString:[dict valueForKey:@"string"]];
+    [label setFntFile:[dict valueForKey:@"fntFile"]];
+    [label setColor:ColorFromNSString([dict valueForKey:@"color"])];
+    [label setOpacity:[[dict valueForKey:@"opacity"] unsignedCharValue]];
 }
 
-- (void)setString:(NSString *)label
+- (NSDictionary *)dictionaryRepresentation
 {
-    if (![label isEqualToString:[self string]])
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setString:[self string]];
-        [um setActionName:NSLocalizedString(@"label string adjustment", nil)];
-        [super setString:label];
-    }
-}
-
-- (void)setFntFile:(NSString *)fntFile
-{
-    if (![[self fntFile] isEqualToString:fntFile])
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [[um prepareWithInvocationTarget:self] setFntFile:[self fntFile]];
-        [um setActionName:NSLocalizedString(@"label font adjustment", nil)];
-        [super setFntFile:fntFile];
-    }
+    CCLabelBMFont *label = (CCLabelBMFont *)_node;
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[super dictionaryRepresentation]];
+    [dict setValue:[label string] forKey:@"string"];
+    [dict setValue:[label fntFile] forKey:@"fntFile"];
+    [dict setValue:NSStringFromColor([label color]) forKey:@"color"];
+    [dict setValue:[NSNumber numberWithUnsignedChar:[label opacity]] forKey:@"opacity"];
+    
+    return dict;
 }
 
 - (NSColor *)colorObject
 {
-    ccColor3B color = self.color;
+    ccColor3B color = [(CCLabelBMFont *)_node color];
     return [NSColor colorWithDeviceRed:color.r/255.0f green:color.g/255.0f blue:color.b/255.0f alpha:1.0f];
 }
 
@@ -81,48 +81,8 @@
 		g = [color greenComponent] * 255;
 		b = [color blueComponent] * 255;
         
-        [self setColor:ccc3(r, g, b)];
+        [(CCLabelBMFont *)_node setColor:ccc3(r, g, b)];
     }
 }
-
-- (void)setColor:(ccColor3B)color
-{
-    if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
-    {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
-        [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
-        [um setActionName:NSLocalizedString(@"color adjustment", nil)];
-        
-        [self willChangeValueForKey:@"colorObject"];
-        [super setColor:color];
-        [self didChangeValueForKey:@"colorObject"];
-    }
-}
-
-- (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
-{
-    self = [self initWithString:[dict valueForKey:@"string"] fntFile:[dict valueForKey:@"fntFile"]];
-    if (self)
-    {
-        self.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-        self.color = ColorFromNSString([dict valueForKey:@"color"]);
-    }
-    
-    return self;
-}
-
-- (NSDictionary *)_dictionaryRepresentation
-{
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
-    
-    [dict setValue:[self fntFile] forKey:@"fntFile"];
-    [dict setValue:[self string] forKey:@"string"];
-    [dict setValue:[NSNumber numberWithUnsignedChar:self.opacity] forKey:@"opacity"];
-    [dict setValue:NSStringFromColor(self.color) forKey:@"color"];
-    
-    return [dict autorelease];
-}
-
-SDNODE_FUNC_SRC
 
 @end

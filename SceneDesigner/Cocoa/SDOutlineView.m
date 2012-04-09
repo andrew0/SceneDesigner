@@ -6,6 +6,7 @@
 #import "SDOutlineView.h"
 #import "SDOutlineViewDataSource.h"
 #import "SDWindowController.h"
+#import "CCNode+Additions.h"
 
 NSString *NSOutlineViewWillReloadDataNotification = @"NSOutlineViewWillReloadDataNotification";
 NSString *NSOutlineViewDidReloadDataNotification = @"NSOutlineViewDidReloadDataNotification";
@@ -29,8 +30,8 @@ NSString *NSOutlineViewDidReloadDataNotification = @"NSOutlineViewDidReloadDataN
         firstCharacter == NSBackspaceCharacter)
     {
         NSInteger row = [self selectedRow];
-        CCNode<SDNodeProtocol> *node = [self itemAtRow:row];
-        if (node != nil && [node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+        CCNode *node = [self itemAtRow:row];
+        if (node != nil && [node isKindOfClass:[CCNode class]] && [node isSDNode])
         {
             SDWindowController *wc = [[self window] windowController];
             if ([wc isKindOfClass:[SDWindowController class]])
