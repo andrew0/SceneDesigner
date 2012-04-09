@@ -170,13 +170,12 @@
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    NSMutableSet *keyPaths = [NSMutableSet setWithSet:[super keyPathsForValuesAffectingValueForKey:key]];
     
     if ([key isEqualToString:@"textureRectX"] || [key isEqualToString:@"textureRectY"] || [key isEqualToString:@"textureRectWidth"] || [key isEqualToString:@"textureRectHeight"])
-    {
-        NSSet *affectingKeys = [NSSet setWithObject:@"textureRect"];
-        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
-    }
+        [keyPaths addObject:@"textureRect"];
+    else if ([key isEqualToString:@"colorObject"])
+        [keyPaths addObject:@"color"];
     
     return keyPaths;
 }

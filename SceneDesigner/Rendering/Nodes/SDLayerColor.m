@@ -81,13 +81,10 @@
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    NSMutableSet *keyPaths = [NSMutableSet setWithSet:[super keyPathsForValuesAffectingValueForKey:key]];
     
-    if ([key isEqualToString:@"colroObject"])
-    {
-        NSSet *affectingKeys = [NSSet setWithObject:@"color"];
-        keyPaths = [keyPaths setByAddingObjectsFromSet:affectingKeys];
-    }
+    if ([key isEqualToString:@"colorObject"])
+        [keyPaths addObject:@"color"];
     
     return keyPaths;
 }

@@ -85,4 +85,14 @@
     }
 }
 
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSMutableSet *keyPaths = [NSMutableSet setWithSet:[super keyPathsForValuesAffectingValueForKey:key]];
+    
+    if ([key isEqualToString:@"colorObject"])
+        [keyPaths addObject:@"color"];
+    
+    return keyPaths;
+}
+
 @end
