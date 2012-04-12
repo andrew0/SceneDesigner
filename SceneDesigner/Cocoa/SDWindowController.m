@@ -180,8 +180,8 @@
                     CCNode *parent = [[[self document] drawingView] selectedNode];
                     NSString *path = [[urls objectAtIndex:0] path];
                     CCLabelBMFont *label = [SDLabelBMFont node];
-                    label.string = @"Text";
                     label.fntFile = path;
+                    label.string = @"Text";
                     [self addNodeToLayer:label parent:parent];
                 }
             }
