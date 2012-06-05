@@ -13,6 +13,7 @@
     [_itemIdentifiers release];
     [_toolbarItems release];
     [_itemViews release];
+    [super dealloc];
 }
 
 - (void)addItems
