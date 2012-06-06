@@ -5,6 +5,7 @@
 
 #import "cocos2d.h"
 
+@class SDSelectionLayer;
 @protocol SDNodeProtocol;
 
 @interface SDDrawingView : CCLayer
@@ -16,6 +17,7 @@
     BOOL _willDeselectNode;
     CGPoint _initialNodePosition;
     CGPoint _initialMouseLocation;
+    SDSelectionLayer *_selectionLayer;
 }
 
 @property (nonatomic, retain) NSArray *nodesToAddOnEnter;

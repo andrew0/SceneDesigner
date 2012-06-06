@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4950278E157EC28200DD9457 /* SDSelectionLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 4950278D157EC28200DD9457 /* SDSelectionLayer.m */; };
+		49502792157EC36C00DD9457 /* resize_handle.png in Resources */ = {isa = PBXBuildFile; fileRef = 49502790157EC36C00DD9457 /* resize_handle.png */; };
+		49502793157EC36C00DD9457 /* rotate_handle.png in Resources */ = {isa = PBXBuildFile; fileRef = 49502791157EC36C00DD9457 /* rotate_handle.png */; };
 		49795119151D8ED100CD18B4 /* CCAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979505B151D8ED100CD18B4 /* CCAction.m */; };
 		4979511A151D8ED100CD18B4 /* CCActionCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979505D151D8ED100CD18B4 /* CCActionCamera.m */; };
 		4979511B151D8ED100CD18B4 /* CCActionCatmullRom.m in Sources */ = {isa = PBXBuildFile; fileRef = 4979505F151D8ED100CD18B4 /* CCActionCatmullRom.m */; };
@@ -174,6 +177,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4950278C157EC28200DD9457 /* SDSelectionLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSelectionLayer.h; path = Rendering/SDSelectionLayer.h; sourceTree = "<group>"; };
+		4950278D157EC28200DD9457 /* SDSelectionLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDSelectionLayer.m; path = Rendering/SDSelectionLayer.m; sourceTree = "<group>"; };
+		49502790157EC36C00DD9457 /* resize_handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = resize_handle.png; path = Resources/resize_handle.png; sourceTree = "<group>"; };
+		49502791157EC36C00DD9457 /* rotate_handle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rotate_handle.png; path = Resources/rotate_handle.png; sourceTree = "<group>"; };
 		4979505A151D8ED100CD18B4 /* CCAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCAction.h; sourceTree = "<group>"; };
 		4979505B151D8ED100CD18B4 /* CCAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCAction.m; sourceTree = "<group>"; };
 		4979505C151D8ED100CD18B4 /* CCActionCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionCamera.h; sourceTree = "<group>"; };
@@ -876,6 +883,8 @@
 		497D927914DDD736007D337F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49502790157EC36C00DD9457 /* resize_handle.png */,
+				49502791157EC36C00DD9457 /* rotate_handle.png */,
 				49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */,
 				497D943A14DDDBDF007D337F /* anchor.png */,
 				497D943B14DDDBDF007D337F /* arial.fnt */,
@@ -991,6 +1000,8 @@
 				49D8F18E151AD8A7004A945B /* SDDrawingView.m */,
 				49D8F18F151AD8A7004A945B /* SDGLView.h */,
 				49D8F190151AD8A7004A945B /* SDGLView.m */,
+				4950278C157EC28200DD9457 /* SDSelectionLayer.h */,
+				4950278D157EC28200DD9457 /* SDSelectionLayer.m */,
 			);
 			name = Rendering;
 			sourceTree = "<group>";
@@ -1120,6 +1131,8 @@
 				49795193151D8EFE00CD18B4 /* CMakeLists.txt in Resources */,
 				497951AA151D8FF200CD18B4 /* CHANGELOG.md in Resources */,
 				497951AC151D8FF200CD18B4 /* README.md in Resources */,
+				49502792157EC36C00DD9457 /* resize_handle.png in Resources */,
+				49502793157EC36C00DD9457 /* rotate_handle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1250,6 +1263,7 @@
 				4979519E151D8EFE00CD18B4 /* vec3.c in Sources */,
 				4979519F151D8EFE00CD18B4 /* vec4.c in Sources */,
 				497951AB151D8FF200CD18B4 /* JSONKit.m in Sources */,
+				4950278E157EC28200DD9457 /* SDSelectionLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

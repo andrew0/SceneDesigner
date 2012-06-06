@@ -37,6 +37,12 @@
         [defaults setValue:[NSNumber numberWithBool:YES] forKey:@"snapToEdges"];
     }
     
+    if (![[defaults valueForKey:@"nonIntegerPositions"] isEqualTo:[NSNumber numberWithBool:YES]] &&
+        ![[defaults valueForKey:@"nonIntegerPositions"] isEqualTo:[NSNumber numberWithBool:NO]])
+    {
+        [defaults setValue:[NSNumber numberWithBool:NO] forKey:@"nonIntegerPositions"];
+    }
+    
     [defaults synchronize];
 }
 

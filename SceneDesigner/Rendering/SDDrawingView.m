@@ -10,6 +10,7 @@
 #import "CCNode+Additions.h"
 #import "SDWindowController.h"
 #import "NSThread+Blocks.h"
+#import "SDSelectionLayer.h"
 
 @interface SDDrawingView ()
 - (BOOL)willSnap;
@@ -59,6 +60,12 @@
 - (void)onEnter
 {
     [super onEnter];
+    
+    if (_selectionLayer == nil)
+    {
+        _selectionLayer = [SDSelectionLayer node];
+        [self addChild:_selectionLayer];
+    }
     
     if (_background == nil)
     {
@@ -112,6 +119,8 @@
         [_selectedNode release];
         _selectedNode = [selectedNode retain];
         [_selectedNode setIsSelected:YES];
+        
+        [_selectionLayer updateForSelection:_selectedNode];
     }
 }
 

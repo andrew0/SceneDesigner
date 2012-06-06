@@ -64,6 +64,12 @@ do\
 \
 - (void)setPosition:(CGPoint)pos\
 {\
+    if ( [[[NSUserDefaults standardUserDefaults] valueForKey:@"nonIntegerPositions"] isEqualTo:[NSNumber numberWithBool:NO]] )\
+    {\
+        pos.x = floorf(pos.x);\
+        pos.y = floorf(pos.y);\
+    }\
+\
     if (!CGPointEqualToPoint([self position], pos))\
     {\
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
