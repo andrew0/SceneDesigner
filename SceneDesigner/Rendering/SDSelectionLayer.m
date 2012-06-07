@@ -199,6 +199,25 @@ enum
     }
 }
 
+- (void)draw
+{
+    if ([self visible])
+    {
+        ccDrawColor4B(255.0f, 255.0f, 255.0f, 255.0f);
+        
+        CGPoint vertices[] = {
+            [_bl position],
+            [_tl position],
+            [_tr position],
+            [_br position]
+        };
+        
+        ccDrawPoly(vertices, 4, YES);
+    }
+    
+    [super draw];
+}
+
 - (void)updateForSelection:(CCNode *)node
 {
     if (_trackingAreas == nil)
@@ -286,6 +305,8 @@ enum
         [view addTrackingArea:rmArea]; [_trackingAreas addObject:rmArea];
         [view addTrackingArea:rotateArea]; [_trackingAreas addObject:rotateArea];
     }
+    
+    self.isMouseEnabled = (node != nil);
 }
 
 - (BOOL)ccMouseDown:(NSEvent *)event

@@ -322,26 +322,6 @@ do\
         [[NSNotificationCenter defaultCenter] postNotificationName:CCNodeDidReorderChildren object:self];\
 }\
 \
-- (void)draw\
-{\
-    [super draw];\
-\
-    if (_isSelected)\
-    {\
-        CGSize s = contentSize_;\
-        ccDrawColor4B(255.0f, 255.0f, 255.0f, 255.0f);\
-\
-        CGPoint vertices[] = {\
-            ccp(0, s.height),\
-            ccp(s.width, s.height),\
-            ccp(s.width, 0),\
-            ccp(0, 0)\
-        };\
-\
-        ccDrawPoly(vertices, 4, YES);\
-    }\
-}\
-\
 - (NSArray *)snapPoints\
 {\
     if (floorf([self rotation]) != [self rotation] || (int)floorf([self rotation]) % 360 != 0 || [self scaleX] != 1 || [self scaleY] != 1 || ![self visible])\
