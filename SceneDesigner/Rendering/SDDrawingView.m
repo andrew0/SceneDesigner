@@ -64,7 +64,7 @@
     if (_selectionLayer == nil)
     {
         _selectionLayer = [SDSelectionLayer node];
-        [self addChild:_selectionLayer];
+        [self addChild:_selectionLayer z:NSIntegerMax];
     }
     
     if (_background == nil)
