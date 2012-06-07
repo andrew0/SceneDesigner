@@ -9,9 +9,14 @@
 
 - (BOOL)isEventInRect:(NSEvent *)event
 {
-	CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
+    return [self isEventInRect:event insetX:0 insetY:0];
+}
+
+- (BOOL)isEventInRect:(NSEvent *)event insetX:(CGFloat)x insetY:(CGFloat)y
+{
+    CGPoint location = [[CCDirector sharedDirector] convertEventToGL:event];
 	CGPoint local = [self convertToNodeSpace:location];
-	CGRect r = CGRectMake(0, 0, contentSize_.width, contentSize_.height);
+	CGRect r = CGRectInset(CGRectMake(0, 0, contentSize_.width, contentSize_.height), x, y);
 	return CGRectContainsPoint(r, local);
 }
 

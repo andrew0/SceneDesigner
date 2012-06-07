@@ -17,14 +17,19 @@
     CCSprite *_rm; ///< Right middle resize handle
     CCSprite *_rotate; ///< Rotation handle
     
-    CCNode *_trackedNode; ///< Node to track for mouse movement
-    CGPoint _initialMousePosition; ///< Initial position of mouse (in GL coordinates)
     CGPoint _initialPosition; ///< Initial position of selected node
     float _initialScaleX; ///< Initial scale X of selected node
     float _initialScaleY; ///< Initial scale X of selected node
     BOOL _isDragging;
+    
+    NSCursor *_rotatedCounterclockwiseCursor;
+    NSCursor *_rotatedClockwiseCursor;
+    
+    NSMutableArray *_trackingAreas;
+    NSInteger _currentTag; ///< Tag of current corner
 }
 
 - (void)updateForSelection:(CCNode *)node;
+- (void)updateCursor;
 
 @end

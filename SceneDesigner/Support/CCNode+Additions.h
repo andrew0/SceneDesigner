@@ -8,5 +8,6 @@
 @interface CCNode (Additions)
 
 - (BOOL)isEventInRect:(NSEvent *)event;
+- (BOOL)isEventInRect:(NSEvent *)event insetX:(CGFloat)x insetY:(CGFloat)y;
 
 @end
