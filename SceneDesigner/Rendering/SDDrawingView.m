@@ -318,7 +318,7 @@
                     CGPoint transformedSnapPoint2 = CGPointApplyAffineTransform(snapPoint2, t);
                     
                     // subtract anchor point if necessary
-                    if ([_selectedNode isRelativeAnchorPoint])
+                    if (![_selectedNode ignoreAnchorPointForPosition])
                     {
                         transformedSnapPoint1 = ccpSub(transformedSnapPoint1, [_selectedNode anchorPointInPoints]);
                         transformedSnapPoint2 = ccpSub(transformedSnapPoint2, [_selectedNode anchorPointInPoints]);

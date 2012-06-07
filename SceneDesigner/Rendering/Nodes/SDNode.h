@@ -193,14 +193,14 @@ do\
     }\
 }\
 \
-- (void)setIsRelativeAnchorPoint:(BOOL)relative\
+- (void)setIgnoreAnchorPointForPosition:(BOOL)relative\
 {\
-    if ([self isRelativeAnchorPoint] != relative)\
+    if ([self ignoreAnchorPointForPosition] != relative)\
     {\
         NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
-        [[um prepareWithInvocationTarget:self] setIsRelativeAnchorPoint:[self isRelativeAnchorPoint]];\
-        [um setActionName:NSLocalizedString(@"relative anchor point adjustment", nil)];\
-        [super setIsRelativeAnchorPoint:relative];\
+        [[um prepareWithInvocationTarget:self] setIgnoreAnchorPointForPosition:[self ignoreAnchorPointForPosition]];\
+        [um setActionName:NSLocalizedString(@"ignore anchor point adjustment", nil)];\
+        [super setIgnoreAnchorPointForPosition:relative];\
     }\
 }\
 \
@@ -392,7 +392,7 @@ do\
     [dict setValue:[NSNumber numberWithFloat:self.rotation] forKey:@"rotation"];\
     [dict setValue:[NSNumber numberWithInteger:self.tag] forKey:@"tag"];\
     [dict setValue:[NSNumber numberWithBool:self.visible] forKey:@"visible"];\
-    [dict setValue:[NSNumber numberWithBool:self.isRelativeAnchorPoint] forKey:@"isRelativeAnchorPoint"];\
+    [dict setValue:[NSNumber numberWithBool:self.ignoreAnchorPointForPosition] forKey:@"ignoreAnchorPointForPosition"];\
 \
     NSMutableArray *children = [NSMutableArray array];\
     if ([[self children] count] > 0)\
@@ -422,7 +422,7 @@ do\
         self.rotation = [[dict valueForKey:@"rotation"] floatValue];\
         self.tag = [[dict valueForKey:@"tag"] integerValue];\
         self.visible = [[dict valueForKey:@"visible"] boolValue];\
-        self.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];\
+        self.ignoreAnchorPointForPosition = [[dict valueForKey:@"ignoreAnchorPointForPosition"] boolValue];\
         self.zOrder = [[dict valueForKey:@"zOrder"] integerValue];\
 \
         NSArray *children = [dict objectForKey:@"children"];\
