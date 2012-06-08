@@ -6,6 +6,7 @@
 #import "SDSelectionLayer.h"
 #import "CCNode+Additions.h"
 #import "SDDrawingView.h"
+#import "SDDocumentController.h"
 
 enum
 {
@@ -338,6 +339,8 @@ enum
     _initialScaleX = [selectedNode scaleX];
     _initialScaleY = [selectedNode scaleY];
     
+    [[[[SDDocumentController sharedDocumentController] currentDocument] undoManager] beginUndoGrouping];
+    
     return YES;
 }
 
@@ -401,6 +404,8 @@ enum
 {
     if (!_isDragging)
         return NO;
+    
+    [[[[SDDocumentController sharedDocumentController] currentDocument] undoManager] endUndoGrouping];
     
     _isDragging = NO;
     
