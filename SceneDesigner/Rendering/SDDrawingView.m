@@ -230,7 +230,7 @@
     
     // if node rotation is divisible by 360 (i.e. not rotated), then allow snapping
     // (TEMP) disable snapping for scaled nodes until fixed
-    return ((int)floorf([_selectedNode rotation]) % 360 == 0) && ([_selectedNode scaleX] == 1 && [_selectedNode scaleY] == 1);
+    return ((int)floorf([_selectedNode rotation]) % 360 == 0); //&& ([_selectedNode scaleX] == 1 && [_selectedNode scaleY] == 1);
 }
 
 - (BOOL)ccMouseDown:(NSEvent *)event
@@ -310,25 +310,28 @@
                     float sx = [_selectedNode scaleX];
                     float sy = [_selectedNode scaleY];
                     CGPoint snapPoint1 = [_selectedNode convertToWorldSpace:ccp(0,0)];
-                    CGPoint snapPoint2 = [_selectedNode convertToWorldSpace:ccp(contentSize.width*sx,contentSize.height*sy)];
+                    CGPoint snapPoint2 = [_selectedNode convertToWorldSpace:ccp(contentSize.width,contentSize.height)];
                     
                     // transform points into node space
                     CGAffineTransform t = [_selectedNode parentToNodeTransform];
                     CGPoint transformedSnapPoint1 = CGPointApplyAffineTransform(snapPoint1, t);
-                    CGPoint transformedSnapPoint2 = CGPointApplyAffineTransform(snapPoint2, t);
+                    CGPoint transformedSnapPoint2 = CGPointApplyAffineTransform([_selectedNode convertToWorldSpace:ccp(contentSize.width*sx,contentSize.height*sy)], t);
                     
                     // subtract anchor point if necessary
                     if (![_selectedNode ignoreAnchorPointForPosition])
                     {
-                        transformedSnapPoint1 = ccpSub(transformedSnapPoint1, [_selectedNode anchorPointInPoints]);
-                        transformedSnapPoint2 = ccpSub(transformedSnapPoint2, [_selectedNode anchorPointInPoints]);
+                        CGPoint anchorPointInPoints = [_selectedNode anchorPointInPoints];
+                        anchorPointInPoints.x *= sx;
+                        anchorPointInPoints.y *= sy;
+                        transformedSnapPoint1 = ccpSub(transformedSnapPoint1, anchorPointInPoints);
+                        transformedSnapPoint2 = ccpSub(transformedSnapPoint2, anchorPointInPoints);
                     }
                     
                     // apply snapping
                     if (abs(snapPoint1.x - point.x) <= kSnapDistance)
-                        newPos.x = point.x - transformedSnapPoint1.x;
+                        newPos.x = (point.x - transformedSnapPoint1.x);
                     if (abs(snapPoint1.y - point.y) <= kSnapDistance)
-                        newPos.y = point.y - transformedSnapPoint1.y;
+                        newPos.y = (point.y - transformedSnapPoint1.y);
                     
                     if (abs(snapPoint2.x - point.x) <= kSnapDistance)
                         newPos.x = point.x - transformedSnapPoint2.x;

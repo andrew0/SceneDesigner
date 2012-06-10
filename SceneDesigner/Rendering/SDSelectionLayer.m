@@ -22,10 +22,6 @@ enum
     kRotateTag
 };
 
-@interface NSImage (Rotate)
-
-@end
-
 @implementation NSImage (Rotate)
 
 - (NSImage *)rotateImage:(float)rotation
@@ -40,7 +36,7 @@ enum
     
     [t translateXBy:center.x yBy:center.y];
     [t rotateByDegrees:rotation];
-    [t translateXBy:-center.y yBy:-center.x];
+    [t translateXBy:-center.x yBy:-center.y];
     [t concat];
     
     [self drawAtPoint:NSZeroPoint fromRect:rect operation:NSCompositeDestinationOver fraction:1.0f];
