@@ -12,6 +12,28 @@
 #import "NSThread+Blocks.h"
 #import "SDSelectionLayer.h"
 
+@implementation CCNode (TotalScale)
+
+- (float)totalScaleX
+{
+    float sx = scaleX_;
+	for (CCNode *p = parent_; p != nil; p = p.parent)
+        sx *= p.scaleX;
+    
+    return sx;
+}
+
+- (float)totalScaleY
+{
+    float sy = scaleY_;
+	for (CCNode *p = parent_; p != nil; p = p.parent)
+        sy *= p.scaleY;
+    
+    return sy;
+}
+
+@end
+
 @interface SDDrawingView ()
 - (BOOL)willSnap;
 - (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node;
@@ -52,6 +74,7 @@
     if (self)
     {
         self.isMouseEnabled = YES;
+        self.isKeyboardEnabled = YES;
     }
     
     return self;
@@ -307,8 +330,8 @@
                     
                     // get snap points (i.e. points on node that will can snap to another node)
                     CGSize contentSize = [_selectedNode contentSize];
-                    float sx = [_selectedNode scaleX];
-                    float sy = [_selectedNode scaleY];
+                    float sx = [_selectedNode totalScaleX];
+                    float sy = [_selectedNode totalScaleY];
                     CGPoint snapPoint1 = [_selectedNode convertToWorldSpace:ccp(0,0)];
                     CGPoint snapPoint2 = [_selectedNode convertToWorldSpace:ccp(contentSize.width,contentSize.height)];
                     
@@ -368,6 +391,140 @@
     }
     
 	return YES;
+}
+
+- (BOOL)ccKeyDown:(NSEvent *)event
+{
+//    [[[SDUtils sharedUtils] currentUndoManager] beginUndoGrouping];
+    
+    // keycodes available at http://forums.macrumors.com/showpost.php?p=8428116&postcount=2
+    NSUInteger modifiers = [event modifierFlags];
+    unsigned short keyCode = [event keyCode];
+    SDWindowController *wc = [[SDUtils sharedUtils] currentWindowController];
+    
+    // remove node
+    switch (keyCode)
+    {
+        case 0x33: // delete
+        case 0x75: // forward delete
+            [wc removeNodeFromLayer:_selectedNode];
+            break;
+        default:
+            break;
+    }
+    
+    // if option/alt key is pressed....
+    if (modifiers & NSAlternateKeyMask)
+    {
+        // move anchor point
+        CGFloat increment = (modifiers & NSShiftKeyMask) ? 0.1f : 0.01f;
+        CGPoint anchorPoint = [_selectedNode anchorPoint];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                anchorPoint.x -= increment;
+                break;
+            case 0x7C: // right arrow
+                anchorPoint.x += increment;
+                break;
+            case 0x7D: // down arrow
+                anchorPoint.y -= increment;
+                break;
+            case 0x7E: // up arrow
+                anchorPoint.y += increment;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setAnchorPoint:anchorPoint];
+        
+        return YES;
+    }
+    else if (modifiers & NSControlKeyMask)
+    {
+        // rotate node
+        float increment = (modifiers & NSShiftKeyMask) ? 10.0f : 1.0f;
+        float rotation = [_selectedNode rotation];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                rotation -= increment;
+                break;
+            case 0x7C: // right arrow
+                rotation += increment;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setRotation:rotation];
+        
+        return YES;
+    }
+    else if (modifiers & NSCommandKeyMask)
+    {
+        // change z
+        NSInteger zOrder = [_selectedNode zOrder];
+        
+        switch(keyCode)
+        {
+            case 0x1E: // cmd-]
+                zOrder += 1;
+                break;
+            case 0x21: // cmd-[
+                zOrder -= 1;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setZOrder:zOrder];
+    }
+    else
+    {
+        // move position & change z
+        NSInteger increment = (modifiers & NSShiftKeyMask) ? 10 : 1;
+        CGPoint position = [_selectedNode position];
+        NSInteger zOrder = [_selectedNode zOrder];
+        
+        switch(keyCode)
+        {
+            case 0x7B: // left arrow
+                position.x -= increment;
+                break;
+            case 0x7C: // right arrow
+                position.x += increment;
+                break;
+            case 0x7D: // down arrow
+                position.y -= increment;
+                break;
+            case 0x7E: // up arrow
+                position.y += increment;
+                break;
+            case 0x74: // page up
+                zOrder += 1;
+                break;
+            case 0x79: // page down
+                zOrder -= 1;
+                break;
+            default:
+                return YES;
+        }
+        
+        [_selectedNode setPosition:position];
+        [_selectedNode setZOrder:zOrder];
+    }
+    
+    return YES;
+}
+
+- (BOOL)ccKeyUp:(NSEvent *)event
+{
+//    [[[SDUtils sharedUtils] currentUndoManager] endUndoGrouping];
+    return YES;
 }
 
 - (void)sortAllChildren

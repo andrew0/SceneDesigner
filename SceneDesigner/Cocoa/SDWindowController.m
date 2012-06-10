@@ -134,6 +134,15 @@
 #pragma mark -
 #pragma mark Add/Remove Nodes
 
+- (IBAction)delete:(id)sender
+{
+    CCNode<SDNodeProtocol> *selectedNode = [[[self document] drawingView] selectedNode];
+    if (selectedNode)
+        [self removeNodeFromLayer:selectedNode];
+    else
+        NSBeep();
+}
+
 - (IBAction)addNode:(id)sender
 {
     if (![sender isKindOfClass:[NSMenuItem class]])
