@@ -13,12 +13,15 @@
 @implementation SDDocument
 
 @synthesize drawingView = _drawingView;
+@dynamic allResourceNames;
 
 - (id)init
 {
     self = [super init];
     if (self)
+    {
         _sceneSizeToSet = NSMakeSize(-1, -1);
+    }
     
     return self;
 }
@@ -89,7 +92,7 @@
 	return [NSString stringWithString:displayName];
 }
 
-- (NSData *)dataOfType:(NSString *)typeName error:(NSError **)outError
+- (NSDictionary *)dictionaryRepresentation
 {
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[[_drawingView children] count]];
     
@@ -101,26 +104,102 @@
     [dict setValue:NSStringFromSize(NSMakeSize([_drawingView sceneWidth], [_drawingView sceneHeight])) forKey:@"sceneSize"];
     [dict setValue:array forKey:@"children"];
     
-    // json
-    if ([typeName isEqualToString:@"JSON"])
-        return [dict JSONData];
-    
-    // plist
-    return [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:NULL];
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-- (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError
+- (NSArray *)allResourceNames
 {
-    SceneDesignerAppDelegate *delegate = (SceneDesignerAppDelegate *)[NSApp delegate];
-    if ([[CCDirector sharedDirector] runningScene] == nil)
-        [delegate startCocos2D];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[self dictionaryRepresentation]];
+    NSDictionary *resources = [self dataFromDictionaryRepresentation:dict];
+    return [resources allKeys];
+}
+
+- (NSDictionary *)dataFromDictionaryRepresentation:(NSDictionary *)dict
+{
+    NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+    id data = [dict objectForKey:@"data"];
+    id key = [dict objectForKey:@"path"];
     
-    // get dictionary from json/plist file
-    NSDictionary *dict;
+    if (data && key && [data isKindOfClass:[NSData class]] && [key isKindOfClass:[NSString class]])
+        [ret setObject:data forKey:[key lastPathComponent]];
+    
+    NSArray *children = [dict objectForKey:@"children"];
+    if (children)
+    {
+        for (NSDictionary *child in children)
+        {
+            NSDictionary *childData = [self dataFromDictionaryRepresentation:child];
+            for (NSString *k in [childData allKeys])
+                if (![ret objectForKey:k])
+                    [ret setObject:[childData objectForKey:k] forKey:k];
+        }
+    }
+    
+    return ret;
+}
+
+- (NSFileWrapper *)fileWrapperOfType:(NSString *)typeName error:(NSError **)outError
+{
+    // create directories
+    NSFileWrapper *mainDirectory = [[[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil] autorelease];
+    NSFileWrapper *resourcesDirectory = [[[NSFileWrapper alloc] initDirectoryWithFileWrappers:nil] autorelease];
+    [resourcesDirectory setPreferredFilename:@"resources"];
+    
+    // make nsdata
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[self dictionaryRepresentation]];
+    NSDictionary *resources = [self dataFromDictionaryRepresentation:dict];
+    [[SDUtils sharedUtils] removeObjectsWithKey:@"data" fromDictionaryRepresentation:dict];
+    
+    NSData *data;
     if ([typeName isEqualToString:@"JSON"])
-        dict = [data objectFromJSONData];
+    {
+        data = [dict JSONData];
+        [mainDirectory addRegularFileWithContents:data preferredFilename:@"project.json"];
+    }
     else
-        dict = [NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:NULL error:outError];
+    {
+        data = [NSPropertyListSerialization dataWithPropertyList:dict format:NSPropertyListXMLFormat_v1_0 options:0 error:NULL];
+        [mainDirectory addRegularFileWithContents:data preferredFilename:@"project.plist"];
+    }
+    
+    // add resources
+    for (NSString *key in [resources allKeys])
+        [resourcesDirectory addRegularFileWithContents:[resources objectForKey:key] preferredFilename:key];
+    
+    // add resources to main directory
+    [mainDirectory addFileWrapper:resourcesDirectory];
+    
+    return mainDirectory;
+}
+
+- (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError **)outError
+{
+    [[SDUtils sharedUtils] setLoadingDocument:self];
+    
+    [[self undoManager] disableUndoRegistration];
+    
+    NSDictionary *files = [fileWrapper fileWrappers];
+    
+    NSFileWrapper *resources = [files objectForKey:@"resources"];
+    if (!resources)
+    {
+        NSLog(@"%s project file has no resources folder", __FUNCTION__);
+        return NO;
+    }
+    
+    NSFileWrapper *json = [files objectForKey:@"project.json"];
+    NSFileWrapper *propertyList = [files objectForKey:@"project.plist"];
+    
+    NSDictionary *dict;
+    if (json)
+        dict = [[json regularFileContents] objectFromJSONData];
+    else if (propertyList)
+        dict = [NSPropertyListSerialization propertyListWithData:[propertyList regularFileContents] options:NSPropertyListImmutable format:NULL error:outError];
+    else
+    {
+        NSLog(@"%s project file has no project.json or project.plist", __FUNCTION__);
+        return NO;
+    }
     
     // ensure that file is a dictionary
     if (![dict isKindOfClass:[NSDictionary class]])
@@ -152,12 +231,18 @@
     for (NSDictionary *child in children)
     {
         Class childClass = [[SDUtils sharedUtils] customClassFromCocosClass:NSClassFromString([child objectForKey:@"className"])];
+        
         if (childClass && [childClass isSubclassOfClass:[CCNode class]] && [childClass conformsToProtocol:@protocol(SDNodeProtocol)])
         {
             CCNode<SDNodeProtocol> *node = [[[childClass alloc] initWithDictionaryRepresentation:child] autorelease];
-            [_nodesToAdd addObject:node];
+            if (node)
+                [_nodesToAdd addObject:node];
         }
     }
+    
+    [[self undoManager] enableUndoRegistration];
+    
+    [[SDUtils sharedUtils] setLoadingDocument:nil];
     
     return YES;
 }

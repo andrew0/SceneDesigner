@@ -11,6 +11,8 @@
 
 @implementation SDUtils
 
+@synthesize loadingDocument = _loadingDocument;
+
 + (id)sharedUtils
 {
     static dispatch_once_t pred;
@@ -27,12 +29,12 @@
     self = [super init];
     if (self)
     {
-        _classesDicitonary = [[NSMutableDictionary alloc] initWithCapacity:5];
-        [_classesDicitonary setObject:@"CCNode" forKey:@"SDNode"];
-        [_classesDicitonary setObject:@"CCSprite" forKey:@"SDSprite"];
-        [_classesDicitonary setObject:@"CCLayer" forKey:@"SDLayer"];
-        [_classesDicitonary setObject:@"CCLayerColor" forKey:@"SDLayerColor"];
-        [_classesDicitonary setObject:@"CCLabelBMFont" forKey:@"SDLabelBMFont"];
+        _classesDictionary = [[NSMutableDictionary alloc] initWithCapacity:5];
+        [_classesDictionary setObject:@"CCNode" forKey:@"SDNode"];
+        [_classesDictionary setObject:@"CCSprite" forKey:@"SDSprite"];
+        [_classesDictionary setObject:@"CCLayer" forKey:@"SDLayer"];
+        [_classesDictionary setObject:@"CCLayerColor" forKey:@"SDLayerColor"];
+        [_classesDictionary setObject:@"CCLabelBMFont" forKey:@"SDLabelBMFont"];
     }
     
     return self;
@@ -40,7 +42,7 @@
 
 - (Class)customClassFromCocosClass:(Class)cocosClass
 {
-    NSArray *classes = [_classesDicitonary allKeysForObject:NSStringFromClass(cocosClass)];
+    NSArray *classes = [_classesDictionary allKeysForObject:NSStringFromClass(cocosClass)];
     if ([classes count] > 0)
         return NSClassFromString([classes objectAtIndex:0]);
     
@@ -49,11 +51,14 @@
 
 - (Class)cocosClassFromCustomClass:(Class)customClass
 {
-    return NSClassFromString([_classesDicitonary objectForKey:NSStringFromClass(customClass)]);
+    return NSClassFromString([_classesDictionary objectForKey:NSStringFromClass(customClass)]);
 }
 
 - (SDDocument *)currentDocument
 {
+    if (_loadingDocument)
+        return _loadingDocument;
+    
     SDDocument *doc = [[NSDocumentController sharedDocumentController] currentDocument];
     if (![doc isKindOfClass:[SDDocument class]])
         return nil;
@@ -118,9 +123,45 @@
     return newString;
 }
 
+- (NSString *)uniqueResourceNameForString:(NSString *)string
+{
+    SDDocument *doc = [self currentDocument];
+    NSArray *names = [doc allResourceNames];
+    
+    NSString *extension = [string pathExtension];
+    NSString *newString = [string stringByDeletingPathExtension];
+    NSUInteger i = 1;
+    while ([names containsObject:[newString stringByAppendingPathExtension:extension]])
+    {
+        NSAssert(i < NSUIntegerMax, @"can't use same name %lu times", (unsigned long)NSUIntegerMax);
+        newString = [[string stringByDeletingPathExtension] stringByAppendingFormat:@"%lu", (unsigned long)i++];
+    }
+    
+    return [newString stringByAppendingPathExtension:extension];
+}
+
 - (NSArray *)allowedImageTypes
 {
     return [NSArray arrayWithObjects:@"png", @"gif", @"jpg", @"jpeg", @"tif", @"tiff", @"bmp", @"ccz", @"pvr", nil];
+}
+
+- (void)removeObjectsWithKey:(NSString *)key fromDictionaryRepresentation:(NSMutableDictionary *)dict
+{
+    [dict removeObjectForKey:key];
+    
+    NSArray *children = [dict objectForKey:@"children"];
+    if (children)
+    {
+        NSMutableArray *newChildren = [NSMutableArray arrayWithCapacity:[children count]];
+        for (NSDictionary *child in children)
+        {
+            NSMutableDictionary *mutableChild = [NSMutableDictionary dictionaryWithDictionary:child];
+            [self removeObjectsWithKey:key fromDictionaryRepresentation:mutableChild];
+            [newChildren addObject:mutableChild];
+        }
+        
+        [dict setObject:newChildren forKey:@"children"];
+    }
 }
 
 @end

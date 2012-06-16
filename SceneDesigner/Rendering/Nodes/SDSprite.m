@@ -5,10 +5,12 @@
 
 #import "SDSprite.h"
 #import "ColorFunctions.h"
+#import "SDDocument.h"
 
 @implementation SDSprite
 
 @synthesize path = _path;
+@synthesize data = _data;
 @dynamic textureRectX;
 @dynamic textureRectY;
 @dynamic textureRectWidth;
@@ -19,28 +21,40 @@
 {
     SDNODE_DEALLOC();
     self.path = nil;
+    self.data = nil;
     [super dealloc];
 }
 
 - (id)initWithFile:(NSString *)filename rect:(CGRect)rect
 {
-    self = [super initWithFile:filename rect:rect];
-    if (self)
-    {
-        SDNODE_INIT();
-        self.path = filename;
-    }
+    NSData *data = [NSData dataWithContentsOfFile:filename];
+    NSString *newPath = [[SDUtils sharedUtils] uniqueResourceNameForString:[filename lastPathComponent]];
+    self = [self initWithData:data key:newPath];
+    self.textureRect = rect;
+    self.path = newPath;
     
     return self;
 }
 
 - (id)initWithFile:(NSString*)filename
 {
-    self = [super initWithFile:filename];
+    NSData *data = [NSData dataWithContentsOfFile:filename];
+    NSString *newPath = [[SDUtils sharedUtils] uniqueResourceNameForString:[filename lastPathComponent]];
+    self = [self initWithData:data key:newPath];
+    self.path = newPath;
+    
+    return self;
+}
+
+- (id)initWithData:(NSData *)data key:(NSString *)key
+{
+    NSBitmapImageRep *image = [[[NSBitmapImageRep alloc] initWithData:data] autorelease];
+    self = [self initWithCGImage:[image CGImage] key:key];
     if (self)
     {
         SDNODE_INIT();
-        self.path = filename;
+        self.data = data;
+        self.path = key;
     }
     
     return self;
@@ -48,19 +62,46 @@
 
 - (id)_initWithDictionaryRepresentation:(NSDictionary *)dict
 {
-    NSString *path = [dict valueForKey:@"path"];
-    if (path == nil || ![[NSFileManager defaultManager] fileExistsAtPath:path])
+    NSData *data = [dict objectForKey:@"data"];
+    NSString *path = [dict objectForKey:@"path"];
+    if (data)
+    {
+        self = [self initWithData:data key:[path lastPathComponent]];
+        self.path = path;
+    }
+    else if (path)
+    {
+        SDDocument *doc = [[SDUtils sharedUtils] currentDocument];
+        if ([doc fileURL])
+        {
+            NSString *newPath = [[[[doc fileURL] path] stringByAppendingPathComponent:@"resources"] stringByAppendingPathComponent:[path lastPathComponent]];
+            if ([[NSFileManager defaultManager] fileExistsAtPath:newPath])
+                path = newPath;
+        }
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:path])
+        {
+            NSLog(@"could not find sprite at path %@", path);
+            return nil;
+        }
+        
+        // use data so we can copy/paste if the file is deleted before saving
+        self = [self initWithFile:path];
+    }
+    else
+    {
+        NSLog(@"error loading sprite with dictionary representation %@", dict);
         return nil;
+    }
     
-    self = [self initWithFile:path];
     if (self)
     {
-        self.path = [dict valueForKey:@"path"];    
-        self.textureRect = NSRectToCGRect(NSRectFromString([dict valueForKey:@"textureRect"]));
-        self.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-        self.color = ColorFromNSString([dict valueForKey:@"color"]);
-        self.flipX = [[dict valueForKey:@"flipX"] boolValue];
-        self.flipY = [[dict valueForKey:@"flipY"] boolValue];
+        self.path = [dict objectForKey:@"path"];    
+        self.textureRect = NSRectToCGRect(NSRectFromString([dict objectForKey:@"textureRect"]));
+        self.opacity = [[dict objectForKey:@"opacity"] unsignedCharValue];
+        self.color = ColorFromNSString([dict objectForKey:@"color"]);
+        self.flipX = [[dict objectForKey:@"flipX"] boolValue];
+        self.flipY = [[dict objectForKey:@"flipY"] boolValue];
     }
     
     return self;
@@ -70,12 +111,14 @@
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:6];
     
-    [dict setValue:self.path forKey:@"path"];
-    [dict setValue:NSStringFromRect(NSRectFromCGRect(self.textureRect)) forKey:@"textureRect"];
-    [dict setValue:[NSNumber numberWithUnsignedChar:self.opacity] forKey:@"opacity"];
-    [dict setValue:NSStringFromColor(self.color) forKey:@"color"];
-    [dict setValue:[NSNumber numberWithBool:self.flipX] forKey:@"flipX"];
-    [dict setValue:[NSNumber numberWithBool:self.flipY] forKey:@"flipY"];
+    [dict setObject:self.path forKey:@"path"];
+    [dict setObject:NSStringFromRect(NSRectFromCGRect(self.textureRect)) forKey:@"textureRect"];
+    [dict setObject:[NSNumber numberWithUnsignedChar:self.opacity] forKey:@"opacity"];
+    [dict setObject:NSStringFromColor(self.color) forKey:@"color"];
+    [dict setObject:[NSNumber numberWithBool:self.flipX] forKey:@"flipX"];
+    [dict setObject:[NSNumber numberWithBool:self.flipY] forKey:@"flipY"];
+    NSAssert(_data, @"data not set");
+    [dict setObject:_data forKey:@"data"];
     
     return dict;
 }

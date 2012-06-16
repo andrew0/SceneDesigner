@@ -20,4 +20,15 @@
 	return CGRectContainsPoint(r, local);
 }
 
+- (NSArray *)allChildren
+{
+    CCArray *children = [self children];
+    NSMutableArray *array = [NSMutableArray arrayWithArray:[children getNSArray]];
+    
+    for (CCNode *child in children)
+        [array addObjectsFromArray:[child allChildren]];
+    
+    return [NSArray arrayWithArray:array];
+}
+
 @end

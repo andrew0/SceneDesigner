@@ -8,6 +8,7 @@
 
 @interface SDSprite : CCSprite <SDNodeProtocol>
 {
+    NSData *_data;
     NSString *_path;
     SDNODE_IVARS
 }
@@ -18,5 +19,6 @@
 @property (nonatomic, readwrite) CGFloat textureRectWidth;
 @property (nonatomic, readwrite) CGFloat textureRectHeight;
 @property (nonatomic, assign, readwrite) NSColor *colorObject;
+@property (nonatomic, copy) NSData *data;
 
 @end

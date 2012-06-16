@@ -10,8 +10,11 @@
 
 @interface SDUtils : NSObject
 {
-    NSMutableDictionary *_classesDicitonary;
+    NSMutableDictionary *_classesDictionary;
+    SDDocument *_loadingDocument; ///< Document currently being loaded, used for currentDocument
 }
+
+@property (nonatomic, assign) SDDocument *loadingDocument;
 
 + (id)sharedUtils;
 - (Class)customClassFromCocosClass:(Class)cocosClass;
@@ -20,6 +23,8 @@
 - (SDWindowController *)currentWindowController;
 - (NSUndoManager *)currentUndoManager;
 - (NSString *)uniqueNameForString:(NSString *)string;
+- (NSString *)uniqueResourceNameForString:(NSString *)string;
 - (NSArray *)allowedImageTypes;
+- (void)removeObjectsWithKey:(NSString *)key fromDictionaryRepresentation:(NSMutableDictionary *)dict;
 
 @end

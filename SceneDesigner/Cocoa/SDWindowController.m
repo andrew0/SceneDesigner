@@ -20,6 +20,7 @@
 #import "NSThread+Blocks.h"
 #import "SDOutlineViewDataSource.h"
 #import "SDOutlineView.h"
+#import "CCNode+Additions.h"
 
 @implementation SDWindowController
 
@@ -253,6 +254,22 @@
     
     [[[[self document] undoManager] prepareWithInvocationTarget:self] removeNodeFromLayer:node];
     [[[self document] undoManager] setActionName:NSLocalizedString(@"node addition", nil)];
+    
+    if ([node isKindOfClass:[SDSprite class]])
+    {
+        SDSprite *sprite = (SDSprite *)node;
+        
+        // check if there are any sprites that already have same data
+        NSArray *allChildren = [[[self document] drawingView] allChildren];
+        for (CCNode *child in allChildren)
+        {
+            if ([child isKindOfClass:[SDSprite class]] && [[(SDSprite *)child data] isEqualToData:sprite.data])
+            {
+                sprite.path = [(SDSprite *)child path];
+                break;
+            }
+        }
+    }
     
     SDDrawingView *layer = [[self document] drawingView];
     [[[CCDirector sharedDirector] runningThread] performBlock:^{

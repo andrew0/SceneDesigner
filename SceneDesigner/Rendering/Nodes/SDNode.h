@@ -361,18 +361,18 @@ do\
     else\
         dict = [NSMutableDictionary dictionaryWithCapacity:11];\
 \
-    [dict setValue:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[self class]]) forKey:@"className"];\
-    [dict setValue:((self.name != nil) ? self.name : @"") forKey:@"name"];\
-    [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.position)) forKey:@"position"];\
-    [dict setValue:NSStringFromPoint(NSPointFromCGPoint(self.anchorPoint)) forKey:@"anchorPoint"];\
-    [dict setValue:[NSNumber numberWithFloat:self.scaleX] forKey:@"scaleX"];\
-    [dict setValue:[NSNumber numberWithFloat:self.scaleY] forKey:@"scaleY"];\
-    [dict setValue:NSStringFromSize(NSSizeFromCGSize(self.contentSize)) forKey:@"contentSize"];\
-    [dict setValue:[NSNumber numberWithInteger:self.zOrder] forKey:@"zOrder"];\
-    [dict setValue:[NSNumber numberWithFloat:self.rotation] forKey:@"rotation"];\
-    [dict setValue:[NSNumber numberWithInteger:self.tag] forKey:@"tag"];\
-    [dict setValue:[NSNumber numberWithBool:self.visible] forKey:@"visible"];\
-    [dict setValue:[NSNumber numberWithBool:self.ignoreAnchorPointForPosition] forKey:@"ignoreAnchorPointForPosition"];\
+    [dict setObject:NSStringFromClass([[SDUtils sharedUtils] cocosClassFromCustomClass:[self class]]) forKey:@"className"];\
+    [dict setObject:((self.name != nil) ? self.name : @"") forKey:@"name"];\
+    [dict setObject:NSStringFromPoint(NSPointFromCGPoint(self.position)) forKey:@"position"];\
+    [dict setObject:NSStringFromPoint(NSPointFromCGPoint(self.anchorPoint)) forKey:@"anchorPoint"];\
+    [dict setObject:[NSNumber numberWithFloat:self.scaleX] forKey:@"scaleX"];\
+    [dict setObject:[NSNumber numberWithFloat:self.scaleY] forKey:@"scaleY"];\
+    [dict setObject:NSStringFromSize(NSSizeFromCGSize(self.contentSize)) forKey:@"contentSize"];\
+    [dict setObject:[NSNumber numberWithInteger:self.zOrder] forKey:@"zOrder"];\
+    [dict setObject:[NSNumber numberWithFloat:self.rotation] forKey:@"rotation"];\
+    [dict setObject:[NSNumber numberWithInteger:self.tag] forKey:@"tag"];\
+    [dict setObject:[NSNumber numberWithBool:self.visible] forKey:@"visible"];\
+    [dict setObject:[NSNumber numberWithBool:self.ignoreAnchorPointForPosition] forKey:@"ignoreAnchorPointForPosition"];\
 \
     NSMutableArray *children = [NSMutableArray array];\
     if ([[self children] count] > 0)\
@@ -380,7 +380,7 @@ do\
             if ([child isKindOfClass:[CCNode class]] && [child conformsToProtocol:@protocol(SDNodeProtocol)])\
                 [children addObject:[child dictionaryRepresentation]];\
 \
-    [dict setValue:children forKey:@"children"];\
+    [dict setObject:children forKey:@"children"];\
 \
     return dict;\
 }\

@@ -9,5 +9,6 @@
 
 - (BOOL)isEventInRect:(NSEvent *)event;
 - (BOOL)isEventInRect:(NSEvent *)event insetX:(CGFloat)x insetY:(CGFloat)y;
+- (NSArray *)allChildren;
 
 @end

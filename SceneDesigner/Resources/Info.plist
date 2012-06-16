@@ -7,9 +7,11 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>LSTypeIsPackage</key>
+			<true/>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>plist</string>
+				<string>sceneproj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string></string>
@@ -25,9 +27,11 @@
 			<string>SDDocument</string>
 		</dict>
 		<dict>
+			<key>LSTypeIsPackage</key>
+			<true/>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>json</string>
+				<string>sceneproj</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string></string>
