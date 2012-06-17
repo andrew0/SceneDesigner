@@ -79,17 +79,11 @@
 {
     CCDirector *director = [CCDirector sharedDirector];
     if ([director runningScene] != nil)
-    {
         [director replaceScene:[CCScene node]];
-//        [director pause];
-    }
 }
 
 - (void)resumeCocos2D
 {
-//    CCDirector *director = [CCDirector sharedDirector];
-//    if ([director runningScene] != nil && [director isPaused])
-//        [director resume];
 }
 
 - (void)currentDocumentDidChange:(NSNotification *)notification
@@ -103,9 +97,9 @@
         if ([document drawingView] == nil)
             [document setDrawingView:[SDDrawingView node]];
         
-        [[CCDirector sharedDirector] replaceScene:[[document drawingView] scene]];
+        if ( ![[[CCDirector sharedDirector] runningScene] isEqualTo:[[document drawingView] scene]] )
+            [[CCDirector sharedDirector] replaceScene:[[document drawingView] scene]];
     }
-    
 }
 
 - (void)dealloc

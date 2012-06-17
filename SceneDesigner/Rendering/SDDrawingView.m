@@ -75,23 +75,10 @@
     {
         self.isMouseEnabled = YES;
         self.isKeyboardEnabled = YES;
-    }
-    
-    return self;
-}
-
-- (void)onEnter
-{
-    [super onEnter];
-    
-    if (_selectionLayer == nil)
-    {
+        
         _selectionLayer = [SDSelectionLayer node];
         [self addChild:_selectionLayer z:NSIntegerMax];
-    }
-    
-    if (_background == nil)
-    {
+        
         // add repeating checkerboard background to indicate transparency
         _background = [[CCSprite spriteWithFile:@"checkerboard_dark.png"] retain];
         [self addChild:_background z:NSIntegerMin];
@@ -107,6 +94,13 @@
         [_background setContentSize:s];
         [_background setTextureRect:CGRectMake(0, 0, s.width, s.height)];
     }
+    
+    return self;
+}
+
+- (void)onEnter
+{
+    [super onEnter];
     
     if (_nodesToAddOnEnter != nil && [_nodesToAddOnEnter count] > 0)
     {
