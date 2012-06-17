@@ -8,6 +8,8 @@
 extern NSString *CCNodeDidReorderChildren;
 extern NSString *SDNodeUTI;
 
+@class SDDocument;
+
 @protocol SDNodeProtocol <NSObject, NSCoding, NSPasteboardReading, NSPasteboardWriting>
 
 @required
@@ -18,6 +20,7 @@ extern NSString *SDNodeUTI;
 
 @optional
 
+@property (nonatomic, readonly) SDDocument *docmuent;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) BOOL isSelected;
 @property (nonatomic, readwrite) CGFloat posX;
@@ -53,6 +56,7 @@ do\
 } while (0)\
 
 #define SDNODE_FUNC_SRC \
+@dynamic document;\
 @synthesize name = _name;\
 @synthesize isSelected = _isSelected;\
 @dynamic posX;\
@@ -61,6 +65,12 @@ do\
 @dynamic anchorY;\
 @dynamic contentWidth;\
 @dynamic contentHeight;\
+\
+- (SDDocument *)document\
+{\
+    CCGLView *glView = [[CCDirector sharedDirector] view];\
+    return [[[glView window] windowController] document];\
+}\
 \
 - (void)setPosition:(CGPoint)pos\
 {\

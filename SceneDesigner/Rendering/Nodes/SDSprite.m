@@ -53,7 +53,23 @@
     if (self)
     {
         SDNODE_INIT();
-        self.data = data;
+        
+        // reuse object to save memory
+        SDDocument *doc = [self document];
+        for (NSString *key in [doc resources])
+        {
+            NSData *object = [[doc resources] objectForKey:key];
+            NSAssert([object isKindOfClass:[NSData class]], @"");
+            if ([object isEqualToData:data])
+            {
+                self.data = object;
+                break;
+            }
+        }
+        
+        if (!_data)
+            self.data = data;
+        
         self.path = key;
     }
     
@@ -71,7 +87,7 @@
     }
     else if (path)
     {
-        SDDocument *doc = [[SDUtils sharedUtils] currentDocument];
+        SDDocument *doc = [self document];
         if ([doc fileURL])
         {
             NSString *newPath = [[[[doc fileURL] path] stringByAppendingPathComponent:@"resources"] stringByAppendingPathComponent:[path lastPathComponent]];
