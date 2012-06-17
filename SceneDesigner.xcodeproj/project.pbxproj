@@ -149,6 +149,8 @@
 		49A77D0D151ACABC00014AB6 /* LICENSE_JSONKit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */; };
 		49A77D0F151ACBFB00014AB6 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 49A77D0E151ACBFB00014AB6 /* Credits.rtf */; };
 		49B9CFD61515729300CEA8F4 /* checkerboard_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */; };
+		49C29A21158E659C001CBA3E /* SDHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C29A20158E659C001CBA3E /* SDHeaderView.m */; };
+		49C29A25158E6EA0001CBA3E /* SDColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49C29A24158E6EA0001CBA3E /* SDColorView.m */; };
 		49D8F166151AD57F004A945B /* TLAnimatingOutlineView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */; };
 		49D8F167151AD57F004A945B /* TLCollapsibleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F15E151AD57F004A945B /* TLCollapsibleView.m */; };
 		49D8F168151AD57F004A945B /* TLDisclosureBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 49D8F160151AD57F004A945B /* TLDisclosureBar.m */; };
@@ -445,6 +447,10 @@
 		49A77D0C151ACABC00014AB6 /* LICENSE_JSONKit.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE_JSONKit.txt; sourceTree = SOURCE_ROOT; };
 		49A77D0E151ACBFB00014AB6 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = SOURCE_ROOT; };
 		49B9CFD51515729300CEA8F4 /* checkerboard_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = checkerboard_dark.png; path = Resources/checkerboard_dark.png; sourceTree = "<group>"; };
+		49C29A1F158E659C001CBA3E /* SDHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDHeaderView.h; path = Cocoa/SDHeaderView.h; sourceTree = "<group>"; };
+		49C29A20158E659C001CBA3E /* SDHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDHeaderView.m; path = Cocoa/SDHeaderView.m; sourceTree = "<group>"; };
+		49C29A23158E6E9F001CBA3E /* SDColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDColorView.h; path = Cocoa/SDColorView.h; sourceTree = "<group>"; };
+		49C29A24158E6EA0001CBA3E /* SDColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SDColorView.m; path = Cocoa/SDColorView.m; sourceTree = "<group>"; };
 		49D8F15B151AD57F004A945B /* TLAnimatingOutlineView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLAnimatingOutlineView.h; sourceTree = "<group>"; };
 		49D8F15C151AD57F004A945B /* TLAnimatingOutlineView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLAnimatingOutlineView.m; sourceTree = "<group>"; };
 		49D8F15D151AD57F004A945B /* TLCollapsibleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCollapsibleView.h; sourceTree = "<group>"; };
@@ -996,6 +1002,10 @@
 				49D8F17C151AD7F2004A945B /* SDPrefsController.m */,
 				49D8F17D151AD7F2004A945B /* SDWindowController.h */,
 				49D8F17E151AD7F2004A945B /* SDWindowController.m */,
+				49C29A1F158E659C001CBA3E /* SDHeaderView.h */,
+				49C29A20158E659C001CBA3E /* SDHeaderView.m */,
+				49C29A23158E6E9F001CBA3E /* SDColorView.h */,
+				49C29A24158E6EA0001CBA3E /* SDColorView.m */,
 			);
 			name = Cocoa;
 			sourceTree = "<group>";
@@ -1274,6 +1284,8 @@
 				4950278E157EC28200DD9457 /* SDSelectionLayer.m in Sources */,
 				49DF5D1A158151620055B3E9 /* ccCArray.m in Sources */,
 				49DF5D1E158151850055B3E9 /* CCNode+Debug.m in Sources */,
+				49C29A21158E659C001CBA3E /* SDHeaderView.m in Sources */,
+				49C29A25158E6EA0001CBA3E /* SDColorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
