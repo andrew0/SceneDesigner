@@ -256,39 +256,39 @@ enum
         [_rotate setPosition:rotatePos];
         
         // add tracking areas
-        NSTrackingArea *tlArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_tl boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *tlArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_tl boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kTopLeftTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *tmArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_tm boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *tmArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_tm boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kTopMiddleTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *trArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_tr boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *trArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_tr boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kTopRightTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *blArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_bl boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *blArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_bl boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kBottomLeftTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *bmArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_bm boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *bmArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_bm boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kBottomMiddleTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *brArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_br boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *brArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_br boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kBottomRightTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *lmArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_lm boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *lmArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_lm boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kLeftMiddleTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *rmArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_rm boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *rmArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_rm boundingBox], -2.0f, -2.0f))
                                                                options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                  owner:view
                                                               userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kRightMiddleTag] forKey:@"tag"]] autorelease];
-        NSTrackingArea *rotateArea = [[[NSTrackingArea alloc] initWithRect:CGRectInset([_rotate boundingBox], -2.0f, -2.0f)
+        NSTrackingArea *rotateArea = [[[NSTrackingArea alloc] initWithRect:NSRectFromCGRect(CGRectInset([_rotate boundingBox], -2.0f, -2.0f))
                                                                    options:(NSTrackingMouseEnteredAndExited | NSTrackingActiveWhenFirstResponder)
                                                                      owner:view
                                                                   userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithInteger:kRotateTag] forKey:@"tag"]] autorelease];
