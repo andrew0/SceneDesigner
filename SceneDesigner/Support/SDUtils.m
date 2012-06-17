@@ -54,44 +54,6 @@
     return NSClassFromString([_classesDictionary objectForKey:NSStringFromClass(customClass)]);
 }
 
-- (SDDocument *)currentDocument
-{
-    if (_loadingDocument)
-        return _loadingDocument;
-    
-    SDDocument *doc = [[NSDocumentController sharedDocumentController] currentDocument];
-    if (![doc isKindOfClass:[SDDocument class]])
-        return nil;
-    
-    return doc;
-}
-
-- (SDWindowController *)currentWindowController
-{
-    SDWindowController *wc = nil;
-    
-    NSArray *windows = [NSApp orderedWindows];
-    if ([windows count] > 0)
-    {
-        for (NSWindow *window in windows)
-        {
-            NSWindowController *controller = [window windowController];
-            if ([controller isKindOfClass:[SDWindowController class]])
-            {
-                wc = (SDWindowController *)controller;
-                break;
-            }
-        }
-    }
-    
-    return wc;
-}
-
-- (NSUndoManager *)currentUndoManager
-{
-    return [[self currentDocument] undoManager];
-}
-
 - (NSArray *)allNamesOfChildrenOfNode:(CCNode *)node
 {
     NSMutableArray *array = [NSMutableArray array];
@@ -109,7 +71,7 @@
 
 - (NSString *)uniqueNameForString:(NSString *)string
 {
-    SDDocument *doc = [self currentDocument];
+    SDDocument *doc = [[NSDocumentController sharedDocumentController] currentDocument];
     NSArray *names = [self allNamesOfChildrenOfNode:[doc drawingView]];
     
     NSString *newString = [[string copy] autorelease];
@@ -125,7 +87,7 @@
 
 - (NSString *)uniqueResourceNameForString:(NSString *)string
 {
-    SDDocument *doc = [self currentDocument];
+    SDDocument *doc = [[NSDocumentController sharedDocumentController] currentDocument];
     NSArray *names = [doc allResourceNames];
     
     NSString *extension = [string pathExtension];

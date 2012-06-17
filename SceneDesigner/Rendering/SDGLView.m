@@ -78,17 +78,17 @@
         
         NSPoint point = [self convertPoint:[sender draggingLocation] fromView:nil];
         
-        [[[SDUtils sharedUtils] currentUndoManager] beginUndoGrouping];
+        [[self undoManager] beginUndoGrouping];
         for (NSString *path in files)
         {
-            SDWindowController *wc = [[SDUtils sharedUtils] currentWindowController];
-            CCNode *parent = [[[[SDUtils sharedUtils] currentDocument] drawingView] selectedNode];
+            SDWindowController *wc = [[self window] windowController];;
+            CCNode *parent = [[[wc document] drawingView] selectedNode];
             
             SDSprite *sprite = [SDSprite spriteWithFile:path];
             sprite.position = NSPointToCGPoint(point);
             [wc addNodeToLayer:sprite parent:parent];
         }
-        [[[SDUtils sharedUtils] currentUndoManager] endUndoGrouping];
+        [[self undoManager] endUndoGrouping];
     }
     return YES;
 }

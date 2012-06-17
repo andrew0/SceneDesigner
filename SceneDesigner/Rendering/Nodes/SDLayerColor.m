@@ -60,7 +60,7 @@
 {
     if (isAccelerometerEnabled != _isAccelerometerEnabled)
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setIsAccelerometerEnabled:_isAccelerometerEnabled];
         [um setActionName:NSLocalizedString(@"accelerometer toggling", nil)];
         _isAccelerometerEnabled = isAccelerometerEnabled;
@@ -71,7 +71,7 @@
 {
     if (isTouchEnabled != isTouchEnabled_)
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setIsTouchEnabled:isTouchEnabled_];
         [um setActionName:NSLocalizedString(@"touch toggling", nil)];
         isTouchEnabled_ = isTouchEnabled;
@@ -82,7 +82,7 @@
 {
     if (isKeyboardEnabled != isKeyboardEnabled_)
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setIsKeyboardEnabled:isKeyboardEnabled_];
         [um setActionName:NSLocalizedString(@"keyboard toggling", nil)];
         isKeyboardEnabled_ = isKeyboardEnabled;
@@ -93,7 +93,7 @@
 {
     if (isMouseEnabled != isMouseEnabled_)
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setIsMouseEnabled:isMouseEnabled_];
         [um setActionName:NSLocalizedString(@"mouse toggling", nil)];
         isMouseEnabled_ = isMouseEnabled;
@@ -125,7 +125,7 @@
 {
     if (color.r != self.color.r || color.g != self.color.g || color.b != self.color.b)
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [(CCLayerColor *)[um prepareWithInvocationTarget:self] setColor:[self color]];
         [um setActionName:NSLocalizedString(@"color adjustment", nil)];
         
@@ -139,7 +139,7 @@
 {
     if (opacity != [self opacity])
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [(CCLayerColor *)[um prepareWithInvocationTarget:self] setOpacity:[self opacity]];
         [um setActionName:NSLocalizedString(@"opacity adjustment", nil)];
         [super setOpacity:opacity];

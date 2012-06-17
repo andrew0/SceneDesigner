@@ -19,9 +19,6 @@
 + (id)sharedUtils;
 - (Class)customClassFromCocosClass:(Class)cocosClass;
 - (Class)cocosClassFromCustomClass:(Class)customClass;
-- (SDDocument *)currentDocument;
-- (SDWindowController *)currentWindowController;
-- (NSUndoManager *)currentUndoManager;
 - (NSString *)uniqueNameForString:(NSString *)string;
 - (NSString *)uniqueResourceNameForString:(NSString *)string;
 - (NSArray *)allowedImageTypes;

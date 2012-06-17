@@ -17,7 +17,9 @@ extern NSString *SDNodeUTI;
 - (id)initWithDictionaryRepresentation:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
 - (NSArray *)snapPoints;
+- (SDWindowController *)windowController;
 - (SDDocument *)document;
+- (NSUndoManager *)undoManager;
 
 @optional
 
@@ -65,10 +67,20 @@ do\
 @dynamic contentWidth;\
 @dynamic contentHeight;\
 \
-- (SDDocument *)document\
+- (SDWindowController *)windowController\
 {\
     CCGLView *glView = [[CCDirector sharedDirector] view];\
-    return [[[glView window] windowController] document];\
+    return [[glView window] windowController];\
+}\
+\
+- (SDDocument *)document\
+{\
+    return [[self windowController] document];\
+}\
+\
+- (NSUndoManager *)undoManager\
+{\
+    return [[self document] undoManager];\
 }\
 \
 - (void)setPosition:(CGPoint)pos\
@@ -81,7 +93,7 @@ do\
 \
     if (!CGPointEqualToPoint([self position], pos))\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setPosition:[self position]];\
         [um setActionName:NSLocalizedString(@"repositioning", nil)];\
 \
@@ -98,7 +110,7 @@ do\
 {\
     if (!CGPointEqualToPoint([self anchorPoint], anchorPoint))\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setAnchorPoint:[self anchorPoint]];\
         [um setActionName:NSLocalizedString(@"anchor point adjustment", nil)];\
 \
@@ -132,7 +144,7 @@ do\
 {\
     if ([self scaleX] != sx)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setScaleX:[self scaleX]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleX:sx];\
@@ -145,7 +157,7 @@ do\
 {\
     if ([self scaleY] != sy)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setScaleY:[self scaleY]];\
         [um setActionName:NSLocalizedString(@"resizing", nil)];\
         [super setScaleY:sy];\
@@ -158,7 +170,7 @@ do\
 {\
     if ([self zOrder] != z)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setZOrder:[self zOrder]];\
         [um setActionName:NSLocalizedString(@"z order adjustment", nil)];\
         [super setZOrder:z];\
@@ -169,7 +181,7 @@ do\
 {\
     if ([self rotation] != rotation)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setRotation:[self rotation]];\
         [um setActionName:NSLocalizedString(@"rotation", nil)];\
         [super setRotation:rotation];\
@@ -182,7 +194,7 @@ do\
 {\
     if ([self tag] != tag)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setTag:[self tag]];\
         [um setActionName:NSLocalizedString(@"tag adjustment", nil)];\
         [super setTag:tag];\
@@ -193,7 +205,7 @@ do\
 {\
     if ([self visible] != visible)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setVisible:[self visible]];\
         [um setActionName:NSLocalizedString(@"visibility adjustment", nil)];\
         [super setVisible:visible];\
@@ -206,7 +218,7 @@ do\
 {\
     if ([self ignoreAnchorPointForPosition] != relative)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setIgnoreAnchorPointForPosition:[self ignoreAnchorPointForPosition]];\
         [um setActionName:NSLocalizedString(@"ignore anchor point adjustment", nil)];\
         [super setIgnoreAnchorPointForPosition:relative];\
@@ -217,7 +229,7 @@ do\
 {\
     if (![name isEqualToString:[self name]])\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [(CCNode<SDNodeProtocol> *)[um prepareWithInvocationTarget:self] setName:[self name]];\
         [um setActionName:NSLocalizedString(@"renaming", nil)];\
         [_name release];\
@@ -294,7 +306,7 @@ do\
 {\
     if (contentWidth != self.contentSize.width)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setContentWidth:self.contentSize.width];\
         [um setActionName:NSLocalizedString(@"content size adjustment", nil)];\
 \
@@ -313,7 +325,7 @@ do\
 {\
     if (contentHeight != self.contentSize.height)\
     {\
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];\
+        NSUndoManager *um = [self undoManager];\
         [[um prepareWithInvocationTarget:self] setContentHeight:self.contentSize.height];\
         [um setActionName:NSLocalizedString(@"content size adjustment", nil)];\
 \

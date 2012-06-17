@@ -11,6 +11,7 @@
 #import "SDWindowController.h"
 #import "NSThread+Blocks.h"
 #import "SDSelectionLayer.h"
+#import "SDDocument.h"
 
 @implementation CCNode (TotalScale)
 
@@ -35,6 +36,9 @@
 @end
 
 @interface SDDrawingView ()
+- (SDWindowController *)windowController;
+- (SDDocument *)document;
+- (NSUndoManager *)undoManager;
 - (BOOL)willSnap;
 - (NSArray *)snapPointsForNode:(CCNode<SDNodeProtocol> *)node;
 @end
@@ -110,13 +114,7 @@
         
         self.nodesToAddOnEnter = nil;
         
-        NSArray *windowControllers = [[[NSDocumentController sharedDocumentController] currentDocument] windowControllers];
-        if ([windowControllers count] > 0)
-        {
-            SDWindowController *wc = [windowControllers objectAtIndex:0];
-            if ([wc isKindOfClass:[SDWindowController class]])
-                [wc reloadOutlineView];
-        }
+        [[self windowController] reloadOutlineView];
     }
 }
 
@@ -126,6 +124,22 @@
     self.nodesToAddOnEnter = nil;
     self.selectedNode = nil;
     [super dealloc];
+}
+
+- (SDWindowController *)windowController
+{
+    CCGLView *glView = [[CCDirector sharedDirector] view];
+    return [[glView window] windowController];
+}
+
+- (SDDocument *)document
+{
+    return [[self windowController] document];
+}
+
+- (NSUndoManager *)undoManager
+{
+    return [[self document] undoManager];
 }
 
 - (void)setSelectedNode:(CCNode<SDNodeProtocol> *)selectedNode
@@ -150,7 +164,7 @@
     
     if (sceneWidth != [self sceneWidth])
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setSceneWidth:[self sceneWidth]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
@@ -178,7 +192,7 @@
     
     if (sceneHeight != [self sceneHeight])
     {
-        NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+        NSUndoManager *um = [self undoManager];
         [[um prepareWithInvocationTarget:self] setSceneHeight:[self sceneHeight]];
         [um setActionName:NSLocalizedString(@"resize scene", nil)];
         
@@ -253,7 +267,7 @@
 - (BOOL)ccMouseDown:(NSEvent *)event
 {
     // don't create undo event for every reposition while dragging, just one at end
-    [[[SDUtils sharedUtils] currentUndoManager] disableUndoRegistration];
+    [[self undoManager] disableUndoRegistration];
     
     _willDragNode = NO;
     _willDeselectNode = NO;
@@ -367,7 +381,7 @@
 
 - (BOOL)ccMouseUp:(NSEvent *)event
 {
-    NSUndoManager *um = [[SDUtils sharedUtils] currentUndoManager];
+    NSUndoManager *um = [self undoManager];
     if (![um isUndoRegistrationEnabled])
         [um enableUndoRegistration];
     
@@ -389,12 +403,12 @@
 
 - (BOOL)ccKeyDown:(NSEvent *)event
 {
-//    [[[SDUtils sharedUtils] currentUndoManager] beginUndoGrouping];
+//    [[self undoManager] beginUndoGrouping];
     
     // keycodes available at http://forums.macrumors.com/showpost.php?p=8428116&postcount=2
     NSUInteger modifiers = [event modifierFlags];
     unsigned short keyCode = [event keyCode];
-    SDWindowController *wc = [[SDUtils sharedUtils] currentWindowController];
+    SDWindowController *wc = [self windowController];
     
     // remove node
     switch (keyCode)
@@ -517,7 +531,7 @@
 
 - (BOOL)ccKeyUp:(NSEvent *)event
 {
-//    [[[SDUtils sharedUtils] currentUndoManager] endUndoGrouping];
+//    [[self undoManager] endUndoGrouping];
     return YES;
 }
 
