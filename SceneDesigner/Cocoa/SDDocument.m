@@ -179,6 +179,7 @@
 
 - (BOOL)readFromFileWrapper:(NSFileWrapper *)fileWrapper ofType:(NSString *)typeName error:(NSError **)outError
 {
+    [[SDUtils sharedUtils] setLoadingDocument:self];
     [[self undoManager] disableUndoRegistration];
     
     NSDictionary *files = [fileWrapper fileWrappers];
@@ -244,6 +245,7 @@
     }
     
     [[self undoManager] enableUndoRegistration];
+    [[SDUtils sharedUtils] setLoadingDocument:nil];
     
     return YES;
 }

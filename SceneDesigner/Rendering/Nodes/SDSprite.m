@@ -88,7 +88,7 @@
     }
     else if (path)
     {
-        SDDocument *doc = [self document];
+        SDDocument *doc = ([self document] != nil) ? [self document] : [[SDUtils sharedUtils] loadingDocument];
         if ([doc fileURL])
         {
             NSString *newPath = [[[[doc fileURL] path] stringByAppendingPathComponent:@"resources"] stringByAppendingPathComponent:[path lastPathComponent]];
