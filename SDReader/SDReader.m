@@ -75,14 +75,25 @@ static inline ccColor3B ColorFromNSString(NSString *string)
         // try to get full path of file
         NSString *path = [[NSBundle mainBundle] pathForResource:[file stringByDeletingPathExtension] ofType:[file pathExtension]];
         
-        // try to get dictionary
-        _dictionary = [[NSDictionary dictionaryWithContentsOfFile:path] retain];
-        NSAssert(_dictionary != nil, @"SDReader: file %@ non-existant or not a property list", path);
+        // find project.plist
+        NSString *plist = [path stringByAppendingPathComponent:@"project.plist"];
         
-        _array = [[_dictionary valueForKey:@"children"] retain];
+        // try to get dictionary
+        _dictionary = [[NSDictionary dictionaryWithContentsOfFile:plist] retain];
+        
+        // try without sceneproj
+        if (!_dictionary)
+        {
+            path = [[NSBundle mainBundle] pathForResource:@"project" ofType:@"plist"];
+            _dictionary = [[NSDictionary dictionaryWithContentsOfFile:path] retain];
+        }
+        
+        NSAssert(_dictionary != nil, @"SDReader: could not find project.plist in %@; make sure you are not using json (unsupported)", path);
+        
+        _array = [[_dictionary objectForKey:@"children"] retain];
         NSAssert(_array != nil, @"SDReader: file %@ does not contain children array", path);
         
-        _sceneSize = CGSizeFromString([_dictionary valueForKey:@"sceneSize"]);
+        _sceneSize = CGSizeFromString([_dictionary objectForKey:@"sceneSize"]);
         if (_sceneSize.width <= 0)
             _sceneSize.width = 480;
         if (_sceneSize.height <= 0)
@@ -109,21 +120,21 @@ static inline ccColor3B ColorFromNSString(NSString *string)
     {
         NSAssert([dict isKindOfClass:[NSDictionary class]], @"SDReader: children array contains non-dictionary child");
         
-        NSString *className = [dict valueForKey:@"className"];
+        NSString *className = [dict objectForKey:@"className"];
         NSAssert(className != nil, @"SDReader: dictionary does not contain className key");
         NSAssert([className isKindOfClass:[NSString class]], @"SDReader: className value is not a string");
         NSAssert(NSClassFromString(className) != nil, @"SDReader: class named \"%@\" not found", className);
         NSAssert([NSClassFromString(className) isSubclassOfClass:[CCNode class]], @"SDReader: class named \"%@\" not a subclass of CCNode", className);
         
-        NSAssert([dict valueForKey:@"children"] != nil, @"SDReader: dictionary does not contain children key");
-        NSAssert([[dict valueForKey:@"children"] isKindOfClass:[NSArray class]], @"SDReader: children value is not an array");
+        NSAssert([dict objectForKey:@"children"] != nil, @"SDReader: dictionary does not contain children key");
+        NSAssert([[dict objectForKey:@"children"] isKindOfClass:[NSArray class]], @"SDReader: children value is not an array");
         
-        NSString *name = [dict valueForKey:@"name"];
+        NSString *name = [dict objectForKey:@"name"];
         NSAssert(name != nil, @"SDReader: dictionary does not contain name key");
         NSAssert([name isKindOfClass:[NSString class]], @"SDReader: name value is not a string");
         NSAssert(![names containsObject:name], @"SDReader: duplicate name \"%@\"", name);
         
-        [self validateArray:[dict valueForKey:@"children"]];
+        [self validateArray:[dict objectForKey:@"children"]];
     }
 }
 
@@ -131,7 +142,7 @@ static inline ccColor3B ColorFromNSString(NSString *string)
 {
     CCNode *retVal = nil;
     
-    NSString *className = [dict valueForKey:@"className"];
+    NSString *className = [dict objectForKey:@"className"];
     if ([className isEqualToString:@"CCNode"])
         retVal = [CCNode node];
     else if ([className isEqualToString:@"CCSprite"])
@@ -144,52 +155,64 @@ static inline ccColor3B ColorFromNSString(NSString *string)
     Class nodeClass = NSClassFromString(className);
     if ([nodeClass isSubclassOfClass:[CCNode class]])
     {
-        retVal.position = CGPointFromString([dict valueForKey:@"position"]);
-        retVal.anchorPoint = CGPointFromString([dict valueForKey:@"anchorPoint"]);
-        retVal.scaleX = [[dict valueForKey:@"scaleX"] floatValue];
-        retVal.scaleY = [[dict valueForKey:@"scaleY"] floatValue];
-        retVal.contentSize = CGSizeFromString([dict valueForKey:@"contentSize"]);
-        [retVal _setZOrder:[[dict valueForKey:@"zOrder"] integerValue]];
-        retVal.rotation = [[dict valueForKey:@"rotation"] floatValue];
-        retVal.tag = [[dict valueForKey:@"tag"] integerValue];
-        retVal.visible = [[dict valueForKey:@"visible"] boolValue];
-        retVal.isRelativeAnchorPoint = [[dict valueForKey:@"isRelativeAnchorPoint"] boolValue];
+        retVal.position = CGPointFromString([dict objectForKey:@"position"]);
+        retVal.anchorPoint = CGPointFromString([dict objectForKey:@"anchorPoint"]);
+        retVal.scaleX = [[dict objectForKey:@"scaleX"] floatValue];
+        retVal.scaleY = [[dict objectForKey:@"scaleY"] floatValue];
+        retVal.contentSize = CGSizeFromString([dict objectForKey:@"contentSize"]);
+        [retVal _setZOrder:[[dict objectForKey:@"zOrder"] integerValue]];
+        retVal.rotation = [[dict objectForKey:@"rotation"] floatValue];
+        retVal.tag = [[dict objectForKey:@"tag"] integerValue];
+        retVal.visible = [[dict objectForKey:@"visible"] boolValue];
+        
+        id ignoreAnchorPointForPosition;
+        if ([dict objectForKey:@"ignoreAnchorPointForPosition"] != nil)
+            ignoreAnchorPointForPosition = [dict objectForKey:@"ignoreAnchorPointForPosition"];
+        else
+            ignoreAnchorPointForPosition = [NSNumber numberWithBool:![[dict objectForKey:@"isRelativeAnchorPoint"] boolValue]];
+        
+        id isRelativeAnchorPoint = [NSNumber numberWithBool:![ignoreAnchorPointForPosition boolValue]];
+        
+        if ([retVal respondsToSelector:@selector(setIgnoreAnchorPointForPosition:)])
+            [retVal setValue:ignoreAnchorPointForPosition forKey:@"ignoreAnchorPointForPosition"];
+        else
+            [retVal setValue:isRelativeAnchorPoint forKey:@"isRelativeAnchorPoint"];
     }
     if ([nodeClass isSubclassOfClass:[CCSprite class]])
     {
         CCSprite *sprite = (CCSprite *)retVal;
         
-        NSString *path = [dict valueForKey:@"path"];
-        NSURL *url = [NSURL URLWithString:path];
-        NSAssert([[NSFileManager defaultManager] fileExistsAtPath:path], @"SDReader: could not find sprite \"%@\"", [url relativeString]);
+        NSString *path = [dict objectForKey:@"path"];
+        CCTexture2D *tex = [[CCTextureCache sharedTextureCache] addImage:path];
+        NSAssert(tex, @"SDReader: Unable to load texture for %@. Try removing your scene project and readding it if you recently added a new image to your project.");
         
-        sprite.texture = [[CCTextureCache sharedTextureCache] addImage:[url relativeString]];
-        sprite.textureRect = CGRectFromString([dict valueForKey:@"textureRect"]);
-        sprite.opacity = [[dict valueForKey:@"opacity"] unsignedCharValue];
-        sprite.color = ColorFromNSString([dict valueForKey:@"color"]);
-        sprite.flipX = [[dict valueForKey:@"flipX"] boolValue];
-        sprite.flipY = [[dict valueForKey:@"flipY"] boolValue];
+        sprite.texture = tex;
+        sprite.textureRect = CGRectFromString([dict objectForKey:@"textureRect"]);
+        sprite.opacity = [[dict objectForKey:@"opacity"] unsignedCharValue];
+        sprite.color = ColorFromNSString([dict objectForKey:@"color"]);
+        sprite.flipX = [[dict objectForKey:@"flipX"] boolValue];
+        sprite.flipY = [[dict objectForKey:@"flipY"] boolValue];
     }
     if ([nodeClass isSubclassOfClass:[CCLayer class]])
     {
         CCLayer *layer = (CCLayer *)retVal;
 #ifdef __CC_PLATFORM_IOS
-        layer.isAccelerometerEnabled = [[dict valueForKey:@"isAccelerometerEnabled"] boolValue];
+        layer.isAccelerometerEnabled = [[dict objectForKey:@"isAccelerometerEnabled"] boolValue];
 #elif defined(__CC_PLATFORM_MAC)
-        layer.isMouseEnabled = [[dict valueForKey:@"isMouseEnabled"] boolValue];
-        layer.isKeyboardEnabled = [[dict valueForKey:@"isKeyboardEnabled"] boolValue];
+        layer.isMouseEnabled = [[dict objectForKey:@"isMouseEnabled"] boolValue];
+        layer.isKeyboardEnabled = [[dict objectForKey:@"isKeyboardEnabled"] boolValue];
 #endif
-        layer.isTouchEnabled = [[dict valueForKey:@"isTouchEnabled"] boolValue];
-        layer.contentSize = CGSizeFromString([dict valueForKey:@"contentSize"]);
+        layer.isTouchEnabled = [[dict objectForKey:@"isTouchEnabled"] boolValue];
+        layer.contentSize = CGSizeFromString([dict objectForKey:@"contentSize"]);
     }
     if ([nodeClass isSubclassOfClass:[CCLayerColor class]])
     {
         CCLayerColor *layer = (CCLayerColor *)retVal;
-        [layer setColor:ColorFromNSString([dict valueForKey:@"color"])];
-        [layer setOpacity:[[dict valueForKey:@"opacity"] unsignedCharValue]];
+        [layer setColor:ColorFromNSString([dict objectForKey:@"color"])];
+        [layer setOpacity:[[dict objectForKey:@"opacity"] unsignedCharValue]];
     }
     
-    NSArray *children = [dict valueForKey:@"children"];
+    NSArray *children = [dict objectForKey:@"children"];
     if ([children count] > 0)
         for (NSDictionary *child in children)
             [retVal addChild:[self nodeForDictionary:child]];
@@ -218,11 +241,11 @@ static inline ccColor3B ColorFromNSString(NSString *string)
     
     for (NSDictionary *child in array)
     {
-        NSString *dictName = [child valueForKey:@"name"];
+        NSString *dictName = [child objectForKey:@"name"];
         if ([dictName isEqualToString:name])
             retVal = [self nodeForDictionary:child];
         else
-            retVal = [self nodeNamed:name inArray:[child valueForKey:@"children"]];
+            retVal = [self nodeNamed:name inArray:[child objectForKey:@"children"]];
         
         if (retVal != nil)
             break;
@@ -242,13 +265,13 @@ static inline ccColor3B ColorFromNSString(NSString *string)
     
     for (NSDictionary *child in array)
     {
-        if ([[child valueForKey:@"tag"] integerValue] == tag)
+        if ([[child objectForKey:@"tag"] integerValue] == tag)
         {
-            retVal = [child valueForKey:@"name"];
+            retVal = [child objectForKey:@"name"];
             break;
         }
         
-        NSArray *children = [child valueForKey:@"children"];
+        NSArray *children = [child objectForKey:@"children"];
         if ([children count] > 0)
             retVal = [self nameForTag:tag inArray:children];
     }
