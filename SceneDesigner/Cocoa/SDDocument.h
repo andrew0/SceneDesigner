@@ -18,4 +18,6 @@
 @property (nonatomic, retain) SDDrawingView *drawingView;
 @property (nonatomic, readonly) NSArray *allResourceNames;
 
+- (NSDictionary *)resources;
+
 @end

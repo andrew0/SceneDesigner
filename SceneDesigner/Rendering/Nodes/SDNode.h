@@ -17,10 +17,10 @@ extern NSString *SDNodeUTI;
 - (id)initWithDictionaryRepresentation:(NSDictionary *)dict;
 - (NSDictionary *)dictionaryRepresentation;
 - (NSArray *)snapPoints;
+- (SDDocument *)document;
 
 @optional
 
-@property (nonatomic, readonly) SDDocument *docmuent;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) BOOL isSelected;
 @property (nonatomic, readwrite) CGFloat posX;
@@ -56,7 +56,6 @@ do\
 } while (0)\
 
 #define SDNODE_FUNC_SRC \
-@dynamic document;\
 @synthesize name = _name;\
 @synthesize isSelected = _isSelected;\
 @dynamic posX;\

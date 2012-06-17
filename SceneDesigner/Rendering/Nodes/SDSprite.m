@@ -56,9 +56,10 @@
         
         // reuse object to save memory
         SDDocument *doc = [self document];
-        for (NSString *key in [doc resources])
+        NSDictionary *resources = [doc resources];
+        for (NSString *key in resources)
         {
-            NSData *object = [[doc resources] objectForKey:key];
+            NSData *object = [resources objectForKey:key];
             NSAssert([object isKindOfClass:[NSData class]], @"");
             if ([object isEqualToData:data])
             {

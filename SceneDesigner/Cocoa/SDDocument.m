@@ -107,11 +107,16 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
-- (NSArray *)allResourceNames
+- (NSDictionary *)resources
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:[self dictionaryRepresentation]];
     NSDictionary *resources = [self dataFromDictionaryRepresentation:dict];
-    return [resources allKeys];
+    return resources;
+}
+
+- (NSArray *)allResourceNames
+{
+    return [[self resources] allKeys];
 }
 
 - (NSDictionary *)dataFromDictionaryRepresentation:(NSDictionary *)dict
