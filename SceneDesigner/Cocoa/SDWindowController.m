@@ -120,16 +120,19 @@
     NSArray *classes = [NSArray arrayWithObjects:[SDNode class], [SDSprite class], [SDLayer class], [SDLayerColor class], [SDLabelBMFont class], nil];
     NSArray *objects = [pasteboard readObjectsForClasses:classes options:nil];
     
-    [[[self document] undoManager] beginUndoGrouping];
-    for (CCNode<SDNodeProtocol> *node in objects)
+    if ([objects count] > 0)
     {
-        if ([node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+        [[[self document] undoManager] beginUndoGrouping];
+        for (CCNode<SDNodeProtocol> *node in objects)
         {
-            CCNode *parent = [[[self document] drawingView] selectedNode];
-            [self addNodeToLayer:node parent:parent];
+            if ([node isKindOfClass:[CCNode class]] && [node conformsToProtocol:@protocol(SDNodeProtocol)])
+            {
+                CCNode *parent = [[[self document] drawingView] selectedNode];
+                [self addNodeToLayer:node parent:parent];
+            }
         }
+        [[[self document] undoManager] endUndoGrouping];
     }
-    [[[self document] undoManager] endUndoGrouping];
 }
 
 #pragma mark -
