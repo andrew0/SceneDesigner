@@ -134,6 +134,8 @@ static inline ccColor3B ColorFromNSString(NSString *string)
         NSAssert([name isKindOfClass:[NSString class]], @"SDReader: name value is not a string");
         NSAssert(![names containsObject:name], @"SDReader: duplicate name \"%@\"", name);
         
+        [names addObject:name];
+        
         [self validateArray:[dict objectForKey:@"children"]];
     }
 }
